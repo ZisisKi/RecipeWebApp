@@ -1,0 +1,150 @@
+/* Γενικό στυλ εφαρμογής - Ζεστό φόντο */
+.appContainer {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #fdfaf6; /* Κρεμ φόντο, σαν παλιό χαρτί */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #2c3e50;
+}
+
+/* Header - Η κορυφή της σελίδας */
+.header {
+  background-color: #fff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: center;
+  border-bottom: 3px solid #e67e22; /* Πορτοκαλί γραμμή */
+}
+
+.appTitle {
+  margin: 0;
+  font-size: 2rem;
+  color: #d35400; /* Σκούρο πορτοκαλί/κεραμιδί */
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: -1px;
+}
+
+.mainContent {
+  flex: 1; /* Πιάνει τον υπόλοιπο χώρο */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- HERO SECTION (Αρχική Σελίδα) --- */
+.heroSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+/* Η μεγάλη εικόνα στην αρχική */
+.heroImagePlaceholder {
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  /* URL εικόνας από Unsplash - Άλλαξέ το αν θες */
+  background-image: url('https://images.unsplash.com/photo-1495521821757-a1efb6729352?q=80&w=2600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+/* Σκούρο φίλτρο πάνω από την εικόνα για να φαίνονται τα γράμματα */
+.heroImagePlaceholder::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+}
+
+.heroText {
+    color: white;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    z-index: 1;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* Τα κύρια κουμπιά του μενού */
+.mainMenu {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.menuBtn {
+  padding: 1.5rem 3rem;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btnView {
+    background-color: #fff;
+    color: #d35400;
+    border: 2px solid #d35400;
+}
+.btnView:hover { background-color: #fcece4; transform: translateY(-3px); }
+
+.btnCreate {
+    background-color: #d35400;
+    color: white;
+}
+.btnCreate:hover { background-color: #e67e22; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3); }
+
+/* --- WRAPPERS ΓΙΑ ΤΙΣ ΑΛΛΕΣ ΣΕΛΙΔΕΣ --- */
+.pageWrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    animation: slideUp 0.5s ease-out;
+}
+
+.navigationHeader { padding-bottom: 1rem; }
+
+.backBtn {
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+.backBtn:hover { color: #d35400; text-decoration: underline; }
+
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    color: #95a5a6;
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }

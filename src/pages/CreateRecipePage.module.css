@@ -1,0 +1,92 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem;
+    /* Το κάνουμε να μοιάζει με καρτέλα */
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border: 1px solid #f0e6dc;
+}
+
+.title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    position: relative;
+}
+/* Διακοσμητική γραμμή κάτω από τον τίτλο */
+.title::after {
+    content: '👨‍🍳'; /* Ένα μικρό εικονίδιο */
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+.formGroup {
+    margin-bottom: 1.8rem;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+    color: #57606f;
+    font-size: 1.1rem;
+}
+
+/* Κοινό στυλ για όλα τα inputs */
+.input, .textarea, .select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #dfe4ea;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fdfdfd;
+    box-sizing: border-box; /* Σημαντικό για να μην ξεχειλίζουν */
+}
+
+/* Όταν κάνεις κλικ μέσα στο πεδίο */
+.input:focus, .textarea:focus, .select:focus {
+    outline: none;
+    border-color: #d35400; /* Το βασικό μας πορτοκαλί */
+    box-shadow: 0 0 0 4px rgba(211, 84, 0, 0.1);
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.select {
+    appearance: none; /* Κρύβουμε το default βελάκι του browser */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d35400' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+    cursor: pointer;
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 1.2rem;
+    background-color: #d35400;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(211, 84, 0, 0.2);
+    margin-top: 1rem;
+}
+
+.submitBtn:hover {
+    background-color: #e67e22;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3);
+}

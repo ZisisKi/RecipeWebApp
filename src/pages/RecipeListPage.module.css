@@ -1,0 +1,107 @@
+.container {
+    /* Δεν χρειάζεται πολλά εδώ, τα αναλαμβάνει ο wrapper του App.js */
+}
+
+.title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Το Grid για τις κάρτες */
+.grid {
+    display: grid;
+    /* Αυτόματο πλάτος, μίνιμουμ 320px η κάθε κάρτα */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+}
+
+/* Η Κάρτα της Συνταγής */
+.card {
+    background-color: #fff;
+    border-radius: 16px;
+    overflow: hidden; /* Για να μην βγαίνουν οι γωνίες */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0e6dc; /* Απαλό μπεζ περίγραμμα */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Εφέ hover στην κάρτα */
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    border-color: #e67e22;
+}
+
+/* Μια χρωματιστή γραμμή πάνω από κάθε κάρτα */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(to right, #d35400, #e67e22);
+}
+
+/* Το εσωτερικό της κάρτας */
+.cardContent {
+    padding: 1.8rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardTitle {
+    margin: 0.5rem 0 1rem;
+    color: #2c3e50;
+    font-size: 1.6rem;
+    line-height: 1.3;
+}
+
+.description {
+    color: #7f8c8d;
+    font-size: 1rem;
+    line-height: 1.6;
+    flex-grow: 1; /* Πιάνει τον διαθέσιμο χώρο */
+    margin-bottom: 1.5rem;
+}
+
+/* Το κάτω μέρος με τα εικονίδια */
+.details {
+    background-color: #fdfaf6; /* Ελαφρώς διαφορετικό φόντο */
+    padding: 1.2rem 1.8rem;
+    border-top: 1px solid #eee;
+    font-size: 0.95rem;
+    color: #555;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Βάζουμε μικρά emoji πριν από κάθε λεπτομέρεια */
+.details span:nth-child(1)::before { content: '🏷️ '; } /* Κατηγορία */
+.details span:nth-child(2)::before { content: '⚡ '; } /* Δυσκολία */
+.details span:nth-child(3)::before { content: '⏰ '; } /* Χρόνος */
+
+.details strong {
+    color: #d35400;
+}
+
+/* Loading & Error states */
+.loading, .error, .empty {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 5rem;
+    color: #95a5a6;
+    padding: 3rem;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+.error { color: #e74c3c; background-color: #fdeaea; }
