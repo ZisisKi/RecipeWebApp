@@ -1,175 +1,174 @@
-import classes from './CreateRecipePage.module.css';
-import React, { useState } from 'react';
-import { createRecipe } from '../api/recipeApi'; 
-import IngredientSelector from '../components/IngredientSelector';
+import classes from "./CreateRecipePage.module.css";
+// [LINE 1] Import React hooks
+// Το { useState } είναι εργαλείο του React για να έχει "μνήμη" το component (να θυμάται τι γράφεις).
+import React, { useState } from "react";
+
+// [LINE 2] Import API Call
+// Εισάγουμε τη συνάρτηση που κάνει το HTTP POST αίτημα.
+// ΣΗΜΕΙΩΣΗ: Αυτή η συνάρτηση περιέχει το URL 'http://localhost:8080/api/recipes'.
+import { createRecipe } from "../api/recipeApi";
 
 const CreateRecipePage = () => {
+  // [LINES 7-13] STATE (Η καρδιά της σύνδεσης με το Backend)
+  // Εδώ ορίζουμε το αντικείμενο που θα στείλουμε στη Java.
+  // SOS BACKEND: Τα ονόματα των κλειδιών (keys) πρέπει να είναι ΙΔΙΑ με το RecipeDto.java.
+  const [formData, setFormData] = useState({
+    name: "", // Αντιστοιχεί στο: private String name;
+    description: "", // Αντιστοιχεί στο: private String description;
 
-    // [STATE] Η καρδιά της φόρμας
-    // Εδώ κρατάμε όλα τα δεδομένα που θα ταξιδέψουν προς το Backend.
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        difficulty: 'Εύκολο', // Default value (πρέπει να είναι κεφαλαία για το Enum)
-        category: 'Πρωινό',
-        totalDuration: 1,
-        
-        steps: [], // Θα το φτιάξουμε αργότερα
-        photos: [], // Θα το φτιάξουμε αργότερα
-        
-        // [SOS BACKEND CONNECTION]
-        // Η Java περιμένει μια λίστα: private List<RecipeIngredientDto> recipeIngredients;
-        // Εδώ ξεκινάμε με άδεια λίστα [] και θα την γεμίσουμε δυναμικά.
-        recipeIngredients: [] 
+    // SOS ENUMS: Οι τιμές εδώ ('EASY') πρέπει να είναι ΚΕΦΑΛΑΙΑ strings.
+    // Η Java θα προσπαθήσει να ταιριάξει το string "EASY" με το Enum Difficulty.EASY.
+    // Αν γράψεις 'Easy', η Java θα πετάξει σφάλμα (ConversionFailedException).
+    difficulty: "EASY",
+
+    category: "MAIN_COURSE", // Ομοίως, πρέπει να ταιριάζει με το RecipeCategory Enum.
+
+    totalDuration: 1, // Αντιστοιχεί στο: private Integer totalDuration;
+    steps: [],
+    recipeIngredients: [],
+    photos: [],
+  });
+
+  // [LINE 15] UI State
+  // Μια απλή μεταβλητή για να δείξουμε μήνυμα επιτυχίας ή λάθους στον χρήστη.
+  const [message, setMessage] = useState("");
+
+  // [LINES 18-21] HANDLE CHANGE (Ο Μηχανισμός Ενημέρωσης)
+  // Αυτή η συνάρτηση τρέχει ΚΑΘΕ φορά που πατάς ένα πλήκτρο στο πληκτρολόγιο.
+  const handleChange = (e) => {
+    // e.target είναι το input που πειράξαμε (π.χ. το πεδίο "Όνομα").
+    // name: είναι το attribute name του input (π.χ. "name" ή "description").
+    // value: είναι αυτό που μόλις πληκτρολόγησε ο χρήστης.
+    const { name, value } = e.target;
+
+    // setFormData: Ενημερώνουμε τη μνήμη.
+    // ...formData: (Spread Operator) "Κράτα όλα τα υπόλοιπα πεδία όπως ήταν".
+    // [name]: value: "Αλλά μόνο το πεδίο που πειράξαμε, κάνε το ίσο με το νέο value".
+    setFormData({
+      ...formData,
+      [name]: name === "totalDuration" ? Number(value) : value,
     });
+  };
 
-    const [message, setMessage] = useState('');
+  // [LINES 24-35] HANDLE SUBMIT (Η Αποστολή στο Backend)
+  // async: Σημαίνει ότι η συνάρτηση θα περιμένει απάντηση από το δίκτυο.
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Σημαντικό: Σταματάει το refresh της σελίδας (default browser behavior).
 
-    // [HANDLER] Για τα απλά πεδία (Όνομα, Περιγραφή κτλ)
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+    try {
+      // [LINE 28] Η Κλήση
+      // createRecipe(formData): Στέλνουμε το JSON στη Java.
+      // await: Περιμένουμε μέχρι το Backend να απαντήσει (να σώσει στη MySQL).
+      // savedRecipe: Είναι το RecipeDto που επιστρέφει ο Controller (με το ID πλέον).
+      const savedRecipe = await createRecipe(formData);
 
-    // [NEW LOGIC - LIFTING STATE UP] 
-    // Αυτή η συνάρτηση είναι το "αυτί" του Γονιού.
-    // Την δίνουμε στο παιδί (IngredientSelector) και του λέμε:
-    // "Όταν ο χρήστης πατήσει Προσθήκη, κάλεσε αυτή τη συνάρτηση και δώσε μου τα δεδομένα".
-    const addIngredientToRecipe = (ingredientData) => {
-        console.log("Ο Γονιός παρέλαβε:", ingredientData);
+      // Αν φτάσαμε εδώ, όλα πήγαν καλά (Status 200 OK).
+      setMessage(`Επιτυχία! Η συνταγή "${savedRecipe.name}" δημιουργήθηκε.`);
+    } catch (error) {
+      // Αν το Backend είναι κλειστό ή στείλαμε λάθος δεδομένα (Status 400/500).
+      console.error(error);
+      setMessage("Σφάλμα κατά την αποθήκευση.");
+    }
+  };
 
-        // Ενημερώνουμε το state προσθέτοντας το νέο υλικό στην υπάρχουσα λίστα
-        setFormData(prevData => ({
-            ...prevData, // Κράτα τα παλιά (name, description...)
-            recipeIngredients: [...prevData.recipeIngredients, ingredientData] // Πρόσθεσε το νέο στη λίστα
-        }));
-    };
-
-    // [NEW LOGIC] Διαγραφή υλικού από τη λίστα (πριν την αποθήκευση)
-    const removeIngredient = (indexToRemove) => {
-        setFormData(prevData => ({
-            ...prevData,
-            // Φιλτράρουμε τη λίστα και κρατάμε όλα εκτός από αυτό που έχει το indexToRemove
-            recipeIngredients: prevData.recipeIngredients.filter((_, index) => index !== indexToRemove)
-        }));
-    };
-
-    // [SUBMIT] Η τελική αποστολή
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        // Έλεγχος αν ξέχασε να βάλει υλικά
-        if (formData.recipeIngredients.length === 0) {
-            alert("Παρακαλώ προσθέστε τουλάχιστον ένα υλικό!");
-            return;
-        }
-        console.log("ΤΙ ΣΤΕΛΝΩ ΣΤΟ BACKEND:", JSON.stringify(formData, null, 2));
-        try {
-            // Στέλνουμε ΟΛΟ το πακέτο (μαζί με τη λίστα υλικών) στο Backend
-            const savedRecipe = await createRecipe(formData);
-            setMessage(`Επιτυχία! Η συνταγή "${savedRecipe.name}" δημιουργήθηκε.`);
-            
-            // Προαιρετικά: Καθαρίζουμε τη φόρμα για νέα συνταγή
-            // setFormData({ ...αρχικές τιμές... })
-        } catch (error) {
-            console.error(error);
-            setMessage('Σφάλμα κατά την αποθήκευση.');
-        }
-    };
-
-    return (
-        <div className={classes.container}>
-            <h1 className={classes.title}>Δημιουργία Νέας Συνταγής</h1>
-            
-            <form onSubmit={handleSubmit}>
-                
-                {/* --- ΤΑ ΒΑΣΙΚΑ ΠΕΔΙΑ --- */}
-                <div className={classes.formGroup}>
-                    <label className={classes.label}>Όνομα:</label>
-                    <input className={classes.input} type="text" name="name" minLength={2} maxLength={30} value={formData.name} onChange={handleChange} required />
-                </div>
-
-                <div className={classes.formGroup}>
-                    <label className={classes.label}>Περιγραφή:</label>
-                    <textarea className={classes.textarea} name="description" maxLength={500} value={formData.description} onChange={handleChange} />
-                </div>
-
-                <div className={classes.formGroup}>
-                    <label className={classes.label}>Χρόνος (λεπτά):</label>
-                    <input className={classes.input} type="number" name="totalDuration" min="1" max="1440" value={formData.totalDuration} onChange={handleChange} />
-                </div>
-
-                <div className={classes.formGroup}>
-                    <label className={classes.label}>Δυσκολία:</label>
-                    <select className={classes.select} name="difficulty" value={formData.difficulty} onChange={handleChange}>
-                        <option value="Εύκολο">Εύκολο</option>
-                        <option value="Μέτριο">Μέτριο</option>
-                        <option value="Δύσκολο">Δύσκολο</option>
-                    </select>
-                </div>
-
-                 <div className={classes.formGroup}>
-                    <label className={classes.label}>Κατηγορία:</label>
-                    <select className={classes.select} name="category" value={formData.category} onChange={handleChange}>
-                        <option value="Ορεκτικό">Ορεκτικό</option>
-                        <option value="Κυρίως Πιάτο">Κυρίως Πιάτο</option>
-                        <option value="Επιδόρπιο">Επιδόρπιο</option>
-                        <option value="Σαλάτα">Σαλάτα</option>
-                        <option value="Σνακ">Σνακ</option>
-                    </select>
-                </div>
-
-                <hr style={{ margin: '2rem 0', border: '0', borderTop: '1px solid #ccc' }} />
-                
-                {/* --- [SECTION] ΛΙΣΤΑ ΥΛΙΚΩΝ (Preview) --- */}
-                {/* Εδώ δείχνουμε στον χρήστη τι έχει προσθέσει μέχρι στιγμής */}
-                <div style={{ marginBottom: '20px' }}>
-                    <h3 style={{color: '#2c3e50'}}>Υλικά Συνταγής ({formData.recipeIngredients.length})</h3>
-                    
-                    {formData.recipeIngredients.length === 0 ? (
-                        <p style={{ color: '#888', fontStyle: 'italic' }}>Δεν έχουν προστεθεί υλικά ακόμα.</p>
-                    ) : (
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {/* Κάνουμε MAP τη λίστα των υλικών που έχουμε στο state */}
-                            {formData.recipeIngredients.map((item, index) => (
-                                <li key={index} style={{ 
-                                    background: '#f8f9fa', padding: '10px', marginBottom: '8px', 
-                                    border: '1px solid #e9ecef', borderRadius: '8px', 
-                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center' 
-                                }}>
-                                    <span style={{ fontWeight: '500' }}>
-                                        {/* Εμφανίζουμε: Ντομάτα - 500 GRAMS */}
-                                        {item.name} <span style={{color:'#666'}}>— {item.quantity} {item.measurementUnit}</span>
-                                    </span>
-                                    
-                                    {/* Κουμπί Διαγραφής (X) */}
-                                    <button 
-                                        type="button" 
-                                        onClick={() => removeIngredient(index)}
-                                        style={{ 
-                                            background: '#ff6b6b', color: 'white', border: 'none', 
-                                            borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontWeight: 'bold' 
-                                        }}
-                                    >
-                                        ✕
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-
-                {/* --- [SECTION] ΤΟ ΕΡΓΑΛΕΙΟ ΠΡΟΣΘΗΚΗΣ (CHILD COMPONENT) --- */}
-                {/* Περνάμε τη συνάρτηση addIngredientToRecipe ως prop με όνομα 'onAdd' */}
-                <IngredientSelector onAdd={addIngredientToRecipe} />
-
-                <br/>
-                <button className={classes.submitBtn} type="submit">Αποθήκευση Συνταγής</button>
-            </form>
-
-            {message && <p style={{marginTop: '1rem', fontWeight: 'bold', color: message.includes('Επιτυχία') ? 'green' : 'red'}}>{message}</p>}
+  // [LINES 37-END] Τι βλέπει ο χρήστης (JSX)
+  return (
+    <div className={classes.container}>
+      {" "}
+      {/* Απλό CSS class string */}
+      <h1 className={classes.title}>Δημιουργία Νέας Συνταγής</h1>
+      {/* Συνδέουμε τη φόρμα με τη συνάρτηση αποστολής */}
+      <form onSubmit={handleSubmit}>
+        {/* --- INPUT: NAME --- */}
+        <div className={classes.formGroup}>
+          <label className={classes.label}>Όνομα:</label>
+          <input
+            className={classes.input}
+            type="text"
+            // SOS BACKEND: Το name="name" λέει στο handleChange ποιο πεδίο να αλλάξει στο JSON.
+            // Πρέπει να ταιριάζει με το κλειδί στο formData.
+            name="name"
+            minLength={2}
+            maxLength={30}
+            // Controlled Component: Η τιμή έρχεται ΠΑΝΤΑ από το state.
+            value={formData.name}
+            // Όταν γράφει ο χρήστης, καλείται το handleChange.
+            onChange={handleChange}
+            required // HTML Validation: Δεν σε αφήνει να πατήσεις submit αν είναι κενό.
+          />
         </div>
-    );
+
+        {/* --- TEXTAREA: DESCRIPTION --- */}
+        <div className={classes.formGroup}>
+          <label className={classes.label}>Περιγραφή:</label>
+          <textarea
+            className={classes.textarea}
+            name="description"
+            maxLength={500} // Αντιστοιχεί στο formData.description
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* --- INPUT: DURATION --- */}
+        <div className={classes.formGroup}>
+          <label className={classes.label}>Χρόνος (λεπτά):</label>
+          <input
+            className={classes.input}
+            type="number" // Ο browser θα επιτρέπει μόνο αριθμούς.
+            name="totalDuration"
+            min="1"
+            max="1440" // Αντιστοιχεί στο formData.totalDuration
+            value={formData.totalDuration}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* --- SELECT: DIFFICULTY (SOS) --- */}
+        <div className={classes.formGroup}>
+          <label className={classes.label}>Δυσκολία:</label>
+          {/* Όταν ο χρήστης επιλέγει, το formData.difficulty ενημερώνεται */}
+          <select
+            className={classes.select}
+            name="difficulty"
+            value={formData.difficulty}
+            onChange={handleChange}
+          >
+            {/* SOS values: Τα value="EASY" είναι αυτά που στέλνονται στο Backend.
+                           Πρέπει να είναι ΚΕΦΑΛΑΙΑ (Java Enum convention).
+                           Το κείμενο "Εύκολο" είναι απλά αυτό που βλέπει ο χρήστης.
+                        */}
+            <option value="EASY">Εύκολο</option>
+            <option value="MEDIUM">Μέτριο</option>
+            <option value="HARD">Δύσκολο</option>
+          </select>
+        </div>
+
+        {/* --- SELECT: CATEGORY --- */}
+        <div className={classes.formGroup}>
+          <label className={classes.label}>Κατηγορία:</label>
+          <select
+            className={classes.select}
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            <option value="APPETIZER">Ορεκτικό</option>
+            <option value="MAIN_COURSE">Κυρίως Πιάτο</option>
+            <option value="DESSERT">Επιδόρπιο</option>
+            <option value="SALAD">Σαλάτα</option>
+            <option value="SNACK">Σνακ</option>
+          </select>
+        </div>
+
+        <button className={classes.submitBtn} type="submit">
+          Αποθήκευση Συνταγής
+        </button>
+      </form>
+      {/* Conditional Rendering: Δείχνει το μήνυμα μόνο αν υπάρχει κείμενο */}
+      {message && <p>{message}</p>}
+    </div>
+  );
 };
 
 export default CreateRecipePage;
