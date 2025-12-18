@@ -1,0 +1,106 @@
+/* Το κουτί που τα περιέχει όλα */
+.container {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Η γραμμή που έχει τα inputs στη σειρά */
+.row {
+    display: flex;
+    gap: 1rem; /* Κενό ανάμεσα στα πεδία */
+    align-items: flex-end; /* Ευθυγράμμιση στο κάτω μέρος */
+}
+
+/* Ομάδες πεδίων (για να πιάνουν τον σωστό χώρο) */
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Το όνομα πιάνει τον περισσότερο χώρο */
+.flexGrow {
+    flex: 2;
+}
+
+/* Η ποσότητα και η μονάδα πιάνουν λιγότερο */
+.flexShrink {
+    flex: 1;
+}
+
+.input, .select {
+    padding: 0.8rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box; /* Για να μην ξεχειλίζουν */
+}
+
+.addButton {
+    padding: 0.8rem 1.5rem;
+    background-color: #27ae60; /* Πράσινο κουμπί προσθήκης */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    height: fit-content;
+}
+
+.addButton:hover {
+    background-color: #219150;
+}
+
+/* ... ο υπάρχων κώδικας ... */
+
+/* Το "κουτί" που περιέχει την αναζήτηση πρέπει να είναι relative
+   ώστε η λίστα να εμφανιστεί ακριβώς από κάτω του */
+.inputGroup {
+    position: relative; 
+}
+
+/* Η λίστα με τα αποτελέσματα */
+.searchResultsList {
+    position: absolute; /* "Επιπλέει" πάνω από τα άλλα στοιχεία */
+    top: 100%; /* Ξεκινάει ακριβώς κάτω από το input */
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-radius: 0 0 8px 8px; /* Στρογγυλεμένες γωνίες μόνο κάτω */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 10; /* Εξασφαλίζει ότι θα φαίνεται ΠΑΝΩ από τα άλλα κουμπιά */
+    max-height: 200px; /* Αν έχει πολλά, να κάνει scroll */
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none; /* Βγάζουμε τις κουκκίδες της λίστας */
+}
+
+/* Το κάθε αποτέλεσμα στη λίστα */
+.searchResultItem {
+    padding: 0.8rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background 0.2s;
+}
+
+.searchResultItem:hover {
+    background-color: #f8f9fa; /* Γκριζάρει όταν περνάς το ποντίκι */
+    color: #d35400;
+}
+
+.searchResultItem:last-child {
+    border-bottom: none;
+}
