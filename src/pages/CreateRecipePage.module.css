@@ -90,3 +90,97 @@
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3);
 }
+
+/* ... τα υπάρχοντα styles σου ... */
+
+.separator {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+.list {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    color: #333;
+}
+
+/* --- ΝΕΑ CLASSES ΓΙΑ ΤΑ STEPS --- */
+
+/* Το container που κρατάει το textarea και το κουμπί + */
+.stepInputGroup {
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Κεντράρισμα στον κάθετο άξονα */
+}
+
+/* Το κουμπί προσθήκης βήματος */
+.addStepButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;       /* Για να κεντράρουμε το + */
+    align-items: center;
+    justify-content: center;
+}
+
+.addStepButton:hover {
+    background-color: #218838;
+}
+
+/* Η λίστα που περιέχει τα βήματα */
+.stepsList {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Το κάθε βήμα ξεχωριστά */
+.stepItem {
+    padding: 10px;
+    background-color: #f8f9fa; /* Απαλό γκρι */
+    border-radius: 5px;
+    border-left: 4px solid #007bff; /* Μια μπλε γραμμή αριστερά για στυλ */
+    color: #333;
+    font-size: 1rem;
+}
+
+/* ... κρατάς τα παλιά ... */
+
+/* Νέα classes για τα μικρότερα components */
+.subSection {
+    background: #fdfdfd;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.checkboxGroup {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.checkboxItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.stepHeader {
+    display: flex;
+    gap: 10px;
+}

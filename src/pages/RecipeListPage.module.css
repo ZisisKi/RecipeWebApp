@@ -1,107 +1,199 @@
 .container {
-    /* Δεν χρειάζεται πολλά εδώ, τα αναλαμβάνει ο wrapper του App.js */
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Header Section --- */
+.header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.titleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Για να σπάνε σε μικρές οθόνες */
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
 .title {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 3rem;
-    font-size: 2.5rem;
+    margin: 0;
+    font-size: 2rem;
+    color: #333;
     font-weight: 700;
 }
 
-/* Το Grid για τις κάρτες */
-.grid {
-    display: grid;
-    /* Αυτόματο πλάτος, μίνιμουμ 320px η κάθε κάρτα */
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2.5rem;
-    padding-bottom: 3rem;
+.buttonGroup {
+    display: flex;
+    gap: 10px;
 }
 
-/* Η Κάρτα της Συνταγής */
-.card {
-    background-color: #fff;
-    border-radius: 16px;
-    overflow: hidden; /* Για να μην βγαίνουν οι γωνίες */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    border: 1px solid #f0e6dc; /* Απαλό μπεζ περίγραμμα */
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+.editBtn, .deleteBtn {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.editBtn {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.editBtn:hover {
+    background-color: #e0e0e0;
+}
+
+.deleteBtn {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.deleteBtn:hover {
+    background-color: #ffcdd2;
+}
+
+/* --- Meta Info (Time, Difficulty, etc) --- */
+.metaContainer {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.badgeTime { background-color: #e3f2fd; color: #1565c0; }
+.badgeCategory { background-color: #f3e5f5; color: #7b1fa2; }
+.badgeDifficulty { background-color: #fff3e0; color: #ef6c00; }
+
+.description {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    font-style: italic;
+    background-color: #fafafa;
+    padding: 15px;
+    border-left: 4px solid #007bff;
+    border-radius: 4px;
+}
+
+/* --- Sections (Ingredients & Steps) --- */
+.section {
+    margin-bottom: 40px;
+}
+
+.sectionTitle {
+    font-size: 1.4rem;
+    color: #444;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Ingredients List */
+.ingredientsList {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Αυτόματο Grid */
+    gap: 15px;
+}
+
+.ingredientItem {
+    background-color: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+}
+
+/* Steps List */
+.stepsContainer {
     display: flex;
     flex-direction: column;
+    gap: 20px;
+}
+
+.stepCard {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
     position: relative;
 }
 
-/* Εφέ hover στην κάρτα */
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    border-color: #e67e22;
-}
-
-/* Μια χρωματιστή γραμμή πάνω από κάθε κάρτα */
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 6px;
-    background: linear-gradient(to right, #d35400, #e67e22);
-}
-
-/* Το εσωτερικό της κάρτας */
-.cardContent {
-    padding: 1.8rem;
-    flex-grow: 1;
+.stepHeader {
     display: flex;
-    flex-direction: column;
-}
-
-.cardTitle {
-    margin: 0.5rem 0 1rem;
-    color: #2c3e50;
-    font-size: 1.6rem;
-    line-height: 1.3;
-}
-
-.description {
-    color: #7f8c8d;
-    font-size: 1rem;
-    line-height: 1.6;
-    flex-grow: 1; /* Πιάνει τον διαθέσιμο χώρο */
-    margin-bottom: 1.5rem;
-}
-
-/* Το κάτω μέρος με τα εικονίδια */
-.details {
-    background-color: #fdfaf6; /* Ελαφρώς διαφορετικό φόντο */
-    padding: 1.2rem 1.8rem;
-    border-top: 1px solid #eee;
-    font-size: 0.95rem;
-    color: #555;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
     align-items: center;
+    margin-bottom: 10px;
 }
 
-/* Βάζουμε μικρά emoji πριν από κάθε λεπτομέρεια */
-.details span:nth-child(1)::before { content: '🏷️ '; } /* Κατηγορία */
-.details span:nth-child(2)::before { content: '⚡ '; } /* Δυσκολία */
-.details span:nth-child(3)::before { content: '⏰ '; } /* Χρόνος */
-
-.details strong {
-    color: #d35400;
+.stepNumber {
+    background-color: #007bff;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 15px;
+    flex-shrink: 0;
 }
 
-/* Loading & Error states */
-.loading, .error, .empty {
+.stepTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #333;
+    margin-right: auto;
+}
+
+.stepDuration {
+    font-size: 0.85rem;
+    color: #666;
+    background-color: #eee;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.stepDescription {
+    color: #555;
+    line-height: 1.6;
+    margin-left: 45px; /* Στοίχιση κάτω από τον τίτλο */
+}
+
+/* --- Loading / Error / Empty States --- */
+.loading, .error, .notFound {
     text-align: center;
-    font-size: 1.5rem;
-    margin-top: 5rem;
-    color: #95a5a6;
-    padding: 3rem;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-top: 50px;
+    font-size: 1.2rem;
 }
-.error { color: #e74c3c; background-color: #fdeaea; }
+
+.error { color: #d32f2f; }
+.loading { color: #0288d1; }

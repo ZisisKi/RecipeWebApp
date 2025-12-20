@@ -1,9 +1,10 @@
+// src/pages/RecipeListPage.js
 import React, { useEffect, useState } from 'react';
 import { getAllRecipes } from '../api/recipeApi';
-// Import το CSS Module
+import RecipeCard from '../components/recipe-list/RecipeCard';
 import classes from './RecipeListPage.module.css';
 
-const RecipeListPage = () => {
+const RecipeListPage = ({ onRecipeClick }) => {
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -20,14 +21,10 @@ const RecipeListPage = () => {
                 setLoading(false);
             }
         };
-
         fetchRecipes();
     }, []);
 
-    //ΕΞΗΓΗΣΗ ΓΙΑ ΤΟ USEEFFECT : Λέει στο React: "Αυτό τον κώδικα θα τον τρέξεις ΜΟΝΟ ΜΙΑ ΦΟΡΑ, τη στιγμή που η σελίδα γεννιέται (mount)".
-    //Το [] στο τέλος είναι η ασφάλεια που του λέει "μην το ξανατρέξεις ποτέ, εκτός αν φορτώσει η σελίδα από την αρχή".
-
-    if (loading) return <div className={classes.loading}>Φόρτωση συνταγών...</div>;
+    if (loading) return <div className={classes.loading}>Φόρτωση συνταγών...</div>; // <--- ΠΡΟΣΕΞΕ ΑΥΤΟ ΤΟ ΜΗΝΥΜΑ
     if (error) return <div className={classes.error}>{error}</div>;
 
     return (
@@ -35,22 +32,15 @@ const RecipeListPage = () => {
             <h1 className={classes.title}>Οι Συνταγές Μου</h1>
             
             {recipes.length === 0 ? (
-                <p className={classes.empty}>Δεν υπάρχουν συνταγές ακόμα. Ξεκίνα δημιουργώντας μία!</p>
+                <p className={classes.empty}>Δεν υπάρχουν συνταγές ακόμα.</p>
             ) : (
                 <div className={classes.grid}>
                     {recipes.map((recipe) => (
-                        <div key={recipe.id} className={classes.card}>
-                            <div>
-                                <h3 className={classes.cardTitle}>{recipe.name}</h3>
-                                <p className={classes.description}>{recipe.description}</p>
-                            </div>
-                            
-                            <div className={classes.details}>
-                                <span><strong>Κατηγορία:</strong> {recipe.category}</span>
-                                <span><strong>Δυσκολία:</strong> {recipe.difficulty}</span>
-                                <span><strong>Χρόνος:</strong> {recipe.totalDuration} λεπτά</span>
-                            </div>
-                        </div>
+                        <RecipeCard 
+                            key={recipe.id} 
+                            recipe={recipe} 
+                            onClick={() => onRecipeClick(recipe.id)}
+                        />
                     ))}
                 </div>
             )}

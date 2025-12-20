@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MEASUREMENT_OPTIONS } from '../utils/enums';
-import { searchIngredients } from '../api/ingredientApi';
+import { MEASUREMENT_OPTIONS } from '../../utils/enums';
+import { searchIngredients } from '../../api/ingredientApi';
 import classes from './IngredientSelector.module.css';
 
 // 1. ΑΛΛΑΓΗ: ΔΕΧΟΜΑΣΤΕ ΤΟ PROP { onAdd }
