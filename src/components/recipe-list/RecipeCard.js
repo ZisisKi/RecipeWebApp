@@ -36,7 +36,7 @@ const RecipeCard = ({ recipe, onClick }) => {
         </span>
         <div className={classes.timeBadge}>
           <span className={classes.timeIcon}>⏱</span>
-          <span>{recipe.totalDuration}min</span>
+          <span>{recipe.totalDuration} λεπτά</span>
         </div>
       </div>
 
