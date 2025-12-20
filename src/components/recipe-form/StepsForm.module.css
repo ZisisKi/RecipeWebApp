@@ -1,199 +1,277 @@
-/* StepsForm.module.css */
+/* StepsForm.module.css - Enhanced with step ingredient controls */
 
 .container {
-    background: #ffffff;
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-    margin-bottom: 20px;
+  background: #ffffff;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  margin-bottom: 20px;
 }
 
 .titleHeader {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.25rem;
-    color: #333;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+  color: #333;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
 }
 
-/* --- Φόρμα Εισαγωγής --- */
+/* --- Form Section --- */
 .formContainer {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border: 1px dashed #ced4da;
-    border-radius: 6px;
-    margin-bottom: 25px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border: 1px dashed #ced4da;
+  border-radius: 6px;
+  margin-bottom: 25px;
 }
 
 .row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
-/* Input Styles */
-.input, .textarea {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.2s;
+.input,
+.textarea {
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
 }
 
-.input:focus, .textarea:focus {
-    border-color: #007bff;
-    outline: none;
+.input:focus,
+.textarea:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .inputTitle {
-    flex: 1; /* Πιάνει όλο τον διαθέσιμο χώρο */
+  flex: 1;
 }
 
 .inputDuration {
-    width: 100px; /* Σταθερό πλάτος */
+  width: 100px;
 }
 
 .textarea {
-    width: 100%;
-    min-height: 80px;
-    resize: vertical;
-    box-sizing: border-box; /* Για να μην ξεφεύγει το padding */
-    margin-bottom: 15px;
-    font-family: inherit;
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  font-family: inherit;
 }
 
-/* --- Checkboxes Υλικών --- */
-.ingredientsSection {
-    margin-top: 15px;
+/* --- NEW: Enhanced Step Ingredients Section --- */
+.stepIngredientsSection {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
 }
 
-.ingredientsLabel {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #555;
-    font-size: 0.9rem;
+.stepIngredientsLabel {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #495057;
+  font-size: 1rem;
 }
 
-.checkboxList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
-    max-height: 160px;
-    overflow-y: auto;
-    border: 1px solid #e9ecef;
-    background: white;
-    padding: 10px;
-    border-radius: 4px;
+/* Available ingredients grid */
+.availableIngredientsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
-.checkboxLabel {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
+.addIngredientBtn {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
 }
 
-.checkboxInput {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
+.addIngredientBtn:hover {
+  background-color: #218838;
 }
 
-/* --- Buttons --- */
+/* Selected step ingredients */
+.selectedStepIngredients {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #dee2e6;
+}
+
+.selectedIngredientsTitle {
+  margin: 0 0 12px 0;
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+.stepIngredientRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e9ecef;
+}
+
+.ingredientName {
+  flex: 1;
+  font-weight: 500;
+  color: #495057;
+}
+
+.quantityInput {
+  width: 80px;
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.unitSelect {
+  width: 120px;
+  padding: 6px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background-color: white;
+}
+
+.removeStepIngredientBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #dc3545;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeStepIngredientBtn:hover {
+  background-color: #ffebee;
+}
+
+/* --- Add Button --- */
 .addButton {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 15px;
-    transition: background-color 0.2s;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 15px;
+  transition: background-color 0.2s;
 }
 
 .addButton:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
-/* --- Λίστα Βημάτων (Preview) --- */
+/* --- Steps Preview List --- */
 .stepsList {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .stepItem {
-    background-color: white;
-    border: 1px solid #dee2e6;
-    border-left: 4px solid #007bff;
-    border-radius: 4px;
-    padding: 15px;
-    position: relative; /* Για να τοποθετήσουμε το κουμπί διαγραφής */
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  padding: 15px;
 }
 
 .stepHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 .stepTitleText {
-    font-weight: 700;
-    color: #333;
+  font-weight: 700;
+  color: #333;
 }
 
 .stepActions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .durationBadge {
-    font-size: 0.8rem;
-    color: #555;
-    background-color: #e9ecef;
-    padding: 3px 8px;
-    border-radius: 12px;
+  font-size: 0.8rem;
+  color: #555;
+  background-color: #e9ecef;
+  padding: 3px 8px;
+  border-radius: 12px;
 }
 
 .removeButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    color: #dc3545;
-    padding: 4px;
-    border-radius: 4px;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #dc3545;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .removeButton:hover {
-    background-color: #ffebee;
+  background-color: #ffebee;
 }
 
 .stepDesc {
-    color: #555;
-    line-height: 1.5;
-    font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
 }
 
-.stepIngredients {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    color: #007bff;
-    font-weight: 500;
+/* --- NEW: Step Ingredients Preview --- */
+.stepIngredientsPreview {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.stepIngredientsList {
+  margin: 5px 0 0 15px;
+  padding: 0;
+}
+
+.stepIngredientItem {
+  margin-bottom: 3px;
+  color: #495057;
 }
