@@ -2,9 +2,9 @@
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 16px;
-  padding: 30px; 
-  margin-bottom: 40px; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+  padding: 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .searchHeader {
@@ -13,13 +13,13 @@
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #f0f0f0; 
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .searchTitle {
   margin: 0;
   color: #2d3748;
-  font-size: 1.3rem; 
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
@@ -27,42 +27,38 @@
   background: #6c757d;
   color: white;
   border: none;
-  border-radius: 8px; 
-  padding: 10px 16px; 
+  border-radius: 8px;
+  padding: 10px 16px;
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .resetButton:hover {
   background: #545b62;
-  transform: translateY(-1px); 
+  transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-
 .filtersGrid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
-  ); 
-  gap: 25px; 
-  margin-bottom: 25px; 
-  padding: 0 5px; 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 25px;
+  padding: 0 5px;
 }
 
 .filterGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px; 
+  gap: 8px;
 }
 
 .filterLabel {
   font-weight: 600;
-  margin-bottom: 0; 
+  margin-bottom: 0;
   color: #4a5568;
   font-size: 0.95rem;
   letter-spacing: 0.3px;
@@ -71,12 +67,12 @@
 .searchInput,
 .filterSelect,
 .durationInput {
-  padding: 12px 16px; 
-  border: 2px solid #e2e8f0; 
-  border-radius: 10px; 
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: all 0.3s ease; 
-  background-color: #fafafa; 
+  transition: all 0.3s ease;
+  background-color: #fafafa;
   box-sizing: border-box;
 }
 
@@ -85,9 +81,9 @@
 .durationInput:focus {
   border-color: #007bff;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15); 
-  background-color: white; 
-  transform: translateY(-1px); 
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  background-color: white;
+  transform: translateY(-1px);
 }
 
 .searchInput {
@@ -102,28 +98,23 @@
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px;
-  padding-right: 40px; 
+  padding-right: 40px;
 }
 
 .durationInput {
   width: 100%;
 }
 
-
 .activeFilters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px; 
-  padding: 20px; 
-  background: linear-gradient(
-    135deg,
-    #f8f9fa 0%,
-    #e9ecef 100%
-  ); 
+  gap: 12px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 12px;
   border: 1px solid #dee2e6;
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 
 .filtersLabel {
@@ -136,38 +127,37 @@
 .filterTag {
   background: linear-gradient(135deg, #007bff, #0056b3);
   color: white;
-  padding: 8px 14px; 
+  padding: 8px 14px;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); 
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
   transition: transform 0.2s ease;
 }
 
 .filterTag:hover {
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
-
 
 @media (max-width: 1024px) {
   .filtersGrid {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px; /
+    gap: 20px;
   }
 }
 
 @media (max-width: 768px) {
   .searchContainer {
-    padding: 25px 20px; 
+    padding: 25px 20px;
     margin-bottom: 30px;
   }
 
   .filtersGrid {
-    grid-template-columns: 1fr; 
-    gap: 20px; 
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .searchHeader {
@@ -178,7 +168,7 @@
   }
 
   .resetButton {
-    align-self: center; 
+    align-self: center;
     padding: 12px 20px;
   }
 
@@ -209,7 +199,7 @@
   }
 
   .filtersGrid {
-    gap: 18px; 
+    gap: 18px;
   }
 
   .searchInput,
