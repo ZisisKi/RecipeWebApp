@@ -1,5 +1,5 @@
 .appContainer {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,13 +10,18 @@
   background-color: #ff6f61;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   color: white;
 }
 
 .appTitle {
   margin: 0;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.appTitle:hover {
+  transform: scale(1.02);
 }
 
 .mainContent {
@@ -35,14 +40,14 @@
 }
 
 .heroImagePlaceholder {
-  background-color: #ddd; /* Γκρι φόντο αντί για εικόνα προσωρινά */
+  background-color: #ddd;
   height: 200px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
-  background-image: url('https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1000&q=80'); /* Τυχαία εικόνα φαγητού */
+  background-image: url("https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1000&q=80");
   background-size: cover;
   background-position: center;
 }
@@ -74,30 +79,41 @@
   transform: scale(1.05);
 }
 
-.btnView { background-color: #007bff; }
-.btnCreate { background-color: #28a745; }
+.btnView {
+  background-color: #007bff;
+}
+.btnCreate {
+  background-color: #28a745;
+}
 
-/* --- Navigation & Page Wrappers --- */
 .pageWrapper {
   animation: fadeIn 0.3s ease-in-out;
 }
 
 .navigationHeader {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  padding: 15px 0;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.navigationHeaderFloating {
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .backBtn {
-  background: none;
-  border: none;
-  color: #555;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.backBtn:hover {
-  color: #000;
-  text-decoration: underline;
+  display: none;
 }
 
 .footer {
@@ -109,9 +125,66 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 15px;
+  }
+
+  .navigationHeader {
+    padding: 10px 0;
+    margin-bottom: 20px;
+  }
+
+  .heroSection {
+    margin-top: 20px;
+  }
+
+  .mainMenu {
+    flex-direction: column;
+    gap: 15px;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .menuBtn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+  }
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.secondaryButton {
+  background: linear-gradient(135deg, #ff6f61 0%, #de4436 100%);
+}
+
+.successButton {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.warningButton {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+}
