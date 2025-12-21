@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { getRecipeById, deleteRecipe } from "../api/recipeApi";
 import classes from "./RecipeDetailsPage.module.css";
 
+import PhotoUploader from "../components/UI/PhotoUploader";
+import PhotoGallery from "../components/UI/PhotoGallery";
+
 const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("ingredients");
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -40,6 +44,15 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
         alert("Σφάλμα κατά τη διαγραφή της συνταγής.");
       }
     }
+  };
+
+  // Photo handlers
+  const handlePhotoUploadSuccess = () => {
+    setShowPhotoUpload(false);
+  };
+
+  const handlePhotoUploadError = (errorMessage) => {
+    alert(`Σφάλμα φωτογραφίας: ${errorMessage}`);
   };
 
   const getDifficultyColor = (difficulty) => {
@@ -149,6 +162,25 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                   <span className={classes.btnIcon}>❌</span>
                   Διαγραφή
                 </button>
+
+                <button
+                  className={`${classes.actionBtn} ${
+                    showPhotoUpload ? classes.editBtn : ""
+                  }`}
+                  onClick={() => setShowPhotoUpload(!showPhotoUpload)}
+                  title="Διαχείριση φωτογραφιών"
+                  style={{
+                    backgroundColor: showPhotoUpload
+                      ? "rgba(40, 167, 69, 0.2)"
+                      : "rgba(255, 255, 255, 0.1)",
+                    borderColor: showPhotoUpload
+                      ? "#28a745"
+                      : "rgba(255, 255, 255, 0.3)",
+                  }}
+                >
+                  <span className={classes.btnIcon}>📷</span>
+                  Φωτογραφίες
+                </button>
               </div>
             </div>
 
@@ -211,6 +243,37 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
             )}
           </div>
         </div>
+      </div>
+
+      {showPhotoUpload && (
+        <div
+          style={{
+            background: "white",
+            margin: "0 2rem 2rem 2rem",
+            borderRadius: "15px",
+            padding: "2rem",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            border: "2px dashed #28a745",
+          }}
+        >
+          <PhotoUploader
+            recipeId={recipeId}
+            onUploadSuccess={handlePhotoUploadSuccess}
+            onUploadError={handlePhotoUploadError}
+          />
+        </div>
+      )}
+
+      <div
+        style={{
+          background: "white",
+          margin: "0 2rem 2rem 2rem",
+          borderRadius: "15px",
+          padding: "2rem",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <PhotoGallery recipeId={recipeId} allowDelete={true} />
       </div>
 
       {/* TAB NAVIGATION */}
@@ -305,6 +368,20 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                               </div>
                             </div>
                           )}
+
+                        <div
+                          style={{
+                            marginTop: "1rem",
+                            paddingTop: "1rem",
+                            borderTop: "1px solid rgba(255, 111, 97, 0.2)",
+                          }}
+                        >
+                          <PhotoGallery
+                            stepId={step.id}
+                            allowDelete={true}
+                            maxPhotosToShow={3}
+                          />
+                        </div>
                       </div>
 
                       {index < recipe.steps.length - 1 && (
