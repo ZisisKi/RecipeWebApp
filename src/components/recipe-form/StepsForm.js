@@ -24,7 +24,6 @@ const StepsForm = ({
         if (file.size > 50 * 1024 * 1024) {
           throw new Error("Το αρχείο είναι πολύ μεγάλο (μέχρι 50MB)");
         }
-
         const allowedTypes = [
           "image/jpeg",
           "image/jpg",
@@ -36,7 +35,6 @@ const StepsForm = ({
         if (!allowedTypes.includes(file.type.toLowerCase())) {
           throw new Error("Μη αποδεκτός τύπος αρχείου");
         }
-
         return {
           file: file,
           id: Date.now() + Math.random(),
@@ -119,21 +117,15 @@ const StepsForm = ({
   };
 
   const createRemoveHandler = (index) => () => {
-    if (onRemoveStep) {
-      onRemoveStep(index);
-    }
+    if (onRemoveStep) onRemoveStep(index);
   };
 
   const handleExistingStepPhotoUpload = (stepId, files) => {
-    if (onStepPhotoUpload) {
-      onStepPhotoUpload(stepId, files);
-    }
+    if (onStepPhotoUpload) onStepPhotoUpload(stepId, files);
   };
 
   const handleExistingStepPhotoDelete = (stepId, photoId) => {
-    if (onStepPhotoDelete) {
-      onStepPhotoDelete(stepId, photoId);
-    }
+    if (onStepPhotoDelete) onStepPhotoDelete(stepId, photoId);
   };
 
   return (
@@ -142,7 +134,6 @@ const StepsForm = ({
 
       {/* --- FORM SECTION FOR NEW STEP --- */}
       <div className={classes.formContainer}>
-        {/* Title & Duration */}
         <div className={classes.row}>
           <input
             type="text"
@@ -163,7 +154,6 @@ const StepsForm = ({
           />
         </div>
 
-        {/* Description */}
         <textarea
           name="description"
           className={classes.textarea}
@@ -172,22 +162,16 @@ const StepsForm = ({
           onChange={handleInputChange}
         />
 
-        {/* Ingredients Selection */}
         {availableIngredients.length > 0 && (
           <div className={classes.ingredientsSection}>
             <label className={classes.ingredientsLabel}>Υλικά βήματος:</label>
             <div className={classes.checkboxList}>
               {availableIngredients.map((ing) => (
-                <label
-                  key={ing.ingredientId || ing.id}
-                  className={classes.checkboxLabel}
-                >
+                <label key={ing.ingredientId || ing.id} className={classes.checkboxLabel}>
                   <input
                     type="checkbox"
                     className={classes.checkboxInput}
-                    checked={newStep.ingredientIds.includes(
-                      ing.ingredientId || ing.id
-                    )}
+                    checked={newStep.ingredientIds.includes(ing.ingredientId || ing.id)}
                     onChange={createCheckboxHandler(ing.ingredientId || ing.id)}
                   />
                   {ing.name}
@@ -199,95 +183,35 @@ const StepsForm = ({
 
         {/* Step Photos Section */}
         <div className={classes.stepPhotosSection}>
-          <label className={classes.ingredientsLabel}>
-            📷 Φωτογραφίες βήματος:
-          </label>
-
+          <label className={classes.photoLabel}>📷 Φωτογραφίες βήματος:</label>
           <input
             type="file"
             accept="image/*"
             multiple
             onChange={(e) => handleStepPhotoSelect(e.target.files)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              border: "1px dashed #ced4da",
-              borderRadius: "4px",
-              marginBottom: "10px",
-            }}
+            className={classes.fileInput}
           />
-          <small style={{ color: "#6c757d", fontSize: "0.8rem" }}>
+          <small className={classes.helperText}>
             Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέχρι 50MB το καθένα)
           </small>
 
           {newStep.pendingPhotos.length > 0 && (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-                gap: "10px",
-                marginTop: "10px",
-              }}
-            >
+            <div className={classes.photoPreviewGrid}>
               {newStep.pendingPhotos.map((photo) => (
-                <div
-                  key={photo.id}
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: "6px",
-                    padding: "8px",
-                    background: "#f9f9f9",
-                  }}
-                >
-                  <img
-                    src={photo.preview}
-                    alt="Preview"
-                    style={{
-                      width: "100%",
-                      height: "80px",
-                      objectFit: "cover",
-                      borderRadius: "4px",
-                      marginBottom: "5px",
-                    }}
-                  />
+                <div key={photo.id} className={classes.photoPreviewCard}>
+                  <img src={photo.preview} alt="Preview" className={classes.previewImage} />
                   <input
                     type="text"
                     placeholder="Περιγραφή..."
                     value={photo.description}
-                    onChange={(e) =>
-                      handleStepPhotoDescriptionChange(photo.id, e.target.value)
-                    }
-                    style={{
-                      width: "100%",
-                      padding: "3px",
-                      border: "1px solid #ccc",
-                      borderRadius: "3px",
-                      fontSize: "0.8rem",
-                      marginBottom: "5px",
-                    }}
+                    onChange={(e) => handleStepPhotoDescriptionChange(photo.id, e.target.value)}
+                    className={classes.photoDescInput}
                   />
-                  <div
-                    style={{
-                      fontSize: "0.7rem",
-                      color: "#666",
-                      marginBottom: "3px",
-                    }}
-                  >
-                    {photo.name}
-                  </div>
+                  <div className={classes.photoName}>{photo.name}</div>
                   <button
                     type="button"
                     onClick={() => handleRemoveStepPhoto(photo.id)}
-                    style={{
-                      width: "100%",
-                      padding: "3px",
-                      background: "#dc3545",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "3px",
-                      fontSize: "0.8rem",
-                      cursor: "pointer",
-                    }}
+                    className={classes.removePhotoBtn}
                   >
                     ✖ Αφαίρεση
                   </button>
@@ -297,14 +221,9 @@ const StepsForm = ({
           )}
         </div>
 
-        <button
-          type="button"
-          className={classes.addButton}
-          onClick={handleAddClick}
-        >
+        <button type="button" className={classes.addButton} onClick={handleAddClick}>
           Προσθήκη Βήματος
-          {newStep.pendingPhotos.length > 0 &&
-            ` (με ${newStep.pendingPhotos.length} φωτογραφίες)`}
+          {newStep.pendingPhotos.length > 0 && ` (με ${newStep.pendingPhotos.length} φωτογραφίες)`}
         </button>
       </div>
 
@@ -318,20 +237,12 @@ const StepsForm = ({
               </span>
 
               <div className={classes.stepActions}>
-                <span className={classes.durationBadge}>
-                  ⏱ {step.duration} λεπτά
-                </span>
+                <span className={classes.durationBadge}>⏱ {step.duration} λεπτά</span>
 
-                {/* Show photo count */}
                 {((step.photos && step.photos.length > 0) ||
                   (step.pendingPhotos && step.pendingPhotos.length > 0)) && (
-                  <span
-                    className={classes.durationBadge}
-                    style={{ background: "#17a2b8" }}
-                  >
-                    📷{" "}
-                    {(step.photos?.length || 0) +
-                      (step.pendingPhotos?.length || 0)}
+                  <span className={`${classes.durationBadge} ${classes.photoBadge}`}>
+                    📷 {(step.photos?.length || 0) + (step.pendingPhotos?.length || 0)}
                   </span>
                 )}
 
@@ -350,146 +261,59 @@ const StepsForm = ({
 
             <div className={classes.stepDesc}>{step.description}</div>
 
-            {/* Step Ingredients */}
             {step.stepIngredients && step.stepIngredients.length > 0 && (
               <div className={classes.stepIngredients}>
                 🛒 {step.stepIngredients.length} Υλικά
               </div>
             )}
 
-            {mode === "edit" &&
-              step.id &&
-              step.photos &&
-              step.photos.length > 0 && (
-                <div className={classes.existingPhotos}>
-                  <h5
-                    style={{
-                      margin: "10px 0 5px 0",
-                      fontSize: "0.9rem",
-                      color: "#555",
-                    }}
-                  >
-                    📷 Υπάρχουσες Φωτογραφίες:
-                  </h5>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns:
-                        "repeat(auto-fill, minmax(100px, 1fr))",
-                      gap: "8px",
-                    }}
-                  >
-                    {step.photos.map((photo) => (
-                      <div
-                        key={photo.id}
-                        style={{
-                          border: "1px solid #ddd",
-                          borderRadius: "4px",
-                          padding: "5px",
-                          background: "white",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "60px",
-                            background: "#f0f0f0",
-                            borderRadius: "3px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "0.7rem",
-                            color: "#666",
-                          }}
-                        >
-                          📷 {photo.id}
-                        </div>
-                        {photo.description && (
-                          <div
-                            style={{
-                              fontSize: "0.7rem",
-                              color: "#666",
-                              marginTop: "3px",
-                              textAlign: "center",
-                            }}
-                          >
-                            {photo.description}
-                          </div>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleExistingStepPhotoDelete(step.id, photo.id)
-                          }
-                          style={{
-                            width: "100%",
-                            padding: "2px",
-                            background: "#dc3545",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "3px",
-                            fontSize: "0.7rem",
-                            marginTop: "3px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          ✖
-                        </button>
+            {/* EDIT MODE: Existing Photos */}
+            {mode === "edit" && step.id && step.photos && step.photos.length > 0 && (
+              <div className={classes.existingPhotos}>
+                <h5 className={classes.existingPhotosTitle}>📷 Υπάρχουσες Φωτογραφίες:</h5>
+                <div className={classes.photoPreviewGrid}>
+                  {step.photos.map((photo) => (
+                    <div key={photo.id} className={classes.photoPreviewCard}>
+                      <div className={classes.existingPhotoPlaceholder}>
+                        📷 Εικόνα {photo.id}
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Add more photos to existing step */}
-                  <div style={{ marginTop: "10px" }}>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={(e) =>
-                        handleExistingStepPhotoUpload(step.id, e.target.files)
-                      }
-                      style={{
-                        width: "100%",
-                        padding: "5px",
-                        border: "1px dashed #28a745",
-                        borderRadius: "3px",
-                        fontSize: "0.8rem",
-                      }}
-                    />
-                  </div>
+                      {photo.description && (
+                        <div className={classes.existingPhotoDesc}>
+                          {photo.description}
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleExistingStepPhotoDelete(step.id, photo.id)}
+                        className={`${classes.removePhotoBtn} ${classes.uploadMoreContainer}`}
+                      >
+                        ✖
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              )}
+                
+                <div className={classes.uploadMoreContainer}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handleExistingStepPhotoUpload(step.id, e.target.files)}
+                    className={classes.fileInput}
+                  />
+                </div>
+              </div>
+            )}
 
-            {/* PENDING PHOTOS (Create Mode) */}
+            {/* PENDING PHOTOS (Create Mode visualizer inside list) */}
             {step.pendingPhotos && step.pendingPhotos.length > 0 && (
-              <div className={classes.pendingPhotos}>
-                <h5
-                  style={{
-                    margin: "10px 0 5px 0",
-                    fontSize: "0.9rem",
-                    color: "#007bff",
-                  }}
-                >
+              <div className={classes.pendingPhotosWrapper}>
+                <h5 className={classes.pendingPhotosTitle}>
                   📋 Φωτογραφίες προς μεταφόρτωση:
                 </h5>
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "5px",
-                  }}
-                >
+                <div className={classes.pendingPhotosGrid}>
                   {step.pendingPhotos.map((photo) => (
-                    <div
-                      key={photo.id}
-                      style={{
-                        fontSize: "0.8rem",
-                        background: "#e3f2fd",
-                        padding: "3px 8px",
-                        borderRadius: "3px",
-                        color: "#0277bd",
-                      }}
-                    >
+                    <div key={photo.id} className={classes.pendingPhotoTag}>
                       📷 {photo.name}
                     </div>
                   ))}

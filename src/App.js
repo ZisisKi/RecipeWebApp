@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-// Import όλων των σελίδων (Pages)
+
+// --- Imports Σελίδων ---
 import CreateRecipePage from "./pages/CreateRecipePage";
 import RecipeListPage from "./pages/RecipeListPage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
-import EditRecipePage from "./pages/EditRecipePage";
+
+// --- ΝΕΟ IMPORT: Το κεντρικό component του EditPage ---
+import EditRecipe from "./pages/EditPage/EditRecipe";
+
+// --- UI Components ---
 import BackButton from "./components/UI/BackButton";
 
-// Import του CSS Module
+// --- CSS ---
 import classes from "./App.module.css";
 
 function App() {
@@ -14,7 +19,7 @@ function App() {
   const [activeScreen, setActiveScreen] = useState("Welcome");
   const [selectedRecipeId, setSelectedRecipeId] = useState(null);
 
-  // --- HANDLERS (Λειτουργίες Πλοήγησης) ---
+  // --- HANDLERS (Navigation) ---
   const goToMenu = () => {
     setActiveScreen("Welcome");
     setSelectedRecipeId(null);
@@ -30,13 +35,15 @@ function App() {
   };
 
   const handleEditComplete = () => {
+    // Όταν τελειώσει το edit (ή πατηθεί back), πάμε πίσω στη λεπτομέρεια
     setActiveScreen("Recipe_Details");
   };
 
   // --- RENDER ---
   return (
     <div className={classes.appContainer}>
-      {/* HEADER: Πάντα ορατό */}
+      
+      {/* HEADER */}
       <header className={classes.header}>
         <h1 className={classes.appTitle} onClick={goToMenu}>
           🍴 Recipe eBook
@@ -44,7 +51,8 @@ function App() {
       </header>
 
       <main className={classes.mainContent}>
-        {/* --- 1. WELCOME SCREEN (ΑΡΧΙΚΗ) --- */}
+        
+        {/* --- 1. WELCOME SCREEN --- */}
         {activeScreen === "Welcome" && (
           <div className={classes.heroSection}>
             <div className={classes.heroImagePlaceholder}>
@@ -108,7 +116,7 @@ function App() {
           </div>
         )}
 
-        {/* --- 5. EDIT RECIPE SCREEN --- */}
+        {/* --- 5. EDIT RECIPE SCREEN (ΝΕΟ COMPONENT) --- */}
         {activeScreen === "Edit_Recipe" && selectedRecipeId && (
           <div className={classes.pageWrapper}>
             <div className={classes.navigationHeader}>
@@ -118,7 +126,8 @@ function App() {
               />
             </div>
 
-            <EditRecipePage
+            {/* Χρήση του νέου EditRecipe Component */}
+            <EditRecipe
               recipeId={selectedRecipeId}
               onCancel={handleEditComplete}
               onSaveSuccess={handleEditComplete}

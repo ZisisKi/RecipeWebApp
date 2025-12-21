@@ -1,253 +1,158 @@
 .container {
-  max-width: 1400px; /* Increased max width for more content */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 30px; /* More top/bottom padding */
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  min-height: 100vh; /* Ensure full height */
+  padding: 2rem;
+  min-height: 80vh;
 }
 
 .title {
-  margin: 0 0 50px 0;
-  font-size: 2.5rem;
-  color: #333;
-  font-weight: 700;
   text-align: center;
-  letter-spacing: -0.02em;
-  position: relative;
-  padding: 20px 0;
+  color: #2c3e50;
+  margin-bottom: 2.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
-.title::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background: linear-gradient(90deg, #007bff, #6610f2);
-  border-radius: 2px;
-}
-
+/* Πληροφορίες Αποτελεσμάτων */
 .resultsInfo {
-  margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 0 10px;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  color: #6c757d;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px 15px;
+  border: 1px solid #e9ecef;
 }
 
 .searchIndicator {
-  background: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 500;
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+  gap: 6px;
 }
 
 .totalCount {
-  color: #6c757d;
-  font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Loading & Error */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
   background: #f8f9fa;
-  padding: 10px 20px;
-  border-radius: 25px;
-  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border-left-color: #007bff;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+  background: #fff5f5;
+  border: 1px solid #ffc9c9;
+  border-radius: 12px;
+  margin-top: 2rem;
+  font-weight: 500;
 }
 
 .searchLoading {
   text-align: center;
-  padding: 60px;
-  font-size: 1.2rem;
+  margin: 1.5rem 0;
   color: #007bff;
-  font-weight: 500;
-  background: #f8f9fa;
-  border-radius: 12px;
-  margin: 20px 0;
+  font-weight: 600;
+  background: #e9f5ff;
+  padding: 0.5rem;
+  border-radius: 6px;
 }
 
+/* Grid Layout */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 32px;
-  margin-top: 30px;
-  padding: 0 10px;
+  gap: 2.5rem;
+  padding-bottom: 2rem;
 }
 
+/* Empty State */
 .emptyResults {
   text-align: center;
-  padding: 80px 20px;
-  color: #666;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  background: #f8f9fa;
+  padding: 4rem 2rem;
+  background: white;
   border-radius: 16px;
-  margin: 30px 0;
   border: 2px dashed #dee2e6;
+  margin-top: 2rem;
+  color: #6c757d;
 }
 
 .emptyResults p {
-  margin: 15px 0;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
 }
 
-.emptyResults::before {
-  content: "🍽️";
-  font-size: 4rem;
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
   display: block;
-  margin-bottom: 20px;
-  opacity: 0.7;
 }
 
-.loading,
-.error {
-  text-align: center;
-  margin-top: 50px;
-  font-size: 1.3rem;
-  padding: 50px;
-  border-radius: 12px;
+.clearFilterBtn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
 }
 
-.error {
-  color: #d32f2f;
-  background: #ffebee;
-  border: 1px solid #ffcdd2;
+.clearFilterBtn:hover {
+  background: #0056b3;
 }
 
-.loading {
-  color: #0288d1;
-  background: #e3f2fd;
-  border: 1px solid #bbdefb;
-}
-
-.loading::before {
-  content: "🔄";
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 16px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 1200px) {
-  .container {
-    padding: 30px 20px;
-  }
-
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 28px;
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: 20px 15px;
-  }
-
-  .title {
-    font-size: 2rem;
-    margin-bottom: 35px;
-    padding: 15px 0;
-  }
-
-  .title::after {
-    width: 60px;
-    height: 2px;
-  }
-
   .grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 1.5rem;
   }
-
+  
   .resultsInfo {
     flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
-  }
-
-  .searchIndicator,
-  .totalCount {
+    gap: 1rem;
     text-align: center;
-    justify-content: center;
-    padding: 12px 16px;
-    font-size: 0.9rem;
   }
-
-  .emptyResults {
-    padding: 60px 15px;
-    font-size: 1.1rem;
-  }
-
-  .emptyResults::before {
-    font-size: 3rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 15px 10px;
-  }
-
+  
   .title {
     font-size: 1.8rem;
-    margin-bottom: 30px;
-  }
-
-  .grid {
-    gap: 20px;
-    padding: 0 5px;
-  }
-}
-
-.grid > * {
-  animation: fadeInUp 0.6s ease-out;
-  animation-fill-mode: both;
-}
-
-.grid > *:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.grid > *:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.grid > *:nth-child(3) {
-  animation-delay: 0.3s;
-}
-.grid > *:nth-child(4) {
-  animation-delay: 0.4s;
-}
-.grid > *:nth-child(5) {
-  animation-delay: 0.5s;
-}
-.grid > *:nth-child(6) {
-  animation-delay: 0.6s;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

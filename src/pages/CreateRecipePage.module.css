@@ -1,201 +1,253 @@
+/* Κεντρικό Container */
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 3rem;
-  /* Το κάνουμε να μοιάζει με καρτέλα */
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f0e6dc;
+  padding: 2rem;
+  background-color: #fcfcfc;
+  min-height: 100vh;
 }
 
 .title {
   text-align: center;
-  color: #2c3e50;
   margin-bottom: 2.5rem;
+  color: #2c3e50;
   font-size: 2.2rem;
-  position: relative;
-}
-/* Διακοσμητική γραμμή κάτω από τον τίτλο */
-.title::after {
-  content: "👨‍🍳";
-  display: block;
-  font-size: 1.5rem;
-  margin-top: 10px;
-}
-
-.formGroup {
-  margin-bottom: 1.8rem;
-}
-
-.label {
-  display: block;
-  margin-bottom: 0.6rem;
-  font-weight: 600;
-  color: #57606f;
-  font-size: 1.1rem;
-}
-
-/* Κοινό στυλ για όλα τα inputs */
-.input,
-.textarea,
-.select {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #dfe4ea;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  background-color: #fdfdfd;
-  box-sizing: border-box;
-}
-
-/* Όταν κάνεις κλικ μέσα στο πεδίο */
-.input:focus,
-.textarea:focus,
-.select:focus {
-  outline: none;
-  border-color: #d35400; /* Το βασικό μας πορτοκαλί */
-  box-shadow: 0 0 0 4px rgba(211, 84, 0, 0.1);
-}
-
-.textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.select {
-  appearance: none; /* Κρύβουμε το default βελάκι του browser */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d35400' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1.2em;
-  cursor: pointer;
-}
-
-.submitBtn {
-  width: 100%;
-  padding: 1.2rem;
-  background-color: #d35400;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.3rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 5px 15px rgba(211, 84, 0, 0.2);
+  border-bottom: 3px solid #e9ecef;
+  padding-bottom: 1rem;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Sections */
+.subSection {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.subSection h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #34495e;
+  font-size: 1.4rem;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 0.5rem;
+}
+
+.descriptionText {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* List Styles (για τα συστατικά που προστέθηκαν) */
+.list {
+  list-style: none;
+  padding: 0;
   margin-top: 1rem;
 }
 
-.submitBtn:hover {
-  background-color: #e67e22;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3);
-}
-
-/* ... τα υπάρχοντα styles σου ... */
-
-.separator {
-  margin: 20px 0;
-  border: 0;
-  border-top: 1px solid #ccc;
-}
-
-.list {
-  margin-bottom: 20px;
-  padding-left: 20px;
-  color: #333;
-}
-
-/* --- ΝΕΑ CLASSES ΓΙΑ ΤΑ STEPS --- */
-
-/* Το container που κρατάει το textarea και το κουμπί + */
-.stepInputGroup {
-  display: flex;
-  gap: 10px;
-  align-items: center; /* Κεντράρισμα στον κάθετο άξονα */
-}
-
-/* Το κουμπί προσθήκης βήματος */
-.addStepButton {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.addStepButton:hover {
-  background-color: #218838;
-}
-
-/* Η λίστα που περιέχει τα βήματα */
-.stepsList {
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Το κάθε βήμα ξεχωριστά */
-.stepItem {
-  padding: 10px;
-  background-color: #f8f9fa; /* Απαλό γκρι */
-  border-radius: 5px;
-  border-left: 4px solid #007bff; /* Μια μπλε γραμμή αριστερά για στυλ */
-  color: #333;
+.list li {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #f1f1f1;
+  color: #495057;
   font-size: 1rem;
-}
-
-/* ... κρατάς τα παλιά ... */
-
-/* Νέα classes για τα μικρότερα components */
-.subSection {
-  background: #fdfdfd;
-  padding: 15px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.checkboxGroup {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
-.checkboxItem {
   display: flex;
   align-items: center;
-  gap: 5px;
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+/* Photo Upload Section */
+.photoLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.fileInput {
+  width: 100%;
+  padding: 12px;
+  border: 2px dashed #ced4da;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.fileInput:hover {
+  border-color: #adb5bd;
+  background-color: #f8f9fa;
+}
+
+.fileInput:disabled {
+  background: #e9ecef;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.helperText {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+/* Photo Preview Grid */
+.photoGridTitle {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #343a40;
+}
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.photoCard {
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.photoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.previewImage {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.photoDescInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  margin-bottom: 10px;
   font-size: 0.9rem;
 }
 
-.stepHeader {
-  display: flex;
-  gap: 10px;
+.photoName {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.message {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 8px;
+.removePhotoBtn {
+  width: 100%;
+  padding: 8px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
   font-weight: 500;
+  transition: background 0.2s;
+}
+
+.removePhotoBtn:hover {
+  background-color: #c82333;
+}
+
+.removePhotoBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Summary Section */
+.summarySection {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-left: 5px solid #007bff;
+}
+
+.summaryTitle {
+  margin-top: 0;
+  color: #495057;
+  font-size: 1.2rem;
+}
+
+.summaryInfoBox {
+  background-color: #e3f2fd;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #0d47a1;
+  border: 1px solid #bbdefb;
+}
+
+/* Submit Button */
+.submitBtn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 2rem;
+  box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
+}
+
+.submitBtn:hover {
+  background-color: #218838;
+}
+
+.submitBtn:active {
+  transform: scale(0.98);
+}
+
+.submitBtn:disabled {
+  background-color: #94d3a2;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Messages */
+.message {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
   text-align: center;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .successMessage {
@@ -205,28 +257,13 @@
 }
 
 .errorMessage {
-  background-color: #3a070b;
+  background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
 
 .infoMessage {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-}
-
-.message {
-  animation: slideDown 0.3s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  background-color: #cce5ff;
+  color: #004085;
+  border: 1px solid #b8daff;
 }

@@ -25,7 +25,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
         setLoading(false);
       } catch (err) {
         console.error(err);
-        setError("Απέτυχε η φόρτωση των συνταγών.");
+        setError("Απέτυχε η φόρτωση των συνταγών. Παρακαλώ δοκιμάστε ξανά αργότερα.");
         setLoading(false);
       }
     };
@@ -83,7 +83,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
       setDisplayedRecipes(results);
       setLoading(false);
     } catch (err) {
-      setError("Η αναζήτηση απέτυχε.");
+      setError("Παρουσιάστηκε σφάλμα κατά την αναζήτηση.");
       setLoading(false);
     }
   };
@@ -91,50 +91,61 @@ const RecipeListPage = ({ onRecipeClick }) => {
   const handleResetSearch = () => {
     setDisplayedRecipes(allRecipes);
     setIsSearching(false);
+    setError(null);
   };
 
-  if (loading && !isSearching)
-    return <div className={classes.loading}>Φόρτωση συνταγών...</div>;
-  if (error) return <div className={classes.error}>{error}</div>;
+  if (loading && !isSearching) {
+    return (
+      <div className={classes.loadingContainer}>
+        <div className={classes.spinner}></div>
+        <p>Φόρτωση συνταγών...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className={classes.error}>{error}</div>;
+  }
 
   return (
     <div className={classes.container}>
       <h1 className={classes.title}>Οι Συνταγές Μου</h1>
 
-      {/* Search Component */}
       <RecipeSearch onSearch={handleSearch} onReset={handleResetSearch} />
 
-      {/* Results Info with Debug */}
       <div className={classes.resultsInfo}>
-        {isSearching && (
+        {isSearching ? (
           <span className={classes.searchIndicator}>
-            🔍 Αποτελέσματα αναζήτησης: {displayedRecipes.length} συνταγές
+            🔍 Αποτελέσματα αναζήτησης: <strong>{displayedRecipes.length}</strong> συνταγές
           </span>
-        )}
-        {!isSearching && (
+        ) : (
           <span className={classes.totalCount}>
-            📚 Σύνολο: {allRecipes.length} συνταγές
+            📚 Σύνολο: <strong>{allRecipes.length}</strong> συνταγές
           </span>
         )}
       </div>
 
-      {/* Loading state during search */}
       {loading && isSearching && (
         <div className={classes.searchLoading}>
-          <span>🔍 Αναζήτηση...</span>
+          <span>🔍 Γίνεται αναζήτηση...</span>
         </div>
       )}
 
-      {/* Recipe Grid */}
       {displayedRecipes.length === 0 && !loading ? (
         <div className={classes.emptyResults}>
+          <span className={classes.emptyIcon}>🍽️</span>
           {isSearching ? (
             <div>
-              <p>❌ Δεν βρέθηκαν συνταγές με αυτά τα κριτήρια.</p>
-              <p>Δοκίμασε να αλλάξεις τα φίλτρα αναζήτησης.</p>
+              <p>Δεν βρέθηκαν συνταγές με αυτά τα κριτήρια.</p>
+              <button 
+                onClick={handleResetSearch}
+                className={classes.clearFilterBtn}
+              >
+                Εκκαθάριση Φίλτρων
+              </button>
             </div>
           ) : (
-            <p>📝 Δεν υπάρχουν συνταγές ακόμα. Δημιούργησε την πρώτη σου!</p>
+            <p>Δεν υπάρχουν συνταγές ακόμα. Δημιούργησε την πρώτη σου!</p>
           )}
         </div>
       ) : (

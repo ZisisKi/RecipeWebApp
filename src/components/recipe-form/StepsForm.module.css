@@ -1,277 +1,352 @@
-/* StepsForm.module.css - Enhanced with step ingredient controls */
-
+/* Κεντρικό Container */
 .container {
   background: #ffffff;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  margin-bottom: 20px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  margin-top: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .titleHeader {
   margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.25rem;
-  color: #333;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
   border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 10px;
+  padding-bottom: 0.5rem;
 }
 
-/* --- Form Section --- */
+/* --- Φόρμα Εισαγωγής Νέου Βήματος --- */
 .formContainer {
   background-color: #f8f9fa;
-  padding: 20px;
-  border: 1px dashed #ced4da;
-  border-radius: 6px;
-  margin-bottom: 25px;
+  border: 2px dashed #ced4da;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  transition: border-color 0.2s;
+}
+
+.formContainer:focus-within {
+  border-color: #007bff;
+  background-color: #fff;
 }
 
 .row {
   display: flex;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.input,
-.textarea {
-  padding: 10px;
+.input, .textarea {
+  width: 100%;
+  padding: 0.75rem;
   border: 1px solid #ced4da;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
 }
 
-.input:focus,
-.textarea:focus {
-  border-color: #007bff;
+.input:focus, .textarea:focus {
   outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
 .inputTitle {
-  flex: 1;
+  flex: 3;
 }
 
 .inputDuration {
-  width: 100px;
+  flex: 1;
 }
 
 .textarea {
-  width: 100%;
   min-height: 80px;
   resize: vertical;
-  box-sizing: border-box;
-  margin-bottom: 15px;
-  font-family: inherit;
+  margin-bottom: 1rem;
 }
 
-/* --- NEW: Enhanced Step Ingredients Section --- */
-.stepIngredientsSection {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-}
-
-.stepIngredientsLabel {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #495057;
-  font-size: 1rem;
-}
-
-/* Available ingredients grid */
-.availableIngredientsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.addIngredientBtn {
-  padding: 8px 12px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-}
-
-.addIngredientBtn:hover {
-  background-color: #218838;
-}
-
-/* Selected step ingredients */
-.selectedStepIngredients {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid #dee2e6;
-}
-
-.selectedIngredientsTitle {
-  margin: 0 0 12px 0;
-  font-size: 0.95rem;
-  color: #495057;
-}
-
-.stepIngredientRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #f8f9fa;
-  border-radius: 4px;
+/* Section Υλικών */
+.ingredientsSection {
+  margin-bottom: 1rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
   border: 1px solid #e9ecef;
 }
 
-.ingredientName {
-  flex: 1;
-  font-weight: 500;
+.ingredientsLabel {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
   color: #495057;
 }
 
-.quantityInput {
-  width: 80px;
-  padding: 6px 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 0.9rem;
+.checkboxList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.5rem;
 }
 
-.unitSelect {
-  width: 120px;
-  padding: 6px 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  background-color: white;
-}
-
-.removeStepIngredientBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  color: #dc3545;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+.checkboxLabel {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.25rem;
 }
 
-.removeStepIngredientBtn:hover {
-  background-color: #ffebee;
+.checkboxInput {
+  accent-color: #28a745;
+  width: 16px;
+  height: 16px;
 }
 
-/* --- Add Button --- */
-.addButton {
-  background-color: #28a745;
+/* --- Section Φωτογραφιών (Upload) --- */
+.stepPhotosSection {
+  margin-bottom: 1.5rem;
+}
+
+.photoLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.fileInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed #adb5bd;
+  border-radius: 8px;
+  background: white;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.helperText {
+  color: #6c757d;
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Grid Προεπισκόπησης Φωτογραφιών (New Step) */
+.photoPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.photoPreviewCard {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 8px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.previewImage {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+
+.photoDescInput {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+
+.photoName {
+  font-size: 0.7rem;
+  color: #6c757d;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.removePhotoBtn {
+  width: 100%;
+  padding: 4px;
+  background: #dc3545;
   color: white;
   border: none;
-  border-radius: 5px;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 4px;
+  font-size: 0.8rem;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.removePhotoBtn:hover {
+  background: #c82333;
+}
+
+/* Κουμπί Προσθήκης Βήματος */
+.addButton {
   width: 100%;
-  margin-top: 15px;
-  transition: background-color 0.2s;
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .addButton:hover {
-  background-color: #218838;
+  background-color: #0056b3;
 }
 
-/* --- Steps Preview List --- */
+/* --- Λίστα Υπαρχόντων Βημάτων --- */
 .stepsList {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
 }
 
 .stepItem {
-  background-color: white;
-  border: 1px solid #dee2e6;
-  border-left: 4px solid #007bff;
-  border-radius: 4px;
-  padding: 15px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #28a745;
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .stepHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f1f1f1;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
 }
 
 .stepTitleText {
   font-weight: 700;
-  color: #333;
+  font-size: 1.1rem;
+  color: #2c3e50;
 }
 
 .stepActions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.8rem;
 }
 
 .durationBadge {
-  font-size: 0.8rem;
-  color: #555;
-  background-color: #e9ecef;
-  padding: 3px 8px;
-  border-radius: 12px;
+  background: #e9ecef;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.photoBadge {
+  background: #17a2b8;
+  color: white;
 }
 
 .removeButton {
   background: none;
   border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
   color: #dc3545;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  transition: color 0.2s;
 }
 
 .removeButton:hover {
-  background-color: #ffebee;
+  color: #a71d2a;
+  transform: scale(1.1);
 }
 
 .stepDesc {
-  color: #555;
+  color: #495057;
   line-height: 1.5;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
+  margin-bottom: 0.8rem;
 }
 
-/* --- NEW: Step Ingredients Preview --- */
-.stepIngredientsPreview {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #f0f0f0;
+.stepIngredients {
   font-size: 0.9rem;
+  color: #155724;
+  background: #d4edda;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 0.8rem;
+}
+
+/* Existing Photos inside step list (Edit Mode) */
+.existingPhotos {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.existingPhotosTitle {
+  margin: 10px 0 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Styles για το placeholder των υπαρχουσών φωτογραφιών που δεν έχουν URL preview εδώ */
+.existingPhotoPlaceholder {
+  width: 100%;
+  height: 60px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
   color: #666;
 }
 
-.stepIngredientsList {
-  margin: 5px 0 0 15px;
-  padding: 0;
+.existingPhotoDesc {
+  font-size: 0.7rem;
+  color: #666;
+  margin-top: 3px;
+  text-align: center;
 }
 
-.stepIngredientItem {
-  margin-bottom: 3px;
-  color: #495057;
+.uploadMoreContainer {
+  margin-top: 10px;
+}
+
+/* Pending Photos Grid (Create Mode visualizer inside list) */
+.pendingPhotosWrapper {
+  margin-top: 0.5rem;
+}
+
+.pendingPhotosTitle {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #007bff;
+}
+
+.pendingPhotosGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pendingPhotoTag {
+  font-size: 0.8rem;
+  background: #e3f2fd;
+  color: #0277bd;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #b3e5fc;
 }

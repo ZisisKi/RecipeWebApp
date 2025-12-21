@@ -1,0 +1,61 @@
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.title { margin: 0; color: #333; font-size: 1.2rem; }
+
+.btnSuccess { background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+.btnDanger { background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+.btnSecondary { background-color: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+
+/* Step Item */
+.stepContainer { border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 15px; overflow: hidden; }
+.stepHeaderDisplay { background-color: #f8f9fa; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.stepTitleText { font-weight: bold; color: #333; }
+.iconBtn { font-size: 1.2rem; cursor: pointer; margin-right: 10px; }
+.actions { display: flex; align-items: center; }
+
+/* View Mode */
+.viewContainer { margin-top: 15px; padding-left: 15px; border-left: 3px solid #eee; padding-bottom: 15px; }
+.viewDesc { font-style: italic; color: #555; margin-bottom: 10px; }
+.viewIngTitle { color: #333; font-weight: bold; }
+.viewIngList { color: #666; }
+.viewEmpty { font-size: 0.8rem; color: #999; }
+.viewPhotos { display: flex; gap: 5px; margin-top: 10px; }
+.viewPhotoImg { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
+
+/* Edit Mode */
+.editForm { padding: 15px; background-color: #fff; }
+.row { display: flex; gap: 15px; margin-bottom: 1rem; }
+.inputGroup { display: flex; flex-direction: column; flex: 1; }
+.durationGroup { display: flex; flex-direction: column; flex: 0 0 100px; }
+.label { font-weight: 500; margin-bottom: 5px; color: #555; }
+.input, .textarea, .select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+.textarea { min-height: 80px; resize: vertical; }
+
+/* Ingredients in Step */
+.ingredientsBox { background-color: #f9f9f9; padding: 10px; border-radius: 4px; margin-bottom: 1rem; border: 1px dashed #ccc; }
+.ingList { list-style: none; padding: 0; margin-bottom: 10px; }
+.ingItem { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+.addRow { display: flex; gap: 10px; align-items: center; }
+.flex2 { flex: 2; }
+.flex1 { flex: 1; }
+
+/* Photo Grid in Edit */
+.photoGrid { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.photoWrapper { position: relative; width: 60px; height: 60px; }
+.photoDeleteBtn { position: absolute; top: -5px; right: -5px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; }
+.buttonsRow { display: flex; gap: 10px; margin-top: 1rem; }

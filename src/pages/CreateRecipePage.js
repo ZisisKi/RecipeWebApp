@@ -1,10 +1,10 @@
-import classes from "./CreateRecipePage.module.css";
 import React, { useState } from "react";
 import { createRecipe } from "../api/recipeApi";
 import { createStep } from "../api/stepApi";
 import { uploadPhotoForRecipe, uploadPhotoForStep } from "../api/PhotoApi";
+import classes from "./CreateRecipePage.module.css";
 
-// Import τα νέα μας components
+// Components
 import BasicInfoForm from "../components/recipe-form/BasicInfoForm";
 import IngredientSelector from "../components/recipe-form/IngredientSelector";
 import StepsForm from "../components/recipe-form/StepsForm";
@@ -25,6 +25,7 @@ const CreateRecipePage = () => {
   const [pendingRecipePhotos, setPendingRecipePhotos] = useState([]);
   const [uploading, setUploading] = useState(false);
 
+  // --- Handlers ---
   const handleBasicChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -120,6 +121,7 @@ const CreateRecipePage = () => {
         photos: [],
       };
 
+      // 1. Create Recipe
       const savedRecipe = await createRecipe(recipeData);
 
       let uploadedPhotosCount = 0;
@@ -130,19 +132,17 @@ const CreateRecipePage = () => {
       );
       const totalPhotos = totalRecipePhotos + totalStepPhotos;
 
+      // 2. Upload Recipe Photos (Με index και console.log)
       if (pendingRecipePhotos.length > 0) {
         setMessage(
-          `Μεταφόρτωση φωτογραφιών συνταγής (${
-            uploadedPhotosCount + 1
-          }/${totalPhotos})...`
+          `Μεταφόρτωση φωτογραφιών συνταγής (${uploadedPhotosCount + 1}/${totalPhotos})...`
         );
 
+        // eslint-disable-next-line no-unused-vars
         for (const [index, photo] of pendingRecipePhotos.entries()) {
           try {
             console.log(
-              `Uploading recipe photo ${index + 1}/${
-                pendingRecipePhotos.length
-              }:`,
+              `Uploading recipe photo ${index + 1}/${pendingRecipePhotos.length}:`,
               photo.name
             );
 
@@ -151,7 +151,7 @@ const CreateRecipePage = () => {
               photo.file,
               photo.description
             );
-
+            
             uploadedPhotosCount++;
             setMessage(
               `Μεταφόρτωση φωτογραφιών: ${uploadedPhotosCount}/${totalPhotos}`
@@ -164,12 +164,11 @@ const CreateRecipePage = () => {
         }
       }
 
+      // 3. Create Steps & Upload Step Photos
       const createdSteps = [];
-
       if (formData.steps.length > 0) {
         setMessage("Δημιουργία βημάτων...");
-        console.log(`Creating ${formData.steps.length} steps...`);
-
+        
         for (const [stepIndex, stepData] of formData.steps.entries()) {
           try {
             const stepDto = {
@@ -181,29 +180,24 @@ const CreateRecipePage = () => {
             };
 
             setMessage(
-              `Δημιουργία βήματος ${stepIndex + 1}/${formData.steps.length}: "${
-                stepDto.title
-              }"`
+              `Δημιουργία βήματος ${stepIndex + 1}/${formData.steps.length}: "${stepDto.title}"`
             );
 
             const createdStep = await createStep(stepDto);
             createdSteps.push(createdStep);
 
+            // Upload photos for this step
             if (stepData.pendingPhotos && stepData.pendingPhotos.length > 0) {
               setMessage(
                 `Μεταφόρτωση φωτογραφιών βήματος "${stepData.title}"...`
               );
-              for (const [
-                photoIndex,
-                photo,
-              ] of stepData.pendingPhotos.entries()) {
+              for (const photo of stepData.pendingPhotos) {
                 try {
                   await uploadPhotoForStep(
                     createdStep.id,
                     photo.file,
                     photo.description
                   );
-
                   uploadedPhotosCount++;
                   setMessage(
                     `Μεταφόρτωση φωτογραφιών: ${uploadedPhotosCount}/${totalPhotos}`
@@ -223,6 +217,7 @@ const CreateRecipePage = () => {
         }
       }
 
+      // Success
       const successMessage = [
         `🎉 Επιτυχία! Η συνταγή "${savedRecipe.name}" δημιουργήθηκε!`,
         `📋 Βήματα: ${createdSteps.length}/${formData.steps.length}`,
@@ -231,6 +226,7 @@ const CreateRecipePage = () => {
 
       setMessage(successMessage);
 
+      // Reset Form
       setFormData({
         name: "",
         description: "",
@@ -256,6 +252,7 @@ const CreateRecipePage = () => {
     }
   };
 
+  // --- Render ---
   return (
     <div className={classes.container}>
       <h1 className={classes.title}>Δημιουργία Νέας Συνταγής</h1>
@@ -285,25 +282,15 @@ const CreateRecipePage = () => {
           mode="create"
         />
 
-        {/* Component 4: Recipe Photos */}
+        {/* Component 4: Recipe Photos (Upload Section) */}
         <div className={classes.subSection}>
           <h3>📷 Φωτογραφίες Συνταγής</h3>
-          <p
-            style={{ color: "#666", fontSize: "0.9rem", marginBottom: "15px" }}
-          >
+          <p className={classes.descriptionText}>
             Προσθέστε κεντρικές φωτογραφίες που αντιπροσωπεύουν τη συνταγή.
           </p>
 
           <div style={{ marginBottom: "20px" }}>
-            <label
-              htmlFor="recipe-photos"
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontWeight: "600",
-                color: "#495057",
-              }}
-            >
+            <label htmlFor="recipe-photos" className={classes.photoLabel}>
               Επιλέξτε φωτογραφίες συνταγής:
             </label>
             <input
@@ -313,55 +300,26 @@ const CreateRecipePage = () => {
               multiple
               onChange={(e) => handleRecipePhotoSelect(e.target.files)}
               disabled={uploading}
-              style={{
-                width: "100%",
-                padding: "12px",
-                border: "2px dashed #ced4da",
-                borderRadius: "8px",
-                background: uploading ? "#e9ecef" : "white",
-                cursor: uploading ? "not-allowed" : "pointer",
-              }}
+              className={classes.fileInput}
             />
-            <small style={{ color: "#6c757d", fontSize: "0.8rem" }}>
+            <small className={classes.helperText}>
               Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέχρι 50MB το καθένα)
             </small>
           </div>
 
-          {/* Recipe Photo Previews */}
+          {/* Previews */}
           {pendingRecipePhotos.length > 0 && (
             <div>
-              <h4 style={{ marginBottom: "15px" }}>
-                📸 Επιλεγμένες φωτογραφίες συνταγής (
-                {pendingRecipePhotos.length}):
+              <h4 className={classes.photoGridTitle}>
+                📸 Επιλεγμένες φωτογραφίες ({pendingRecipePhotos.length}):
               </h4>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-                  gap: "15px",
-                }}
-              >
+              <div className={classes.photoGrid}>
                 {pendingRecipePhotos.map((photo) => (
-                  <div
-                    key={photo.id}
-                    style={{
-                      border: "2px solid #dee2e6",
-                      borderRadius: "12px",
-                      padding: "12px",
-                      background: "#ffffff",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                    }}
-                  >
+                  <div key={photo.id} className={classes.photoCard}>
                     <img
                       src={photo.preview}
                       alt="Preview"
-                      style={{
-                        width: "100%",
-                        height: "140px",
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                        marginBottom: "10px",
-                      }}
+                      className={classes.previewImage}
                     />
                     <input
                       type="text"
@@ -374,39 +332,14 @@ const CreateRecipePage = () => {
                         )
                       }
                       disabled={uploading}
-                      style={{
-                        width: "100%",
-                        padding: "8px",
-                        border: "1px solid #ced4da",
-                        borderRadius: "6px",
-                        marginBottom: "10px",
-                        fontSize: "0.9rem",
-                      }}
+                      className={classes.photoDescInput}
                     />
-                    <div
-                      style={{
-                        fontSize: "0.8rem",
-                        color: "#6c757d",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {photo.name}
-                    </div>
+                    <div className={classes.photoName}>{photo.name}</div>
                     <button
                       type="button"
                       onClick={() => handleRemoveRecipePhoto(photo.id)}
                       disabled={uploading}
-                      style={{
-                        width: "100%",
-                        padding: "8px",
-                        background: "#dc3545",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: uploading ? "not-allowed" : "pointer",
-                        fontSize: "0.9rem",
-                        opacity: uploading ? 0.6 : 1,
-                      }}
+                      className={classes.removePhotoBtn}
                     >
                       ✖ Αφαίρεση
                     </button>
@@ -420,20 +353,12 @@ const CreateRecipePage = () => {
         {/* Summary Section */}
         {(pendingRecipePhotos.length > 0 ||
           formData.steps.some((step) => step.pendingPhotos?.length > 0)) && (
-          <div
-            className={classes.subSection}
-            style={{ background: "#f8f9fa", border: "1px solid #e9ecef" }}
-          >
-            <h4 style={{ marginTop: 0, color: "#495057" }}>
-              📋 Σύνοψη Φωτογραφιών
-            </h4>
+          <div className={`${classes.subSection} ${classes.summarySection}`}>
+            <h4 className={classes.summaryTitle}>📋 Σύνοψη Φωτογραφιών</h4>
             <p>📷 Φωτογραφίες συνταγής: {pendingRecipePhotos.length}</p>
             <p>
               🔢 Βήματα με φωτογραφίες:{" "}
-              {
-                formData.steps.filter((step) => step.pendingPhotos?.length > 0)
-                  .length
-              }
+              {formData.steps.filter((step) => step.pendingPhotos?.length > 0).length}
             </p>
             <p>
               📸 Συνολικές φωτογραφίες βημάτων:{" "}
@@ -442,18 +367,9 @@ const CreateRecipePage = () => {
                 0
               )}
             </p>
-            <div
-              style={{
-                background: "#e3f2fd",
-                padding: "10px",
-                borderRadius: "5px",
-                marginTop: "10px",
-                fontSize: "0.9rem",
-                color: "#1565c0",
-              }}
-            >
+            <div className={classes.summaryInfoBox}>
               💡 <strong>Σημαντικό:</strong> Οι φωτογραφίες βημάτων θα ανέβουν
-              μετά τη δημιουργία κάθε βήματος.
+              μετά τη δημιουργία κάθε βήματος αυτόματα.
             </div>
           </div>
         )}
