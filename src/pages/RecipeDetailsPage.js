@@ -1,22 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { getRecipeById, deleteRecipe } from "../api/recipeApi";
+import {
+  getPhotosByRecipeId,
+  getPhotosByStepId,
+  getPhotoImageUrl,
+} from "../api/PhotoApi";
 import classes from "./RecipeDetailsPage.module.css";
-
-import PhotoUploader from "../components/UI/PhotoUploader";
-import PhotoGallery from "../components/UI/PhotoGallery";
 
 const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   const [recipe, setRecipe] = useState(null);
+  const [recipePhotos, setRecipePhotos] = useState([]);
+  const [stepPhotos, setStepPhotos] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("ingredients");
-  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [photosLoading, setPhotosLoading] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
+        console.log("Fetching recipe details for ID:", recipeId);
+
         const data = await getRecipeById(recipeId);
         setRecipe(data);
+
+        await fetchAllPhotos(data);
+
         setLoading(false);
       } catch (err) {
         console.error("Failed to fetch recipe:", err);
@@ -29,6 +39,34 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
       fetchDetails();
     }
   }, [recipeId]);
+
+  const fetchAllPhotos = async (recipeData) => {
+    try {
+      setPhotosLoading(true);
+      const photos = await getPhotosByRecipeId(recipeId);
+
+      setRecipePhotos(photos || []);
+
+      if (recipeData.steps && recipeData.steps.length > 0) {
+        const stepPhotoMap = {};
+
+        for (const step of recipeData.steps) {
+          try {
+            const photos = await getPhotosByStepId(step.id);
+            stepPhotoMap[step.id] = photos || [];
+          } catch (stepPhotoError) {
+            stepPhotoMap[step.id] = [];
+          }
+        }
+
+        setStepPhotos(stepPhotoMap);
+      }
+
+      setPhotosLoading(false);
+    } catch (photosError) {
+      setPhotosLoading(false);
+    }
+  };
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
@@ -46,13 +84,12 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
     }
   };
 
-  // Photo handlers
-  const handlePhotoUploadSuccess = () => {
-    setShowPhotoUpload(false);
+  const openPhotoModal = (photo) => {
+    setSelectedPhoto(photo);
   };
 
-  const handlePhotoUploadError = (errorMessage) => {
-    alert(`Σφάλμα φωτογραφίας: ${errorMessage}`);
+  const closePhotoModal = () => {
+    setSelectedPhoto(null);
   };
 
   const getDifficultyColor = (difficulty) => {
@@ -106,40 +143,120 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   };
 
   const getTotalStepsTime = () => {
-    if (!recipe.steps || recipe.steps.length === 0) return 0;
+    if (!recipe?.steps || recipe.steps.length === 0) return 0;
     return recipe.steps.reduce(
       (total, step) => total + (step.duration || 0),
       0
     );
   };
 
-  if (loading)
+  const PhotoThumbnail = ({ photo, onClick, size = "150px" }) => (
+    <div
+      style={{
+        cursor: "pointer",
+        border: "2px solid #e0e0e0",
+        borderRadius: "8px",
+        overflow: "hidden",
+        transition: "transform 0.2s, box-shadow 0.2s",
+        width: size,
+        backgroundColor: "white",
+      }}
+      onClick={() => onClick(photo)}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "scale(1.05)";
+        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: size,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={getPhotoImageUrl(photo.id)}
+          alt={photo.description || "Recipe photo"}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+          onError={(e) => {
+            e.target.style.display = "none";
+            e.target.nextSibling.style.display = "flex";
+          }}
+        />
+        <div
+          style={{
+            display: "none",
+            width: "100%",
+            height: "100%",
+            background: "#f5f5f5",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            fontSize: "2rem",
+            color: "#999",
+          }}
+        >
+          📷
+          <div style={{ fontSize: "0.8rem", marginTop: "5px" }}>
+            Image not available
+          </div>
+        </div>
+      </div>
+
+      {photo.description && (
+        <div
+          style={{
+            padding: "8px",
+            fontSize: "0.8rem",
+            color: "#666",
+            textAlign: "center",
+            borderTop: "1px solid #eee",
+          }}
+        >
+          {photo.description}
+        </div>
+      )}
+    </div>
+  );
+
+  if (loading) {
     return (
       <div className={classes.loadingContainer}>
         <div className={classes.spinner}></div>
         <p>Φόρτωση λεπτομερειών συνταγής...</p>
       </div>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
       <div className={classes.errorContainer}>
         <div className={classes.errorIcon}>⚠️</div>
         <p>{error}</p>
       </div>
     );
+  }
 
-  if (!recipe)
+  if (!recipe) {
     return (
       <div className={classes.notFoundContainer}>
         <div className={classes.notFoundIcon}>🔍</div>
         <p>Η συνταγή δεν βρέθηκε.</p>
       </div>
     );
+  }
 
   return (
     <div className={classes.container}>
-      {/* RECIPE SECTION */}
       <div className={classes.heroSection}>
         <div className={classes.heroBackground}>
           <div className={classes.heroContent}>
@@ -161,25 +278,6 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                 >
                   <span className={classes.btnIcon}>❌</span>
                   Διαγραφή
-                </button>
-
-                <button
-                  className={`${classes.actionBtn} ${
-                    showPhotoUpload ? classes.editBtn : ""
-                  }`}
-                  onClick={() => setShowPhotoUpload(!showPhotoUpload)}
-                  title="Διαχείριση φωτογραφιών"
-                  style={{
-                    backgroundColor: showPhotoUpload
-                      ? "rgba(40, 167, 69, 0.2)"
-                      : "rgba(255, 255, 255, 0.1)",
-                    borderColor: showPhotoUpload
-                      ? "#28a745"
-                      : "rgba(255, 255, 255, 0.3)",
-                  }}
-                >
-                  <span className={classes.btnIcon}>📷</span>
-                  Φωτογραφίες
                 </button>
               </div>
             </div>
@@ -232,6 +330,18 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                   </div>
                 </div>
               )}
+
+              {recipePhotos.length > 0 && (
+                <div className={classes.statCard}>
+                  <div className={classes.statIcon}>📷</div>
+                  <div className={classes.statContent}>
+                    <span className={classes.statValue}>
+                      {recipePhotos.length}
+                    </span>
+                    <span className={classes.statLabel}>Φωτογραφίες</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* DESCRIPTION */}
@@ -245,7 +355,8 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
         </div>
       </div>
 
-      {showPhotoUpload && (
+      {/* RECIPE PHOTOS SECTION */}
+      {recipePhotos.length > 0 && (
         <div
           style={{
             background: "white",
@@ -253,28 +364,45 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
             borderRadius: "15px",
             padding: "2rem",
             boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-            border: "2px dashed #28a745",
           }}
         >
-          <PhotoUploader
-            recipeId={recipeId}
-            onUploadSuccess={handlePhotoUploadSuccess}
-            onUploadError={handlePhotoUploadError}
-          />
+          <h3
+            style={{
+              marginTop: 0,
+              marginBottom: "1.5rem",
+              fontSize: "1.4rem",
+              color: "#444",
+            }}
+          >
+            📷 Φωτογραφίες Συνταγής ({recipePhotos.length})
+          </h3>
+
+          {photosLoading && (
+            <div
+              style={{ textAlign: "center", color: "#666", padding: "20px" }}
+            >
+              Φόρτωση φωτογραφιών...
+            </div>
+          )}
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gap: "15px",
+            }}
+          >
+            {recipePhotos.map((photo) => (
+              <PhotoThumbnail
+                key={photo.id}
+                photo={photo}
+                onClick={openPhotoModal}
+                size="200px"
+              />
+            ))}
+          </div>
         </div>
       )}
-
-      <div
-        style={{
-          background: "white",
-          margin: "0 2rem 2rem 2rem",
-          borderRadius: "15px",
-          padding: "2rem",
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <PhotoGallery recipeId={recipeId} allowDelete={true} />
-      </div>
 
       {/* TAB NAVIGATION */}
       <div className={classes.tabContainer}>
@@ -348,6 +476,7 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                             </span>
                           </div>
                         </div>
+
                         <p className={classes.stepDescription}>
                           {step.description}
                         </p>
@@ -369,19 +498,49 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                             </div>
                           )}
 
-                        <div
-                          style={{
-                            marginTop: "1rem",
-                            paddingTop: "1rem",
-                            borderTop: "1px solid rgba(255, 111, 97, 0.2)",
-                          }}
-                        >
-                          <PhotoGallery
-                            stepId={step.id}
-                            allowDelete={true}
-                            maxPhotosToShow={3}
-                          />
-                        </div>
+                        {/* STEP PHOTOS */}
+                        {stepPhotos[step.id] &&
+                          stepPhotos[step.id].length > 0 && (
+                            <div
+                              style={{
+                                marginTop: "15px",
+                                paddingTop: "15px",
+                                borderTop: "1px solid #e0e0e0",
+                              }}
+                            >
+                              <h5
+                                style={{
+                                  margin: "0 0 10px 0",
+                                  fontSize: "0.9rem",
+                                  color: "#555",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                }}
+                              >
+                                📷 Φωτογραφίες βήματος (
+                                {stepPhotos[step.id].length})
+                              </h5>
+
+                              <div
+                                style={{
+                                  display: "grid",
+                                  gridTemplateColumns:
+                                    "repeat(auto-fill, minmax(120px, 1fr))",
+                                  gap: "10px",
+                                }}
+                              >
+                                {stepPhotos[step.id].map((photo) => (
+                                  <PhotoThumbnail
+                                    key={photo.id}
+                                    photo={photo}
+                                    onClick={openPhotoModal}
+                                    size="120px"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          )}
                       </div>
 
                       {index < recipe.steps.length - 1 && (
@@ -392,7 +551,8 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
 
                 <div className={classes.stepsSummary}>
                   <div className={classes.summaryIcon}>⏱️</div>
-                  <p>Συνολικός χρόνος: {getTotalStepsTime()} λεπτά</p>
+                  <h4>Σύνοψη</h4>
+                  <p>Συνολικός χρόνος βημάτων: {getTotalStepsTime()} λεπτά</p>
                 </div>
               </div>
             ) : (
@@ -407,6 +567,111 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
           </div>
         )}
       </div>
+
+      {/* PHOTO MODAL */}
+      {selectedPhoto && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={closePhotoModal}
+        >
+          <div
+            style={{
+              background: "white",
+              borderRadius: "12px",
+              overflow: "hidden",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={closePhotoModal}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "rgba(0,0,0,0.7)",
+                color: "white",
+                border: "none",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                fontSize: "18px",
+                cursor: "pointer",
+                zIndex: 1001,
+              }}
+            >
+              ✖
+            </button>
+
+            {/* Photo */}
+            <img
+              src={getPhotoImageUrl(selectedPhoto.id)}
+              alt={selectedPhoto.description || "Photo"}
+              style={{
+                maxWidth: "80vw",
+                maxHeight: "70vh",
+                width: "auto",
+                height: "auto",
+              }}
+              onError={(e) => {
+                e.target.style.display = "none";
+                e.target.nextSibling.style.display = "flex";
+              }}
+            />
+
+            {/* Fallback if image fails */}
+            <div
+              style={{
+                display: "none",
+                width: "500px",
+                height: "400px",
+                background: "#f5f5f5",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div style={{ fontSize: "4rem", marginBottom: "10px" }}>📷</div>
+              <div style={{ fontSize: "1.2rem", color: "#666" }}>
+                Photo ID: {selectedPhoto.id}
+              </div>
+              <div
+                style={{ fontSize: "0.9rem", color: "#999", marginTop: "5px" }}
+              >
+                Image not available
+              </div>
+            </div>
+
+            {/* Photo description */}
+            {selectedPhoto.description && (
+              <div
+                style={{
+                  padding: "15px",
+                  background: "#f8f9fa",
+                  borderTop: "1px solid #e0e0e0",
+                  textAlign: "center",
+                }}
+              >
+                <strong>Περιγραφή:</strong> {selectedPhoto.description}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

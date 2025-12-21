@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { MEASUREMENT_OPTIONS } from "../../utils/enums";
 import classes from "./StepsForm.module.css";
 
 const StepsForm = ({
@@ -7,115 +6,115 @@ const StepsForm = ({
   onAddStep,
   availableIngredients,
   onRemoveStep,
+  mode = "create",
+  onStepPhotoUpload,
+  onStepPhotoDelete,
 }) => {
-  // Enhanced state to track step ingredients with quantities and units
   const [newStep, setNewStep] = useState({
     title: "",
     description: "",
     duration: 5,
-    stepIngredients: [], // Changed from ingredientIds to full objects
+    ingredientIds: [],
+    pendingPhotos: [],
   });
 
-  // --- HANDLERS ---
+  const handleStepPhotoSelect = (files) => {
+    try {
+      const newPhotos = Array.from(files).map((file) => {
+        if (file.size > 50 * 1024 * 1024) {
+          throw new Error("Το αρχείο είναι πολύ μεγάλο (μέχρι 50MB)");
+        }
+
+        const allowedTypes = [
+          "image/jpeg",
+          "image/jpg",
+          "image/png",
+          "image/gif",
+          "image/bmp",
+          "image/webp",
+        ];
+        if (!allowedTypes.includes(file.type.toLowerCase())) {
+          throw new Error("Μη αποδεκτός τύπος αρχείου");
+        }
+
+        return {
+          file: file,
+          id: Date.now() + Math.random(),
+          preview: URL.createObjectURL(file),
+          description: "",
+          name: file.name,
+        };
+      });
+
+      setNewStep((prev) => ({
+        ...prev,
+        pendingPhotos: [...prev.pendingPhotos, ...newPhotos],
+      }));
+    } catch (error) {
+      alert(`Σφάλμα φωτογραφίας: ${error.message}`);
+    }
+  };
+
+  const handleRemoveStepPhoto = (photoId) => {
+    setNewStep((prev) => ({
+      ...prev,
+      pendingPhotos: prev.pendingPhotos.filter((photo) => photo.id !== photoId),
+    }));
+  };
+
+  const handleStepPhotoDescriptionChange = (photoId, description) => {
+    setNewStep((prev) => ({
+      ...prev,
+      pendingPhotos: prev.pendingPhotos.map((photo) =>
+        photo.id === photoId ? { ...photo, description } : photo
+      ),
+    }));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewStep((prev) => ({ ...prev, [name]: value }));
   };
 
-  // NEW: Add ingredient with quantity and unit
-  const handleAddStepIngredient = (ingredient) => {
-    const ingredientId = ingredient.ingredientId || ingredient.id;
-
-    // Check if ingredient already added
-    const exists = newStep.stepIngredients.find(
-      (si) => si.ingredientId === ingredientId
-    );
-    if (exists) {
-      alert("Το υλικό έχει ήδη προστεθεί σε αυτό το βήμα");
-      return;
-    }
-
-    const newStepIngredient = {
-      ingredientId: ingredientId,
-      name: ingredient.name,
-      quantity: 1.0, // Default quantity
-      measurementUnit: MEASUREMENT_OPTIONS[0].value, // Default unit
-    };
-
-    setNewStep((prev) => ({
-      ...prev,
-      stepIngredients: [...prev.stepIngredients, newStepIngredient],
-    }));
-  };
-
-  // NEW: Remove step ingredient
-  const handleRemoveStepIngredient = (ingredientId) => {
-    setNewStep((prev) => ({
-      ...prev,
-      stepIngredients: prev.stepIngredients.filter(
-        (si) => si.ingredientId !== ingredientId
-      ),
-    }));
-  };
-
-  // NEW: Update step ingredient quantity
-  const handleStepIngredientQuantityChange = (ingredientId, quantity) => {
-    setNewStep((prev) => ({
-      ...prev,
-      stepIngredients: prev.stepIngredients.map((si) =>
-        si.ingredientId === ingredientId
-          ? { ...si, quantity: parseFloat(quantity) || 0 }
-          : si
-      ),
-    }));
-  };
-
-  // NEW: Update step ingredient measurement unit
-  const handleStepIngredientUnitChange = (ingredientId, unit) => {
-    setNewStep((prev) => ({
-      ...prev,
-      stepIngredients: prev.stepIngredients.map((si) =>
-        si.ingredientId === ingredientId ? { ...si, measurementUnit: unit } : si
-      ),
-    }));
+  const createCheckboxHandler = (ingredientId) => () => {
+    setNewStep((prevState) => {
+      const currentIds = prevState.ingredientIds;
+      if (currentIds.includes(ingredientId)) {
+        return {
+          ...prevState,
+          ingredientIds: currentIds.filter((id) => id !== ingredientId),
+        };
+      } else {
+        return { ...prevState, ingredientIds: [...currentIds, ingredientId] };
+      }
+    });
   };
 
   const handleAddClick = () => {
-    // Validation
     if (!newStep.description.trim()) {
       alert("Η περιγραφή είναι υποχρεωτική");
       return;
     }
 
-    // Validate step ingredients have positive quantities
-    const invalidIngredients = newStep.stepIngredients.filter(
-      (si) => si.quantity <= 0
-    );
-    if (invalidIngredients.length > 0) {
-      alert("Όλα τα υλικά πρέπει να έχουν ποσότητα μεγαλύτερη από 0");
-      return;
-    }
-
-    // Auto title if missing
     const titleToUse =
       newStep.title.trim() === "" ? `Βήμα ${steps.length + 1}` : newStep.title;
 
-    // Call parent with enhanced step data
     onAddStep({
       ...newStep,
       title: titleToUse,
       stepOrder: steps.length + 1,
-      // Keep stepIngredients as is - now includes quantity and measurementUnit
-      stepIngredients: newStep.stepIngredients,
+      stepIngredients: newStep.ingredientIds.map((id) => ({
+        ingredientId: id,
+      })),
+      pendingPhotos: newStep.pendingPhotos,
     });
 
-    // Reset form
     setNewStep({
       title: "",
       description: "",
       duration: 5,
-      stepIngredients: [],
+      ingredientIds: [],
+      pendingPhotos: [],
     });
   };
 
@@ -125,13 +124,25 @@ const StepsForm = ({
     }
   };
 
+  const handleExistingStepPhotoUpload = (stepId, files) => {
+    if (onStepPhotoUpload) {
+      onStepPhotoUpload(stepId, files);
+    }
+  };
+
+  const handleExistingStepPhotoDelete = (stepId, photoId) => {
+    if (onStepPhotoDelete) {
+      onStepPhotoDelete(stepId, photoId);
+    }
+  };
+
   return (
     <div className={classes.container}>
       <h3 className={classes.titleHeader}>Εκτέλεση (Βήματα)</h3>
 
-      {/* --- FORM SECTION --- */}
+      {/* --- FORM SECTION FOR NEW STEP --- */}
       <div className={classes.formContainer}>
-        {/* Row 1: Title & Duration */}
+        {/* Title & Duration */}
         <div className={classes.row}>
           <input
             type="text"
@@ -152,7 +163,7 @@ const StepsForm = ({
           />
         </div>
 
-        {/* Row 2: Description */}
+        {/* Description */}
         <textarea
           name="description"
           className={classes.textarea}
@@ -161,98 +172,130 @@ const StepsForm = ({
           onChange={handleInputChange}
         />
 
-        {/* ENHANCED: Step Ingredients with Quantities */}
+        {/* Ingredients Selection */}
         {availableIngredients.length > 0 && (
-          <div className={classes.stepIngredientsSection}>
-            <label className={classes.stepIngredientsLabel}>
-              Υλικά βήματος με ποσότητες:
-            </label>
-
-            {/* Available ingredients to add */}
-            <div className={classes.availableIngredientsGrid}>
-              {availableIngredients
-                .filter(
-                  (ing) =>
-                    !newStep.stepIngredients.find(
-                      (si) => si.ingredientId === (ing.ingredientId || ing.id)
-                    )
-                )
-                .map((ing) => (
-                  <button
-                    key={ing.ingredientId || ing.id}
-                    type="button"
-                    className={classes.addIngredientBtn}
-                    onClick={() => handleAddStepIngredient(ing)}
-                  >
-                    + {ing.name}
-                  </button>
-                ))}
+          <div className={classes.ingredientsSection}>
+            <label className={classes.ingredientsLabel}>Υλικά βήματος:</label>
+            <div className={classes.checkboxList}>
+              {availableIngredients.map((ing) => (
+                <label
+                  key={ing.ingredientId || ing.id}
+                  className={classes.checkboxLabel}
+                >
+                  <input
+                    type="checkbox"
+                    className={classes.checkboxInput}
+                    checked={newStep.ingredientIds.includes(
+                      ing.ingredientId || ing.id
+                    )}
+                    onChange={createCheckboxHandler(ing.ingredientId || ing.id)}
+                  />
+                  {ing.name}
+                </label>
+              ))}
             </div>
-
-            {/* Selected step ingredients with quantity controls */}
-            {newStep.stepIngredients.length > 0 && (
-              <div className={classes.selectedStepIngredients}>
-                <h4 className={classes.selectedIngredientsTitle}>
-                  Επιλεγμένα υλικά:
-                </h4>
-
-                {newStep.stepIngredients.map((stepIng) => (
-                  <div
-                    key={stepIng.ingredientId}
-                    className={classes.stepIngredientRow}
-                  >
-                    <span className={classes.ingredientName}>
-                      {stepIng.name}
-                    </span>
-
-                    <input
-                      type="number"
-                      className={classes.quantityInput}
-                      placeholder="Ποσότητα"
-                      value={stepIng.quantity}
-                      onChange={(e) =>
-                        handleStepIngredientQuantityChange(
-                          stepIng.ingredientId,
-                          e.target.value
-                        )
-                      }
-                      min="0.01"
-                      step="0.1"
-                    />
-
-                    <select
-                      className={classes.unitSelect}
-                      value={stepIng.measurementUnit}
-                      onChange={(e) =>
-                        handleStepIngredientUnitChange(
-                          stepIng.ingredientId,
-                          e.target.value
-                        )
-                      }
-                    >
-                      {MEASUREMENT_OPTIONS.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-
-                    <button
-                      type="button"
-                      className={classes.removeStepIngredientBtn}
-                      onClick={() =>
-                        handleRemoveStepIngredient(stepIng.ingredientId)
-                      }
-                      title="Αφαίρεση υλικού"
-                    >
-                      ✖
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         )}
+
+        {/* Step Photos Section */}
+        <div className={classes.stepPhotosSection}>
+          <label className={classes.ingredientsLabel}>
+            📷 Φωτογραφίες βήματος:
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => handleStepPhotoSelect(e.target.files)}
+            style={{
+              width: "100%",
+              padding: "8px",
+              border: "1px dashed #ced4da",
+              borderRadius: "4px",
+              marginBottom: "10px",
+            }}
+          />
+          <small style={{ color: "#6c757d", fontSize: "0.8rem" }}>
+            Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέχρι 50MB το καθένα)
+          </small>
+
+          {newStep.pendingPhotos.length > 0 && (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+                gap: "10px",
+                marginTop: "10px",
+              }}
+            >
+              {newStep.pendingPhotos.map((photo) => (
+                <div
+                  key={photo.id}
+                  style={{
+                    border: "1px solid #ddd",
+                    borderRadius: "6px",
+                    padding: "8px",
+                    background: "#f9f9f9",
+                  }}
+                >
+                  <img
+                    src={photo.preview}
+                    alt="Preview"
+                    style={{
+                      width: "100%",
+                      height: "80px",
+                      objectFit: "cover",
+                      borderRadius: "4px",
+                      marginBottom: "5px",
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Περιγραφή..."
+                    value={photo.description}
+                    onChange={(e) =>
+                      handleStepPhotoDescriptionChange(photo.id, e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      padding: "3px",
+                      border: "1px solid #ccc",
+                      borderRadius: "3px",
+                      fontSize: "0.8rem",
+                      marginBottom: "5px",
+                    }}
+                  />
+                  <div
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#666",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    {photo.name}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveStepPhoto(photo.id)}
+                    style={{
+                      width: "100%",
+                      padding: "3px",
+                      background: "#dc3545",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "3px",
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    ✖ Αφαίρεση
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <button
           type="button"
@@ -260,10 +303,12 @@ const StepsForm = ({
           onClick={handleAddClick}
         >
           Προσθήκη Βήματος
+          {newStep.pendingPhotos.length > 0 &&
+            ` (με ${newStep.pendingPhotos.length} φωτογραφίες)`}
         </button>
       </div>
 
-      {/* --- STEPS PREVIEW LIST --- */}
+      {/* --- LIST SECTION - EXISTING STEPS --- */}
       <div className={classes.stepsList}>
         {steps.map((step, index) => (
           <div key={index} className={classes.stepItem}>
@@ -276,6 +321,19 @@ const StepsForm = ({
                 <span className={classes.durationBadge}>
                   ⏱ {step.duration} λεπτά
                 </span>
+
+                {/* Show photo count */}
+                {((step.photos && step.photos.length > 0) ||
+                  (step.pendingPhotos && step.pendingPhotos.length > 0)) && (
+                  <span
+                    className={classes.durationBadge}
+                    style={{ background: "#17a2b8" }}
+                  >
+                    📷{" "}
+                    {(step.photos?.length || 0) +
+                      (step.pendingPhotos?.length || 0)}
+                  </span>
+                )}
 
                 {onRemoveStep && (
                   <button
@@ -292,20 +350,150 @@ const StepsForm = ({
 
             <div className={classes.stepDesc}>{step.description}</div>
 
-            {/* Show step ingredients with quantities */}
+            {/* Step Ingredients */}
             {step.stepIngredients && step.stepIngredients.length > 0 && (
-              <div className={classes.stepIngredientsPreview}>
-                <strong>Υλικά:</strong>
-                <ul className={classes.stepIngredientsList}>
-                  {step.stepIngredients.map((ing, idx) => (
-                    <li key={idx} className={classes.stepIngredientItem}>
-                      {ing.name}: {ing.quantity}{" "}
-                      {MEASUREMENT_OPTIONS.find(
-                        (opt) => opt.value === ing.measurementUnit
-                      )?.label || ing.measurementUnit}
-                    </li>
+              <div className={classes.stepIngredients}>
+                🛒 {step.stepIngredients.length} Υλικά
+              </div>
+            )}
+
+            {mode === "edit" &&
+              step.id &&
+              step.photos &&
+              step.photos.length > 0 && (
+                <div className={classes.existingPhotos}>
+                  <h5
+                    style={{
+                      margin: "10px 0 5px 0",
+                      fontSize: "0.9rem",
+                      color: "#555",
+                    }}
+                  >
+                    📷 Υπάρχουσες Φωτογραφίες:
+                  </h5>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(100px, 1fr))",
+                      gap: "8px",
+                    }}
+                  >
+                    {step.photos.map((photo) => (
+                      <div
+                        key={photo.id}
+                        style={{
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          padding: "5px",
+                          background: "white",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "60px",
+                            background: "#f0f0f0",
+                            borderRadius: "3px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "0.7rem",
+                            color: "#666",
+                          }}
+                        >
+                          📷 {photo.id}
+                        </div>
+                        {photo.description && (
+                          <div
+                            style={{
+                              fontSize: "0.7rem",
+                              color: "#666",
+                              marginTop: "3px",
+                              textAlign: "center",
+                            }}
+                          >
+                            {photo.description}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleExistingStepPhotoDelete(step.id, photo.id)
+                          }
+                          style={{
+                            width: "100%",
+                            padding: "2px",
+                            background: "#dc3545",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "3px",
+                            fontSize: "0.7rem",
+                            marginTop: "3px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          ✖
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add more photos to existing step */}
+                  <div style={{ marginTop: "10px" }}>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) =>
+                        handleExistingStepPhotoUpload(step.id, e.target.files)
+                      }
+                      style={{
+                        width: "100%",
+                        padding: "5px",
+                        border: "1px dashed #28a745",
+                        borderRadius: "3px",
+                        fontSize: "0.8rem",
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+            {/* PENDING PHOTOS (Create Mode) */}
+            {step.pendingPhotos && step.pendingPhotos.length > 0 && (
+              <div className={classes.pendingPhotos}>
+                <h5
+                  style={{
+                    margin: "10px 0 5px 0",
+                    fontSize: "0.9rem",
+                    color: "#007bff",
+                  }}
+                >
+                  📋 Φωτογραφίες προς μεταφόρτωση:
+                </h5>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "5px",
+                  }}
+                >
+                  {step.pendingPhotos.map((photo) => (
+                    <div
+                      key={photo.id}
+                      style={{
+                        fontSize: "0.8rem",
+                        background: "#e3f2fd",
+                        padding: "3px 8px",
+                        borderRadius: "3px",
+                        color: "#0277bd",
+                      }}
+                    >
+                      📷 {photo.name}
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
