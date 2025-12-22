@@ -1,121 +1,129 @@
-/* Existing styles... */
 .container {
-  background-color: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-  margin-bottom: 2rem;
-}
-
-.label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #495057;
-}
-
-.row {
   display: flex;
-  gap: 1rem;
-  align-items: flex-end;
+  gap: 15px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  flex-wrap: wrap;
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  position: relative; /* Important for absolute positioning */
-}
-
-.flexGrow {
-  flex: 2;
-}
-
-.flexShrink {
+  position: relative;
   flex: 1;
+  min-width: 140px;
 }
 
-.input,
-.select {
-  padding: 0.8rem;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
-  font-size: 1rem;
+.searchGroup {
+  flex: 2;
+  min-width: 200px;
+}
+
+.inputIcon, .iconWrapper {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fbbf24;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.inputWithIcon, .selectWithIcon {
   width: 100%;
+  padding: 12px 12px 12px 40px; /* Space for icon */
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  font-size: 1rem;
   box-sizing: border-box;
+  transition: all 0.3s;
 }
 
+.inputWithIcon:focus, .selectWithIcon:focus {
+  outline: none;
+  border-color: #fbbf24;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.selectWithIcon {
+  appearance: none;
+  cursor: pointer;
+}
+
+.selectWithIcon option {
+  background: #1e293b;
+}
+
+/* ADD BUTTON */
 .addButton {
-  padding: 0.8rem 1.5rem;
-  background-color: #27ae60;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
+  width: 48px;
+  height: 46px; /* Match input height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
-  height: fit-content;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
 }
 
 .addButton:hover {
-  background-color: #219150;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5);
 }
 
-/* Search results dropdown */
+/* DROPDOWN */
 .searchResultsList {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ced4da;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  top: 100%; left: 0; right: 0;
+  margin-top: 5px;
+  background: #1e293b;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+  z-index: 50;
   max-height: 200px;
   overflow-y: auto;
-  margin: 0;
-  padding: 0;
   list-style: none;
+  padding: 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .searchResultItem {
-  padding: 0.8rem;
+  padding: 10px 15px;
   cursor: pointer;
-  border-bottom: 1px solid #f1f1f1;
-  transition: background 0.2s;
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .searchResultItem:hover {
-  background-color: #f8f9fa;
-  color: #d35400;
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
 }
 
-.searchResultItem:last-child {
-  border-bottom: none;
-}
-
-/* NEW: Create new ingredient indicator */
 .createNewIndicator {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #e8f5e8;
-  border: 1px solid #28a745;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  padding: 0.8rem;
+  top: 100%; left: 0; right: 0;
+  margin-top: 5px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid #10b981;
+  color: #6ee7b7;
+  padding: 10px;
+  border-radius: 8px;
   font-size: 0.9rem;
-  color: #155724;
-  z-index: 10;
-  animation: fadeIn 0.2s ease-in;
+  z-index: 50;
+  display: flex; gap: 5px; align-items: center;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@media (max-width: 600px) {
+  .container { flex-direction: column; }
+  .inputGroup, .searchGroup { width: 100%; }
+  .addButton { width: 100%; }
 }

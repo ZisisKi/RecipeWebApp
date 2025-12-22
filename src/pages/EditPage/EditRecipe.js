@@ -3,6 +3,9 @@ import { getRecipeById, updateRecipe } from "../../api/recipeApi";
 import BasicInfoForm from "../../components/recipe-form/BasicInfoForm";
 import styles from "./EditRecipe.module.css";
 
+// Lucide Icons
+import { FileText, Save, LogOut, Loader2, PenLine } from "lucide-react";
+
 // Sub-components
 import EditRecipeIngredients from "./EditRecipeIngredients";
 import EditRecipeSteps from "./EditRecipeSteps";
@@ -70,22 +73,27 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
     }
   };
 
-  if (loading || !formData) return <div className={styles.container}>Φόρτωση...</div>;
+  if (loading || !formData) return (
+    <div className={styles.container} style={{ display:'flex', justifyContent:'center', alignItems:'center' }}>
+       <Loader2 size={48} className="spin" color="#fbbf24" />
+    </div>
+  );
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Επεξεργασία: {formData.name}</h1>
+      <h1 className={styles.title}>
+        <PenLine size={32}/> Επεξεργασία: {formData.name}
+      </h1>
 
       {/* 1. Basic Info & Photos */}
       <div className={styles.sectionCard}>
         <div className={styles.sectionHeader}>
-          <h3 className={styles.sectionTitle}>📝 Βασικές Πληροφορίες</h3>
+          <h3 className={styles.sectionTitle}><FileText size={24}/> Βασικές Πληροφορίες</h3>
           <button type="button" className={styles.btnPrimary} onClick={onSaveBasicInfo}>
-            Αποθήκευση Βασικών
+            <Save size={18} /> Αποθήκευση Βασικών
           </button>
         </div>
         
-        {/* Υποθέτω ότι το BasicInfoForm είναι ήδη έτοιμο component αλλού */}
         <BasicInfoForm formData={formData} handleChange={handleBasicChange} />
 
         <EditRecipePhotos
@@ -116,13 +124,15 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
 
       <div className={styles.backButtonContainer}>
         <button className={styles.btnSecondary} onClick={onSaveSuccess}>
-          ← Επιστροφή στη Λεπτομέρεια
+          <LogOut size={20} /> Έξοδος Επεξεργασίας
         </button>
       </div>
 
+      {/* Toast Notification */}
       {uiMessage && (
         <div className={`${styles.messageBar} ${uiMessage.type === 'error' ? styles.msgError : styles.msgSuccess}`}>
-          {uiMessage.type === 'error' ? '⚠️' : '✅'} {uiMessage.text}
+          <span>{uiMessage.type === 'error' ? '⚠️' : '✅'}</span>
+          {uiMessage.text}
         </div>
       )}
     </div>

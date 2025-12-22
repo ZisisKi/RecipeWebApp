@@ -1,64 +1,50 @@
 import React from "react";
-import { uploadPhotoForRecipe, deletePhoto } from "../../api/PhotoApi";
+
+// --- ΔΙΟΡΘΩΜΕΝΑ IMPORTS (από components/UI) ---
+import PhotoGallery from "../../components/UI/PhotoGallery";
+import PhotoUploader from "../../components/UI/PhotoUploader"; 
+
 import styles from "./EditRecipePhotos.module.css";
 
-const EditRecipePhotos = ({ recipeId, photos, onRefresh, showMessage }) => {
+const EditRecipePhotos = ({ recipeId, onRefresh, showMessage }) => {
 
-  const onFileChange = async (e) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    try {
-      for (const file of files) {
-        await uploadPhotoForRecipe(recipeId, file, "Φωτογραφία Συνταγής");
-      }
-      onRefresh();
-      showMessage("📷 Η φωτογραφία συνταγής ανέβηκε!");
-    } catch (error) {
-      showMessage("❌ Σφάλμα ανεβάσματος.", "error");
-    }
+  // Callback: Όταν το PhotoUploader ολοκληρώσει το ανέβασμα
+  const handleUploadSuccess = () => {
+    showMessage("📷 Η φωτογραφία ανέβηκε επιτυχώς!");
+    // Καλουμε onRefresh για να ξαναφορτώσει η σελίδα τα δεδομένα (ώστε να εμφανιστεί η νέα φωτό στο Gallery)
+    if (onRefresh) onRefresh();
   };
 
-  const onDeleteClick = async (photoId) => {
-    if (!window.confirm("Διαγραφή φωτογραφίας;")) return;
-    try {
-      await deletePhoto(photoId);
-      onRefresh();
-      showMessage("🗑️ Η φωτογραφία διαγράφηκε.");
-    } catch (error) {
-      showMessage("❌ Σφάλμα διαγραφής.", "error");
-    }
+  // Callback: Όταν αποτύχει το ανέβασμα
+  const handleUploadError = (msg) => {
+    showMessage(`❌ ${msg}`, "error");
+  };
+
+  // Callback: Όταν διαγραφεί μια φωτογραφία μέσα από το Gallery
+  const handlePhotoDeleted = (photoId) => {
+    showMessage("🗑️ Η φωτογραφία διαγράφηκε.");
+    if (onRefresh) onRefresh();
   };
 
   return (
     <div className={styles.container}>
-      <label className={styles.label}>📷 Φωτογραφίες Συνταγής</label>
-      
-      <div className={styles.photoPreviewGrid}>
-        {(photos || []).map((p) => (
-          <div key={p.id} className={styles.photoWrapper}>
-            <img
-              src={`http://localhost:8080/api/photos/image?id=${p.id}`}
-              className={styles.photoThumbnail}
-              alt="recipe thumbnail"
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
-            <button
-              className={styles.deleteBtn}
-              onClick={() => onDeleteClick(p.id)}
-              type="button"
-            >
-              x
-            </button>
-          </div>
-        ))}
+      {/* 1. Gallery Section: Προβολή & Διαγραφή υπαρχουσών φωτογραφιών */}
+      <div className={styles.gallerySection}>
+        <PhotoGallery 
+          recipeId={recipeId} 
+          allowDelete={true} // Επιτρέπουμε διαγραφή στο Edit Mode
+          onPhotoDeleted={handlePhotoDeleted}
+        />
       </div>
 
-      <input
-        type="file"
-        className={styles.fileInput}
-        onChange={onFileChange}
-      />
+      {/* 2. Upload Section: Προσθήκη νέων φωτογραφιών */}
+      <div className={styles.uploadSection}>
+        <PhotoUploader 
+          recipeId={recipeId}
+          onUploadSuccess={handleUploadSuccess}
+          onUploadError={handleUploadError}
+        />
+      </div>
     </div>
   );
 };

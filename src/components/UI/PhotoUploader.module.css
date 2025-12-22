@@ -1,169 +1,96 @@
 .container {
-  background: #f8f9fa;
+  background: rgba(30, 41, 59, 0.4);
+  border: 2px dashed rgba(251, 191, 36, 0.3); /* Gold Dashed Border */
+  border-radius: 16px;
   padding: 20px;
-  border-radius: 12px;
-  border: 2px dashed #dee2e6;
-  margin-bottom: 20px;
-  transition: border-color 0.3s;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-top: 20px;
 }
 
 .container:hover {
-  border-color: #007bff;
+  background: rgba(251, 191, 36, 0.05);
+  border-color: #fbbf24;
 }
 
 .title {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 1.1rem;
-  text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #dee2e6;
+  margin: 0 0 15px 0;
+  color: #fbbf24;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 
 .inputGroup {
   margin-bottom: 15px;
+  text-align: left;
 }
 
 .label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #495057;
+  margin-bottom: 5px;
+  color: #81e6d9; /* Teal */
   font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .fileInput {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #ced4da;
+  padding: 10px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background: white;
+  color: #cbd5e1;
   cursor: pointer;
-  transition: border-color 0.3s;
 }
 
-.fileInput:hover:not(:disabled) {
-  border-color: #007bff;
-}
-
-.fileInput:disabled {
-  background-color: #e9ecef;
-  cursor: not-allowed;
+.fileInput::file-selector-button {
+  background: #38b2ac;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
 .textarea {
   width: 100%;
-  min-height: 80px;
-  padding: 12px;
-  border: 2px solid #ced4da;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  font-family: inherit;
+  padding: 10px;
+  color: white;
+  min-height: 60px;
   resize: vertical;
-  transition: border-color 0.3s;
-  box-sizing: border-box;
 }
+.textarea:focus { outline: none; border-color: #fbbf24; }
 
-.textarea:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
-
-.textarea:disabled {
-  background-color: #e9ecef;
-  cursor: not-allowed;
-}
-
-.charCount {
-  display: block;
-  text-align: right;
-  color: #6c757d;
-  font-size: 0.8rem;
-  margin-top: 4px;
-}
-
-.previewSection {
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.previewImage {
-  max-width: 100%;
-  max-height: 200px;
-  border-radius: 8px;
-  border: 2px solid #dee2e6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  object-fit: cover;
-}
+.previewSection { margin: 15px 0; }
+.previewImage { max-height: 150px; border-radius: 8px; border: 1px solid #fbbf24; }
 
 .buttonGroup {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 20px;
+  display: flex; gap: 10px; justify-content: center; margin-top: 15px;
 }
 
 .button {
-  padding: 12px 24px;
+  padding: 8px 20px;
+  border-radius: 50px;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  transition: transform 0.2s;
 }
+.button:hover { transform: translateY(-2px); }
 
 .uploadButton {
-  background-color: #28a745;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
 }
-
-.uploadButton:hover:not(:disabled) {
-  background-color: #218838;
-  transform: translateY(-2px);
-}
-
-.uploadButton:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-  transform: none;
-}
+.uploadButton:disabled { background: #4b5563; cursor: not-allowed; transform: none; }
 
 .cancelButton {
-  background-color: #6c757d;
-  color: white;
-}
-
-.cancelButton:hover:not(:disabled) {
-  background-color: #5a6268;
-  transform: translateY(-2px);
-}
-
-.cancelButton:disabled {
-  background-color: #adb5bd;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Responsive */
-@media (max-width: 576px) {
-  .container {
-    padding: 15px;
-  }
-
-  .buttonGroup {
-    flex-direction: column;
-  }
-
-  .button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .previewImage {
-    max-height: 150px;
-  }
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
 }

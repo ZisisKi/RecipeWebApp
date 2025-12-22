@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  getAllRecipes,
-  searchRecipesByName,
-  getRecipesByCategory,
-  getRecipesByDifficulty,
-} from "../api/recipeApi";
+// Lucide Icons
+import { Loader2, Frown, Coffee } from "lucide-react";
+
+import { getAllRecipes } from "../api/recipeApi";
+
 import RecipeCard from "../components/recipe-list/RecipeCard";
 import RecipeSearch from "../components/recipe-search/RecipeSearch";
-import classes from "./RecipeListPage.module.css";
+import styles from "./RecipeListPage.module.css";
 
 const RecipeListPage = ({ onRecipeClick }) => {
   const [allRecipes, setAllRecipes] = useState([]);
@@ -25,7 +24,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
         setLoading(false);
       } catch (err) {
         console.error(err);
-        setError("Απέτυχε η φόρτωση των συνταγών. Παρακαλώ δοκιμάστε ξανά αργότερα.");
+        setError("Απέτυχε η φόρτωση των συνταγών.");
         setLoading(false);
       }
     };
@@ -33,130 +32,105 @@ const RecipeListPage = ({ onRecipeClick }) => {
   }, []);
 
   const handleSearch = async (filters) => {
-    if (
-      !filters.name &&
-      !filters.category &&
-      !filters.difficulty &&
-      !filters.maxDuration
-    ) {
+    // Αν όλα είναι κενά
+    if (!filters.name && !filters.category && !filters.difficulty && !filters.maxDuration) {
       setDisplayedRecipes(allRecipes);
       setIsSearching(false);
       return;
     }
 
     setIsSearching(true);
-    setLoading(true);
 
     try {
       let results = allRecipes;
 
-      if (filters.name && filters.name.trim()) {
-        results = await searchRecipesByName(filters.name);
-      }
-
-      if (filters.category) {
-        if (filters.name) {
-          results = results.filter(
-            (recipe) => recipe.category === filters.category
-          );
-        } else {
-          results = await getRecipesByCategory(filters.category);
-        }
-      }
-
-      if (filters.difficulty) {
-        if (filters.name || filters.category) {
-          results = results.filter(
-            (recipe) => recipe.difficulty === filters.difficulty
-          );
-        } else {
-          results = await getRecipesByDifficulty(filters.difficulty);
-        }
-      }
-
-      if (filters.maxDuration) {
-        results = results.filter(
-          (recipe) => recipe.totalDuration <= filters.maxDuration
+      // 1. Search by Name
+      if (filters.name) {
+        const lowerName = filters.name.toLowerCase();
+        results = results.filter(r => 
+          r.name.toLowerCase().includes(lowerName) || 
+          (r.recipeIngredients && r.recipeIngredients.some(ing => 
+             (ing.name || (ing.ingredient && ing.ingredient.name) || "").toLowerCase().includes(lowerName)
+          ))
         );
       }
 
+      // 2. Category
+      if (filters.category) {
+        results = results.filter(r => r.category === filters.category);
+      }
+
+      // 3. Difficulty
+      if (filters.difficulty) {
+        results = results.filter(r => r.difficulty === filters.difficulty);
+      }
+
+      // 4. Duration
+      if (filters.maxDuration) {
+        results = results.filter(r => r.totalDuration <= filters.maxDuration);
+      }
+
       setDisplayedRecipes(results);
-      setLoading(false);
     } catch (err) {
-      setError("Παρουσιάστηκε σφάλμα κατά την αναζήτηση.");
-      setLoading(false);
+      console.error(err);
     }
   };
 
   const handleResetSearch = () => {
     setDisplayedRecipes(allRecipes);
     setIsSearching(false);
-    setError(null);
   };
 
   if (loading && !isSearching) {
     return (
-      <div className={classes.loadingContainer}>
-        <div className={classes.spinner}></div>
-        <p>Φόρτωση συνταγών...</p>
+      <div className={styles.centerMessage}>
+        <Loader2 size={48} className={styles.spinner} />
+        <p>Φόρτωση βιβλίου συνταγών...</p>
       </div>
     );
   }
 
   if (error) {
-    return <div className={classes.error}>{error}</div>;
+    return (
+      <div className={styles.centerMessage}>
+        <Frown size={48} color="#f87171" />
+        <p>{error}</p>
+      </div>
+    );
   }
 
   return (
-    <div className={classes.container}>
-      <h1 className={classes.title}>Οι Συνταγές Μου</h1>
+    <div className={styles.container}>
+      <h1 className={styles.pageTitle}>Οι Συνταγές Μου</h1>
 
+      {/* Χρήση του RecipeSearch Component */}
       <RecipeSearch onSearch={handleSearch} onReset={handleResetSearch} />
 
-      <div className={classes.resultsInfo}>
+      {/* Info Bar */}
+      <div className={styles.resultsInfo}>
         {isSearching ? (
-          <span className={classes.searchIndicator}>
-            🔍 Αποτελέσματα αναζήτησης: <strong>{displayedRecipes.length}</strong> συνταγές
-          </span>
+           <span>🔍 Αποτελέσματα: <strong>{displayedRecipes.length}</strong></span>
         ) : (
-          <span className={classes.totalCount}>
-            📚 Σύνολο: <strong>{allRecipes.length}</strong> συνταγές
-          </span>
+           <span>📚 Σύνολο: <strong>{allRecipes.length}</strong> συνταγές</span>
         )}
       </div>
 
-      {loading && isSearching && (
-        <div className={classes.searchLoading}>
-          <span>🔍 Γίνεται αναζήτηση...</span>
-        </div>
-      )}
-
-      {displayedRecipes.length === 0 && !loading ? (
-        <div className={classes.emptyResults}>
-          <span className={classes.emptyIcon}>🍽️</span>
-          {isSearching ? (
-            <div>
-              <p>Δεν βρέθηκαν συνταγές με αυτά τα κριτήρια.</p>
-              <button 
-                onClick={handleResetSearch}
-                className={classes.clearFilterBtn}
-              >
-                Εκκαθάριση Φίλτρων
-              </button>
-            </div>
-          ) : (
-            <p>Δεν υπάρχουν συνταγές ακόμα. Δημιούργησε την πρώτη σου!</p>
-          )}
-        </div>
-      ) : (
-        <div className={classes.grid}>
+      {/* Grid */}
+      {displayedRecipes.length > 0 ? (
+        <div className={styles.grid}>
           {displayedRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
-              onClick={() => onRecipeClick(recipe.id)}
+              onClick={onRecipeClick}
             />
           ))}
+        </div>
+      ) : (
+        <div className={styles.centerMessage}>
+          <Coffee size={64} style={{ opacity: 0.3 }} />
+          <h3 className={styles.emptyText}>Δεν βρέθηκαν συνταγές</h3>
+          <p>Δοκιμάστε να αλλάξετε τα φίλτρα.</p>
         </div>
       )}
     </div>

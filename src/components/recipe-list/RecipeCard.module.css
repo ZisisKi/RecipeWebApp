@@ -1,121 +1,217 @@
+/* src/components/recipe-list/RecipeCard.module.css */
+
 .card {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
-  padding: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  width: 100%;
+  text-align: left;
   cursor: pointer;
+
+  /* NORDIC DARK GLASS BASE */
+  border: 1px solid rgba(251, 191, 36, 0.3); /* Gold border low opacity */
+  background: rgba(30, 41, 59, 0.6); /* Dark Slate Glass */
+  border-radius: 20px;
+
+  padding: 0;
   overflow: hidden;
-  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
-}
+  min-height: 380px;
 
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-/* Header */
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px 0 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
-.categoryIcon {
-  font-size: 2rem;
-  opacity: 0.8;
-  transition: all 0.3s ease;
+.card:hover {
+  transform: translateY(-8px);
+  /* Stronger Gold on Hover */
+  border-color: #fbbf24;
+  background: rgba(30, 41, 59, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 15px rgba(251, 191, 36, 0.15);
 }
 
-.card:hover .categoryIcon {
-  opacity: 1;
+.card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3);
+}
+
+/* -------- Cover -------- */
+.cover {
+  position: relative;
+  height: 180px; /* Λίγο πιο ψηλό */
+  overflow: hidden;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+
+  /* Gold & Teal Gradients instead of Coral */
+  background: radial-gradient(
+      600px 240px at 20% 10%,
+      rgba(251, 191, 36, 0.15), /* Gold tint */
+      transparent 60%
+    ),
+    radial-gradient(
+      500px 220px at 90% 0%,
+      rgba(56, 178, 172, 0.1), /* Teal tint */
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(30, 41, 59, 0.2),
+      rgba(30, 41, 59, 0.4)
+    );
+}
+
+.coverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .coverImg {
   transform: scale(1.1);
 }
 
-.timeBadge {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 50px;
-  padding: 6px 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #495057;
-  transition: all 0.3s ease;
-}
-
-.card:hover .timeBadge {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
-  transform: scale(1.05);
-}
-
-.timeIcon {
-  font-size: 1rem;
-}
-
-.cardBody {
-  padding: 20px 24px;
-  flex-grow: 1;
+.coverPlaceholder {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fbbf24; /* Gold Icon */
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.coverText {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8; /* Slate text */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Top row over cover */
+.coverTopRow {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+/* Category pill */
+.categoryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 50px;
+
+  /* Glass Dark */
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  
+  color: #fbbf24; /* Gold Icon */
+}
+
+.categoryText {
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Time badge */
+.timeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 50px;
+
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #81e6d9; /* Teal Text */
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+/* Shine Effect (Keep existing logic but adjust colors) */
+.shine {
+  position: absolute;
+  inset: -40% -20%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(251, 191, 36, 0.2) 45%, /* Gold Shine */
+    transparent 55%
+  );
+  transform: translateX(-60%) rotate(10deg);
+  opacity: 0;
+  transition: transform 0.6s ease, opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.card:hover .shine {
+  opacity: 1;
+  transform: translateX(40%) rotate(10deg);
+}
+
+/* -------- Body -------- */
+.cardBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .title {
-  margin: 0 0 12px 0;
-  font-size: 1.4rem;
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #212529;
   line-height: 1.3;
-  letter-spacing: -0.02em;
+  color: #f1f5f9;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .description {
-  font-size: 0.95rem;
-  color: #6c757d;
+  margin: 0 0 20px 0;
+  font-size: 0.9rem;
   line-height: 1.6;
-  margin-bottom: 20px;
+  color: #94a3b8; /* Slate */
+
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex-grow: 1;
 }
 
+/* Stats */
 .quickStats {
+  margin-top: auto;
+  padding: 12px;
+
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 0;
-  background: #f8f9fa;
+  justify-content: space-around;
+  gap: 10px;
+
   border-radius: 12px;
-  margin: auto 0 0 0;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .stat {
@@ -126,119 +222,83 @@
 }
 
 .statNumber {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #495057;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fbbf24; /* Gold */
 }
 
 .statText {
-  font-size: 0.75rem;
-  color: #6c757d;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #cbd5e1;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 .statDivider {
-  color: #dee2e6;
-  font-size: 1.2rem;
-  margin: 0 4px;
+  width: 1px;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
+/* -------- Footer -------- */
 .cardFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px 20px 24px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .difficultyTag {
-  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
   border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: all 0.3s ease;
 }
 
+/* Difficulty Colors (Adjusted for Dark Theme) */
 .easy {
-  background: rgba(40, 167, 69, 0.1);
-  color: #28a745;
-  border: 1px solid rgba(40, 167, 69, 0.2);
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
 }
 
 .medium {
-  background: rgba(255, 193, 7, 0.1);
-  color: #ffc107;
-  border: 1px solid rgba(255, 193, 7, 0.2);
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
 }
 
 .hard {
-  background: rgba(220, 53, 69, 0.1);
-  color: #dc3545;
-  border: 1px solid rgba(220, 53, 69, 0.2);
-}
-
-.card:hover .easy {
-  background: #28a745;
-  color: white;
-}
-
-.card:hover .medium {
-  background: #ffc107;
-  color: #212529;
-}
-
-.card:hover .hard {
-  background: #dc3545;
-  color: white;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
 }
 
 .viewAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #81e6d9; /* Teal */
+  font-weight: 700;
   font-size: 0.9rem;
-  color: #007bff;
-  font-weight: 600;
-  opacity: 0.7;
   transition: all 0.3s ease;
-  letter-spacing: 0.3px;
 }
 
 .card:hover .viewAction {
-  opacity: 1;
   transform: translateX(4px);
+  color: #fbbf24; /* Gold on hover */
 }
 
+/* Responsive */
 @media (max-width: 768px) {
-  .cardHeader,
-  .cardBody,
-  .cardFooter {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .cardHeader {
-    padding-top: 16px;
-  }
-
-  .cardBody {
-    padding-top: 16px;
-    padding-bottom: 16px;
-  }
-
-  .cardFooter {
-    padding-bottom: 16px;
-  }
-
-  .title {
-    font-size: 1.2rem;
-  }
-
-  .categoryIcon {
-    font-size: 1.8rem;
-  }
-
-  .description {
-    font-size: 0.9rem;
-  }
+  .cover { height: 160px; }
+  .title { font-size: 1.15rem; }
+  .categoryText { display: none; } /* Hide text on small screens, keep icon */
 }

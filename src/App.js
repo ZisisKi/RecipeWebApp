@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 
+// --- Icons (Lucide React) ---
+import { ChefHat, BookOpen, PlusCircle } from "lucide-react";
+
 // --- Imports Σελίδων ---
 import CreateRecipePage from "./pages/CreateRecipePage";
 import RecipeListPage from "./pages/RecipeListPage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
-
-// --- ΝΕΟ IMPORT: Το κεντρικό component του EditPage ---
 import EditRecipe from "./pages/EditPage/EditRecipe";
 
 // --- UI Components ---
@@ -35,7 +36,6 @@ function App() {
   };
 
   const handleEditComplete = () => {
-    // Όταν τελειώσει το edit (ή πατηθεί back), πάμε πίσω στη λεπτομέρεια
     setActiveScreen("Recipe_Details");
   };
 
@@ -46,7 +46,9 @@ function App() {
       {/* HEADER */}
       <header className={classes.header}>
         <h1 className={classes.appTitle} onClick={goToMenu}>
-          🍴 Recipe eBook
+          {/* ΑΛΛΑΓΗ 1: Lucide Icon αντί για Emoji */}
+          <ChefHat size={36} color="#fbbf24" strokeWidth={2.5} style={{ marginRight: '12px' }} /> 
+          Recipe eBook
         </h1>
       </header>
 
@@ -54,27 +56,40 @@ function App() {
         
         {/* --- 1. WELCOME SCREEN --- */}
         {activeScreen === "Welcome" && (
-          <div className={classes.heroSection}>
-            <div className={classes.heroImagePlaceholder}>
-              <h2 className={classes.heroText}>
-                Οι καλύτερες συνταγές, συγκεντρωμένες.
-              </h2>
-            </div>
+          <div className={classes.heroSplitSection}>
+            <div className={classes.heroBgLeft}></div>
+            <div className={classes.heroBgRight}></div>
+            <div className={classes.heroDivider}></div>
 
-            <nav className={classes.mainMenu}>
-              <button
-                className={`${classes.menuBtn} ${classes.btnView}`}
-                onClick={() => setActiveScreen("Recipe_List")}
-              >
-                📖 Προβολή Συνταγών
-              </button>
-              <button
-                className={`${classes.menuBtn} ${classes.btnCreate}`}
-                onClick={() => setActiveScreen("Create_Recipe")}
-              >
-                ➕ Νέα Συνταγή
-              </button>
-            </nav>
+            <div className={classes.heroContent}>
+              <h2 className={classes.heroHeadline}>
+                Μια εφαρμογή Συνταγών<br /> για όλες τις Κουζίνες
+              </h2>
+              <p className={classes.heroSubHeadline}>
+                Δημιούργησε! <br />
+                Αποθήκευσε! <br />
+                Εκτέλεσε! 
+              </p>
+
+              <nav className={classes.mainMenu}>
+                <button
+                  className={`${classes.menuBtn} ${classes.btnView}`}
+                  onClick={() => setActiveScreen("Recipe_List")}
+                >
+                  {/* ΑΛΛΑΓΗ 2: Lucide Icon */}
+                  <BookOpen size={24} />
+                  Προβολή Συνταγών
+                </button>
+                <button
+                  className={`${classes.menuBtn} ${classes.btnCreate}`}
+                  onClick={() => setActiveScreen("Create_Recipe")}
+                >
+                  {/* ΑΛΛΑΓΗ 2: Lucide Icon */}
+                  <PlusCircle size={24} />
+                  Νέα Συνταγή
+                </button>
+              </nav>
+            </div>
           </div>
         )}
 
@@ -82,7 +97,8 @@ function App() {
         {activeScreen === "Recipe_List" && (
           <div className={classes.pageWrapper}>
             <div className={classes.navigationHeader}>
-              <BackButton onClick={goToMenu} text="← Πίσω στο Μενού" />
+              {/* ΑΛΛΑΓΗ 3: Αφαίρεση του "←" από το text */}
+              <BackButton onClick={goToMenu} text="Πίσω στο Μενού" />
             </div>
             <RecipeListPage onRecipeClick={handleRecipeSelection} />
           </div>
@@ -92,7 +108,7 @@ function App() {
         {activeScreen === "Create_Recipe" && (
           <div className={classes.pageWrapper}>
             <div className={classes.navigationHeader}>
-              <BackButton onClick={goToMenu} text="← Πίσω στο Μενού" />
+              <BackButton onClick={goToMenu} text="Πίσω στο Μενού" />
             </div>
             <CreateRecipePage />
           </div>
@@ -104,7 +120,7 @@ function App() {
             <div className={classes.navigationHeader}>
               <BackButton
                 onClick={() => setActiveScreen("Recipe_List")}
-                text="← Πίσω στη Λίστα"
+                text="Πίσω στη Λίστα"
               />
             </div>
 
@@ -116,17 +132,10 @@ function App() {
           </div>
         )}
 
-        {/* --- 5. EDIT RECIPE SCREEN (ΝΕΟ COMPONENT) --- */}
+        {/* --- 5. EDIT RECIPE SCREEN --- */}
         {activeScreen === "Edit_Recipe" && selectedRecipeId && (
           <div className={classes.pageWrapper}>
-            <div className={classes.navigationHeader}>
-              <BackButton
-                onClick={handleEditComplete}
-                text="← Ακύρωση Επεξεργασίας"
-              />
-            </div>
-
-            {/* Χρήση του νέου EditRecipe Component */}
+             {/* Εδώ δεν βάζουμε Header/BackButton γιατί υπάρχει το κουμπί "Έξοδος" μέσα στο EditRecipe */}
             <EditRecipe
               recipeId={selectedRecipeId}
               onCancel={handleEditComplete}
@@ -137,7 +146,15 @@ function App() {
       </main>
 
       {/* FOOTER */}
-      <footer className={classes.footer}>© 2025 My Recipe eBook Project</footer>
+      <footer className={classes.footer}>
+        <div className={classes.footerContent}>
+          <span>© 2025 Recipe eBook Project</span>
+          <span className={classes.footerSeparator}>|</span>
+          <span className={classes.footerTeam}>
+            Powered by: <strong>Alex / Zisis / Stelios / Argiris</strong>
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }

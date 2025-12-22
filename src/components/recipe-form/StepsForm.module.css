@@ -1,352 +1,98 @@
-/* Κεντρικό Container */
 .container {
-  background: #ffffff;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-  margin-top: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.titleHeader {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  color: #2c3e50;
-  border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 0.5rem;
-}
-
-/* --- Φόρμα Εισαγωγής Νέου Βήματος --- */
-.formContainer {
-  background-color: #f8f9fa;
-  border: 2px dashed #ced4da;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  transition: border-color 0.2s;
-}
-
-.formContainer:focus-within {
-  border-color: #007bff;
-  background-color: #fff;
-}
-
-.row {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.input, .textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-}
-
-.input:focus, .textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
-
-.inputTitle {
-  flex: 3;
-}
-
-.inputDuration {
-  flex: 1;
-}
-
-.textarea {
-  min-height: 80px;
-  resize: vertical;
-  margin-bottom: 1rem;
-}
-
-/* Section Υλικών */
-.ingredientsSection {
-  margin-bottom: 1rem;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-.ingredientsLabel {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #495057;
-}
-
-.checkboxList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 0.5rem;
-}
-
-.checkboxLabel {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.25rem;
-}
-
-.checkboxInput {
-  accent-color: #28a745;
-  width: 16px;
-  height: 16px;
-}
-
-/* --- Section Φωτογραφιών (Upload) --- */
-.stepPhotosSection {
-  margin-bottom: 1.5rem;
-}
-
-.photoLabel {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-  color: #495057;
-}
-
-.fileInput {
-  width: 100%;
-  padding: 10px;
-  border: 1px dashed #adb5bd;
-  border-radius: 8px;
-  background: white;
-  margin-bottom: 0.5rem;
-  cursor: pointer;
-}
-
-.helperText {
-  color: #6c757d;
-  font-size: 0.8rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-/* Grid Προεπισκόπησης Φωτογραφιών (New Step) */
-.photoPreviewGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.photoPreviewCard {
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 8px;
-  background: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.previewImage {
-  width: 100%;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 5px;
-}
-
-.photoDescInput {
-  width: 100%;
-  padding: 4px 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  margin-bottom: 5px;
-}
-
-.photoName {
-  font-size: 0.7rem;
-  color: #6c757d;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.removePhotoBtn {
-  width: 100%;
-  padding: 4px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.removePhotoBtn:hover {
-  background: #c82333;
-}
-
-/* Κουμπί Προσθήκης Βήματος */
-.addButton {
-  width: 100%;
-  padding: 0.8rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.addButton:hover {
-  background-color: #0056b3;
-}
-
-/* --- Λίστα Υπαρχόντων Βημάτων --- */
-.stepsList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 30px;
 }
 
-.stepItem {
-  background: white;
-  border: 1px solid #e9ecef;
-  border-left: 4px solid #28a745;
-  border-radius: 8px;
-  padding: 1.2rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+/* --- NEW STEP FORM --- */
+.newStepBox {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px dashed rgba(251, 191, 36, 0.4);
+  padding: 20px;
+  border-radius: 16px;
 }
 
-.stepHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
+.boxTitle {
+  margin-top: 0;
+  color: #fbbf24;
+  display: flex; align-items: center; gap: 8px;
 }
 
-.stepTitleText {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #2c3e50;
-}
+.row { display: flex; gap: 15px; margin-bottom: 15px; }
 
-.stepActions {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.durationBadge {
-  background: #e9ecef;
-  padding: 0.25rem 0.6rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  color: #495057;
-  font-weight: 500;
-}
-
-.photoBadge {
-  background: #17a2b8;
-  color: white;
-}
-
-.removeButton {
-  background: none;
-  border: none;
-  color: #dc3545;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0 0.5rem;
-  transition: color 0.2s;
-}
-
-.removeButton:hover {
-  color: #a71d2a;
-  transform: scale(1.1);
-}
-
-.stepDesc {
-  color: #495057;
-  line-height: 1.5;
-  margin-bottom: 0.8rem;
-}
-
-.stepIngredients {
-  font-size: 0.9rem;
-  color: #155724;
-  background: #d4edda;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  display: inline-block;
-  margin-bottom: 0.8rem;
-}
-
-/* Existing Photos inside step list (Edit Mode) */
-.existingPhotos {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f0f0f0;
-}
-
-.existingPhotosTitle {
-  margin: 10px 0 5px 0;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-/* Styles για το placeholder των υπαρχουσών φωτογραφιών που δεν έχουν URL preview εδώ */
-.existingPhotoPlaceholder {
+.input, .textarea, .inputWithIcon {
   width: 100%;
-  height: 60px;
-  background: #f0f0f0;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  color: #666;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
-.existingPhotoDesc {
-  font-size: 0.7rem;
-  color: #666;
-  margin-top: 3px;
-  text-align: center;
+.iconInputWrapper { position: relative; }
+.inputIcon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #fbbf24; }
+.inputWithIcon { padding-left: 35px; }
+
+.ingredientsSection {
+  background: rgba(15, 23, 42, 0.3);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+.sectionLabel { display: flex; align-items: center; gap: 5px; color: #81e6d9; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; }
+
+.checkboxGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.checkboxLabel { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; color: #cbd5e1; cursor: pointer; }
+
+/* PHOTO UPLOAD MINI AREA */
+.uploadLabel {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 15px; border-radius: 50px;
+  cursor: pointer; border: 1px solid rgba(255,255,255,0.1);
+  color: #e2e8f0; font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.uploadLabel:hover { background: rgba(255, 255, 255, 0.1); border-color: #fbbf24; }
+.uploadBtnText { color: #fbbf24; font-weight: 600; display: flex; gap: 4px; align-items: center; }
+
+.previewRow { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.miniPreview { position: relative; width: 60px; height: 60px; }
+.miniPreview img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; border: 1px solid #fbbf24; }
+.miniPreview button { position: absolute; top: -5px; right: -5px; background: #ef4444; border: none; border-radius: 50%; width: 20px; height: 20px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+.addButton {
+  width: 100%; padding: 12px; margin-top: 15px;
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24; border: 1px solid #fbbf24;
+  border-radius: 8px; font-weight: 700; cursor: pointer;
+  transition: all 0.2s;
+}
+.addButton:hover { background: #fbbf24; color: #0f172a; }
+
+/* --- STEPS LIST --- */
+.stepCard {
+  background: rgba(30, 41, 59, 0.6);
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 4px solid #fbbf24;
+  margin-bottom: 10px;
 }
 
-.uploadMoreContainer {
-  margin-top: 10px;
-}
+.stepHeader { display: flex; gap: 15px; }
+.stepNumber { background: #fbbf24; color: #0f172a; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+.stepInfo { flex-grow: 1; }
 
-/* Pending Photos Grid (Create Mode visualizer inside list) */
-.pendingPhotosWrapper {
-  margin-top: 0.5rem;
-}
+.stepTitleRow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; color: #f1f5f9; }
+.durationTag { font-size: 0.8rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; }
 
-.pendingPhotosTitle {
-  margin: 5px 0;
-  font-size: 0.9rem;
-  color: #007bff;
-}
+.stepDesc { color: #94a3b8; font-size: 0.95rem; margin: 0 0 10px 0; }
 
-.pendingPhotosGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+.metaTags { display: flex; gap: 10px; }
+.tag { font-size: 0.8rem; background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 2px 8px; border-radius: 4px; }
+.photoTag { background: rgba(56, 178, 172, 0.15); color: #81e6d9; }
 
-.pendingPhotoTag {
-  font-size: 0.8rem;
-  background: #e3f2fd;
-  color: #0277bd;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  border: 1px solid #b3e5fc;
-}
+.removeStepBtn { background: none; border: none; color: #f87171; cursor: pointer; opacity: 0.7; }
+.removeStepBtn:hover { opacity: 1; transform: scale(1.1); }

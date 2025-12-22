@@ -1,79 +1,175 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import classes from "./RecipeCard.module.css";
+// Βεβαιώσου ότι τα εικονίδια είναι εγκατεστημένα (npm install lucide-react)
+import {
+  Clock,
+  Salad,
+  UtensilsCrossed,
+  CakeSlice,
+  Leaf,
+  Popcorn,
+  Sandwich,
+  ChevronRight,
+  // ΑΦΑΙΡΕΣΑΜΕ τα ListChecks και ShoppingBasket που δεν χρησιμοποιούνταν
+  Gauge,
+  Image as ImageIcon,
+} from "lucide-react";
+
+import { getPhotosByRecipeId, getPhotoImageUrl } from "../../api/PhotoApi";
+
+const getDifficultyClass = (diff) => {
+  if (diff === "EASY") return classes.easy;
+  if (diff === "MEDIUM") return classes.medium;
+  return classes.hard;
+};
+
+const getDifficultyText = (difficulty) => {
+  const texts = { EASY: "Εύκολο", MEDIUM: "Μέτριο", HARD: "Δύσκολο" };
+  return texts[difficulty] || difficulty;
+};
+
+const getCategoryText = (category) => {
+  const map = {
+    APPETIZER: "Ορεκτικό",
+    MAIN_COURSE: "Κυρίως",
+    DESSERT: "Επιδόρπιο",
+    SALAD: "Σαλάτα",
+    SNACK: "Σνακ",
+  };
+  return map[category] || "Συνταγή";
+};
+
+const getCategoryIcon = (category) => {
+  const map = {
+    APPETIZER: <Salad size={16} />,
+    MAIN_COURSE: <UtensilsCrossed size={16} />,
+    DESSERT: <CakeSlice size={16} />,
+    SALAD: <Leaf size={16} />,
+    SNACK: <Popcorn size={16} />,
+  };
+  return map[category] || <Sandwich size={16} />;
+};
 
 const RecipeCard = ({ recipe, onClick }) => {
-  const getDifficultyClass = (diff) => {
-    if (diff === "EASY") return classes.easy;
-    if (diff === "MEDIUM") return classes.medium;
-    return classes.hard;
-  };
+  const [coverPhotoId, setCoverPhotoId] = useState(null);
 
-  const getCategoryIcon = (category) => {
-    const icons = {
-      APPETIZER: "🥗",
-      MAIN_COURSE: "🍽️",
-      DESSERT: "🍰",
-      SALAD: "🥬",
-      SNACK: "🍿",
-    };
-    return icons[category] || "🍴";
-  };
+  // Cache key per recipe ID to avoid re-fetching
+  const cacheKey = useMemo(() => `recipe_cover_${recipe?.id}`, [recipe?.id]);
 
-  const getDifficultyText = (difficulty) => {
-    const texts = {
-      EASY: "Εύκολο",
-      MEDIUM: "Μέτριο",
-      HARD: "Δύσκολο",
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadCover = async () => {
+      if (!recipe?.id) return;
+
+      // Try cache first
+      const cached = sessionStorage.getItem(cacheKey);
+      if (cached) {
+        if (!cancelled) setCoverPhotoId(cached === "null" ? null : cached);
+        return;
+      }
+
+      try {
+        const photos = await getPhotosByRecipeId(recipe.id);
+        const first =
+          Array.isArray(photos) && photos.length > 0 ? photos[0] : null;
+        const firstId = first?.id ? String(first.id) : null;
+
+        sessionStorage.setItem(cacheKey, firstId ?? "null");
+        if (!cancelled) setCoverPhotoId(firstId);
+      } catch (e) {
+        sessionStorage.setItem(cacheKey, "null");
+        if (!cancelled) setCoverPhotoId(null);
+      }
     };
-    return texts[difficulty] || difficulty;
-  };
+
+    loadCover();
+    return () => {
+      cancelled = true;
+    };
+  }, [recipe?.id, cacheKey]);
+
+  const coverUrl = coverPhotoId ? getPhotoImageUrl(coverPhotoId) : "";
 
   return (
-    <div className={classes.card} onClick={onClick}>
-      <div className={classes.cardHeader}>
-        <span className={classes.categoryIcon}>
-          {getCategoryIcon(recipe.category)}
-        </span>
-        <div className={classes.timeBadge}>
-          <span className={classes.timeIcon}>⏱</span>
-          <span>{recipe.totalDuration} λεπτά</span>
+    <div className={classes.card} onClick={() => onClick(recipe.id)}>
+      {/* Cover Image Section */}
+      <div className={classes.cover}>
+        {coverUrl ? (
+          <img
+            src={coverUrl}
+            alt={recipe.name}
+            className={classes.coverImg}
+            onError={() => setCoverPhotoId(null)}
+            loading="lazy"
+          />
+        ) : (
+          <div className={classes.coverPlaceholder}>
+            <ImageIcon size={32} />
+            <span className={classes.coverText}>Χωρίς Εικόνα</span>
+          </div>
+        )}
+
+        <div className={classes.coverTopRow}>
+          <div className={classes.categoryPill}>
+            {getCategoryIcon(recipe.category)}
+            <span className={classes.categoryText}>
+              {getCategoryText(recipe.category)}
+            </span>
+          </div>
+
+          <div className={classes.timeBadge}>
+            <Clock size={14} />
+            <span>{recipe.totalDuration}'</span>
+          </div>
         </div>
+
+        {/* Shine Effect */}
+        <div className={classes.shine} aria-hidden="true" />
       </div>
 
+      {/* Body Section */}
       <div className={classes.cardBody}>
         <h3 className={classes.title}>{recipe.name}</h3>
 
         <p className={classes.description}>
-          {recipe.description ||
-            "Μια νόστιμη συνταγή που αξίζει να δοκιμάσετε!"}
+          {recipe.description || "Μια υπέροχη συνταγή που περιμένει να ανακαλυφθεί!"}
         </p>
 
+        {/* Quick Stats Grid */}
         <div className={classes.quickStats}>
-          <span className={classes.stat}>
+          <div className={classes.stat}>
             <span className={classes.statNumber}>
               {recipe.steps ? recipe.steps.length : 0}
             </span>
             <span className={classes.statText}>βήματα</span>
-          </span>
-          <span className={classes.statDivider}>•</span>
-          <span className={classes.stat}>
+          </div>
+
+          <div className={classes.statDivider} />
+
+          <div className={classes.stat}>
             <span className={classes.statNumber}>
               {recipe.recipeIngredients ? recipe.recipeIngredients.length : 0}
             </span>
             <span className={classes.statText}>υλικά</span>
-          </span>
+          </div>
         </div>
       </div>
 
+      {/* Footer Section */}
       <div className={classes.cardFooter}>
         <span
           className={`${classes.difficultyTag} ${getDifficultyClass(
             recipe.difficulty
           )}`}
         >
+          <Gauge size={14} style={{ marginRight: '4px' }} />
           {getDifficultyText(recipe.difficulty)}
         </span>
-        <span className={classes.viewAction}>Προβολή →</span>
+
+        <span className={classes.viewAction}>
+          Προβολή <ChevronRight size={16} />
+        </span>
       </div>
     </div>
   );

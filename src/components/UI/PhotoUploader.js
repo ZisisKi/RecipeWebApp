@@ -79,7 +79,9 @@ const PhotoUploader = ({
       setSelectedFile(null);
       setPreview(null);
       setDescription("");
-      document.getElementById("photo-input").value = "";
+      const fileInput = document.getElementById("photo-input");
+      if(fileInput) fileInput.value = "";
+      
     } catch (error) {
       console.error("Upload failed:", error);
       onUploadError(error.message || "Αποτυχία μεταφόρτωσης φωτογραφίας");
@@ -92,7 +94,8 @@ const PhotoUploader = ({
     setSelectedFile(null);
     setPreview(null);
     setDescription("");
-    document.getElementById("photo-input").value = "";
+    const fileInput = document.getElementById("photo-input");
+    if(fileInput) fileInput.value = "";
   };
 
   return (

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { updateStep, createStep, deleteStep } from "../../api/stepApi";
-import { uploadPhotoForStep, deletePhoto } from "../../api/PhotoApi";
+import { uploadPhotoForStep, deletePhoto, getPhotoImageUrl } from "../../api/PhotoApi";
+import { ListOrdered, Plus, Edit2, Trash2, Save, X, Clock, Camera } from "lucide-react";
 import styles from "./EditRecipeSteps.module.css";
 
 const MEASUREMENT_UNITS = [
-  { value: "GRAMS", label: "Γραμμάρια (g)" },
-  { value: "KILOGRAMS", label: "Κιλά (kg)" },
+  { value: "GRAMS", label: "g" },
+  { value: "KILOGRAMS", label: "kg" },
   { value: "MILLILITERS", label: "ml" },
-  { value: "LITERS", label: "Λίτρα (L)" },
-  { value: "CUPS", label: "Φλιτζάνια" },
-  { value: "TABLESPOONS", label: "Κουταλιές Σούπας" },
-  { value: "TEASPOONS", label: "Κουταλάκια Γλυκού" },
-  { value: "PIECES", label: "Τεμάχια" },
-  { value: "SLICES", label: "Φέτες" },
-  { value: "PINCH", label: "Πρέζα" }
+  { value: "LITERS", label: "L" },
+  { value: "CUPS", label: "φλιτζ." },
+  { value: "TABLESPOONS", label: "κ.σ." },
+  { value: "TEASPOONS", label: "κ.γ." },
+  { value: "PIECES", label: "τεμ." },
+  { value: "SLICES", label: "φέτες" },
+  { value: "PINCH", label: "πρέζα" }
 ];
 
 const TO_BACKEND_UNIT_MAP = {
@@ -74,7 +75,7 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
     }
   };
 
-  // --- Form Handlers ---
+  // --- Handlers ---
   const handleTitleChange = (e, stepId) => {
     const val = e.target.value;
     setLocalSteps(prev => prev.map(s => s.id === stepId ? { ...s, title: val } : s));
@@ -90,7 +91,6 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
     setLocalSteps(prev => prev.map(s => s.id === stepId ? { ...s, description: val } : s));
   };
 
-  // --- Ingredient Handlers within Step ---
   const onSelectIngredientChange = (e) => {
     const selected = recipeIngredients.find(i => (i.ingredientId || i.id).toString() === e.target.value);
     setNewStepIng({ ...newStepIng, ingredientId: e.target.value, name: selected ? selected.name : "" });
@@ -195,52 +195,51 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <h3 className={styles.title}>👣 Βήματα Εκτέλεσης</h3>
+        <h3 className={styles.title}><ListOrdered size={24}/> Βήματα Εκτέλεσης</h3>
         <button type="button" className={styles.btnSuccess} onClick={onAddNewStep}>
-          + Προσθήκη Νέου Βήματος
+          <Plus size={18}/> Προσθήκη Βήματος
         </button>
       </div>
 
       {localSteps.map((step) => (
-        <div key={step.id} className={styles.stepContainer}>
+        <div key={step.id} className={`${styles.stepContainer} ${editingStepId === step.id ? styles.activeEdit : ''}`}>
+          
           {/* Header Display */}
           <div className={styles.stepHeaderDisplay} onClick={() => onToggleEdit(step.id)}>
-            <span className={styles.stepTitleText}>
-              {step.stepOrder}. {step.title} ({step.duration} λεπτά)
-            </span>
+            <div className={styles.stepHeaderInfo}>
+               <span className={styles.stepNumberBadge}>{step.stepOrder}</span>
+               <span className={styles.stepTitleText}>{step.title}</span>
+               <span className={styles.durationBadge}><Clock size={12}/> {step.duration}'</span>
+            </div>
+            
             <div className={styles.actions}>
               <span className={styles.iconBtn}>
-                {editingStepId === step.id ? "🔼" : "✏️"}
+                {editingStepId === step.id ? <Edit2 size={18} color="#fbbf24"/> : <Edit2 size={18} color="#94a3b8"/>}
               </span>
               <button 
-                className={styles.btnDanger} 
+                className={styles.btnDangerIcon} 
                 onClick={(e) => onDeleteStep(e, step.id)}
                 type="button"
+                title="Διαγραφή Βήματος"
               >
-                🗑️
+                <Trash2 size={18} />
               </button>
             </div>
           </div>
 
-          {/* VIEW MODE */}
+          {/* VIEW MODE Content */}
           {editingStepId !== step.id && (
             <div className={styles.viewContainer}>
               <p className={styles.viewDesc}>{step.description || "Χωρίς περιγραφή"}</p>
               
-              {step.stepIngredients && step.stepIngredients.length > 0 ? (
-                <div style={{ marginBottom: '10px' }}>
-                  <strong className={styles.viewIngTitle}>Υλικά: </strong>
-                  <span className={styles.viewIngList}>
-                    {step.stepIngredients.map((ing, i) => (
-                      <span key={i}>
-                        {ing.name || `Υλικό #${ing.ingredientId}`} ({ing.quantity} {getUnitLabel(ing.measurementUnit)})
-                        {i < step.stepIngredients.length - 1 ? ', ' : ''}
-                      </span>
-                    ))}
-                  </span>
+              {step.stepIngredients && step.stepIngredients.length > 0 && (
+                <div className={styles.tagList}>
+                  {step.stepIngredients.map((ing, i) => (
+                    <span key={i} className={styles.ingTag}>
+                      🛒 {ing.name} ({ing.quantity} {getUnitLabel(ing.measurementUnit)})
+                    </span>
+                  ))}
                 </div>
-              ) : (
-                <div className={styles.viewEmpty}>Κανένα υλικό στο βήμα.</div>
               )}
 
               {step.photos && step.photos.length > 0 && (
@@ -248,9 +247,10 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
                   {step.photos.map((p) => (
                     <img 
                       key={p.id} 
-                      src={`http://localhost:8080/api/photos/image?id=${p.id}`} 
+                      src={getPhotoImageUrl(p.id)}
                       className={styles.viewPhotoImg} 
                       alt="step preview" 
+                      onError={(e) => { e.target.style.display = 'none'; }}
                     />
                   ))}
                 </div>
@@ -258,54 +258,33 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
             </div>
           )}
 
-          {/* EDIT MODE */}
+          {/* EDIT MODE Form */}
           {editingStepId === step.id && (
             <div className={styles.editForm}>
               <div className={styles.row}>
-                <div className={styles.inputGroup}>
+                <div className={styles.inputGroup} style={{flex:3}}>
                   <label className={styles.label}>Τίτλος</label>
-                  <input 
-                    className={styles.input} 
-                    value={step.title} 
-                    onChange={(e) => handleTitleChange(e, step.id)} 
-                  />
+                  <input className={styles.input} value={step.title} onChange={(e) => handleTitleChange(e, step.id)} />
                 </div>
-                <div className={styles.durationGroup}>
-                  <label className={styles.label}>Διάρκεια</label>
-                  <input 
-                    type="number" 
-                    className={styles.input} 
-                    value={step.duration} 
-                    onChange={(e) => handleDurationChange(e, step.id)} 
-                  />
+                <div className={styles.inputGroup} style={{flex:1}}>
+                  <label className={styles.label}>Διάρκεια (λ.)</label>
+                  <input type="number" className={styles.input} value={step.duration} onChange={(e) => handleDurationChange(e, step.id)} />
                 </div>
               </div>
 
               <div className={styles.inputGroup} style={{ marginBottom: '1rem' }}>
                 <label className={styles.label}>Περιγραφή</label>
-                <textarea 
-                  className={styles.textarea} 
-                  value={step.description} 
-                  onChange={(e) => handleDescChange(e, step.id)} 
-                />
+                <textarea className={styles.textarea} value={step.description} onChange={(e) => handleDescChange(e, step.id)} />
               </div>
 
-              {/* Step Ingredients List */}
+              {/* Ingredients in Step */}
               <div className={styles.ingredientsBox}>
                 <label className={styles.label}>💊 Υλικά Βήματος</label>
                 <ul className={styles.ingList}>
                   {(step.stepIngredients || []).map((sing, idx) => (
                     <li key={idx} className={styles.ingItem}>
-                      <span>
-                        <strong>{sing.name}</strong> - {sing.quantity} {getUnitLabel(sing.measurementUnit)}
-                      </span>
-                      <button 
-                        type="button" 
-                        className={styles.btnDanger} 
-                        onClick={() => onRemoveIngredientFromStep(step.id, idx)}
-                      >
-                        ✖
-                      </button>
+                      <span><strong>{sing.name}</strong> - {sing.quantity} {getUnitLabel(sing.measurementUnit)}</span>
+                      <button type="button" className={styles.btnDangerSmall} onClick={() => onRemoveIngredientFromStep(step.id, idx)}>✕</button>
                     </li>
                   ))}
                 </ul>
@@ -314,68 +293,37 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
                   <select className={`${styles.select} ${styles.flex2}`} value={newStepIng.ingredientId} onChange={onSelectIngredientChange}>
                     <option value="">Επιλογή Υλικού...</option>
                     {recipeIngredients.map((ri) => (
-                      <option key={ri.ingredientId || ri.id} value={ri.ingredientId || ri.id}>
-                        {ri.name}
-                      </option>
+                      <option key={ri.ingredientId || ri.id} value={ri.ingredientId || ri.id}>{ri.name}</option>
                     ))}
                   </select>
-
-                  <input 
-                    type="number" 
-                    placeholder="Ποσ." 
-                    className={`${styles.input} ${styles.flex1}`} 
-                    value={newStepIng.quantity} 
-                    onChange={onQuantityChange} 
-                  />
-
+                  <input type="number" placeholder="Ποσ." className={`${styles.input} ${styles.flex1}`} value={newStepIng.quantity} onChange={onQuantityChange} />
                   <select className={`${styles.select} ${styles.flex1}`} value={newStepIng.measurementUnit} onChange={onUnitChange}>
-                    {MEASUREMENT_UNITS.map((unit) => (
-                      <option key={unit.value} value={unit.value}>{unit.label}</option>
-                    ))}
+                    {MEASUREMENT_UNITS.map((unit) => <option key={unit.value} value={unit.value}>{unit.label}</option>)}
                   </select>
-
-                  <button type="button" className={styles.btnSuccess} onClick={() => onAddIngredientToStep(step.id)}>
-                    +
-                  </button>
+                  <button type="button" className={styles.btnAdd} onClick={() => onAddIngredientToStep(step.id)}><Plus size={18}/></button>
                 </div>
               </div>
 
-              {/* Step Photos Edit */}
-              <div style={{ marginBottom: '1rem' }}>
-                <label className={styles.label}>📷 Φωτογραφίες Βήματος</label>
+              {/* Photos Edit */}
+              <div className={styles.photoEditSection}>
+                <label className={styles.label}><Camera size={16}/> Φωτογραφίες</label>
                 <div className={styles.photoGrid}>
                   {(step.photos || []).map((p) => (
                     <div key={p.id} className={styles.photoWrapper}>
-                      <img 
-                        src={`http://localhost:8080/api/photos/image?id=${p.id}`} 
-                        className={styles.viewPhotoImg} 
-                        alt="step" 
-                        onError={(e) => { e.target.style.display = 'none'; }} 
-                      />
-                      <button 
-                        className={styles.photoDeleteBtn} 
-                        onClick={() => onDeletePhoto(p.id)}
-                        type="button"
-                      >
-                        x
-                      </button>
+                      <img src={getPhotoImageUrl(p.id)} className={styles.viewPhotoImg} alt="step" onError={(e) => { e.target.style.display = 'none'; }} />
+                      <button className={styles.photoDeleteBtn} onClick={() => onDeletePhoto(p.id)} type="button">✕</button>
                     </div>
                   ))}
                 </div>
-                <input 
-                  type="file" 
-                  className={styles.input} 
-                  style={{ marginTop: '5px' }} 
-                  onChange={(e) => onPhotoUpload(e, step.id)} 
-                />
+                <input type="file" className={styles.fileInput} style={{ marginTop: '5px' }} onChange={(e) => onPhotoUpload(e, step.id)} />
               </div>
 
               <div className={styles.buttonsRow}>
                 <button type="button" className={styles.btnSuccess} onClick={() => onSaveStep(step)}>
-                  💾 Αποθήκευση Βήματος
+                  <Save size={18}/> Αποθήκευση
                 </button>
                 <button type="button" className={styles.btnSecondary} onClick={() => setEditingStepId(null)}>
-                  Κλείσιμο
+                  <X size={18}/> Κλείσιμο
                 </button>
               </div>
             </div>

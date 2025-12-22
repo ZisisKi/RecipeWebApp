@@ -1,23 +1,49 @@
+/* --- APP CONTAINER --- */
 .appContainer {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f4f4f9;
+  color: #e2e8f0;
+  /* Dark Theme Background */
+  background: linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98)),
+              url('https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden; /* Αποφυγή οριζόντιου scroll */
 }
 
+/* --- HEADER --- */
 .header {
-  background-color: #ff6f61;
-  padding: 20px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 15px 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  color: white;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .appTitle {
   margin: 0;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  color: #fbbf24; /* Gold */
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 15px rgba(251, 191, 36, 0.4);
+  
+  /* ΝΕΟ: Για να κάτσει το εικονίδιο δίπλα στο κείμενο */
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+  transition: transform 0.3s;
 }
 
 .appTitle:hover {
@@ -26,134 +52,217 @@
 
 .mainContent {
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageWrapper {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  box-sizing: border-box;
+  animation: fadeIn 0.5s ease-out;
 }
 
-/* --- Hero Section Styles --- */
-.heroSection {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.heroImagePlaceholder {
-  background-color: #ddd;
-  height: 200px;
-  border-radius: 10px;
+/* --- HERO SPLIT SECTION (WELCOME) --- */
+.heroSplitSection {
+  position: relative;
+  width: 100%;
+  min-height: 85vh; 
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
-  background-image: url("https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1000&q=80");
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+  margin-top: -20px; /* Counteract padding */
 }
 
-.heroText {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
+/* Background Layers */
+.heroBgLeft, .heroBgRight {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 60%; 
+  background-size: cover;
+  background-position: center;
+  transition: transform 10s ease;
+}
+
+/* HOME KITCHEN IMAGE */
+.heroBgLeft {
+  left: 0;
+  background-image: url('https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop');
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  z-index: 1;
+}
+
+/* PRO KITCHEN IMAGE */
+.heroBgRight {
+  right: 0;
+  background-image: url('https://images.unsplash.com/photo-1577106263724-2c8e03bfe9cf?q=80&w=2000&auto=format&fit=crop');
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+  z-index: 1;
+}
+
+.heroBgLeft::after, .heroBgRight::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.4); /* Dark Overlay */
+}
+
+/* Animation on Hover */
+.heroSplitSection:hover .heroBgLeft { transform: scale(1.05); }
+.heroSplitSection:hover .heroBgRight { transform: scale(1.05); }
+
+/* Gold Divider Line */
+.heroDivider {
+  position: absolute;
+  top: -10%; bottom: -10%;
+  left: 50%;
+  width: 4px;
+  background: linear-gradient(to bottom, #f59e0b, #fbbf24, #fcd34d);
+  transform: rotate(10deg);
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+}
+
+/* --- HERO CONTENT OVERLAY --- */
+.heroContent {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 800px;
+  padding: 40px;
+  
+  /* Glassmorphism */
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  
+  animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.heroHeadline {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin: 0 0 15px 0;
+  background: linear-gradient(90deg, #fcd34d, #fbbf24, #d97706);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.heroSubHeadline {
+  font-size: 1.3rem;
+  color: #cbd5e1;
+  margin-bottom: 35px;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 .mainMenu {
   display: flex;
   gap: 20px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
+/* --- BUTTONS --- */
 .menuBtn {
-  padding: 15px 30px;
-  font-size: 1.2rem;
+  padding: 18px 35px;
+  font-size: 1.1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s;
   color: white;
-}
-
-.menuBtn:hover {
-  transform: scale(1.05);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  
+  /* ΝΕΟ: Flexbox για τα εικονίδια */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
 .btnView {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%); /* Teal */
+  border: 1px solid rgba(20, 184, 166, 0.5);
 }
+.btnView:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(20, 184, 166, 0.4);
+}
+
 .btnCreate {
-  background-color: #28a745;
+  background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%); /* Gold/Orange */
+  border: 1px solid rgba(245, 158, 11, 0.5);
+}
+.btnCreate:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
 }
 
-.pageWrapper {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
+/* --- NAVIGATION HEADER (pages) --- */
 .navigationHeader {
-  margin-bottom: 25px;
-  padding: 15px 0;
-  border-bottom: 1px solid #e9ecef;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
 }
 
-.navigationHeaderFloating {
-  position: sticky;
-  top: 10px;
-  z-index: 100;
-  margin-bottom: 25px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
+/* --- FOOTER --- */
 .footer {
   text-align: center;
-  padding: 15px;
-  background-color: #333;
-  color: #ccc;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.95);
+  color: #94a3b8;
   font-size: 0.9rem;
+  border-top: 1px solid rgba(251, 191, 36, 0.2);
+  margin-top: auto;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.footerContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
+.footerSeparator { color: #fbbf24; font-weight: bold; }
+.footerTeam { color: #cbd5e1; }
+.footerTeam strong { color: #81e6d9; font-weight: 700; margin-left: 5px; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive Mobile */
 @media (max-width: 768px) {
-  .mainContent {
-    padding: 15px;
+  .heroBgLeft { clip-path: none; width: 100%; height: 50%; top: 0; bottom: auto; }
+  .heroBgRight { clip-path: none; width: 100%; height: 50%; top: auto; bottom: 0; }
+  .heroDivider { display: none; }
+  
+  .heroSplitSection { flex-direction: column; min-height: 90vh; }
+  
+  .heroContent {
+    margin: 20px;
+    padding: 25px;
+    background: rgba(15, 23, 42, 0.85);
   }
-
-  .navigationHeader {
-    padding: 10px 0;
-    margin-bottom: 20px;
-  }
-
-  .heroSection {
-    margin-top: 20px;
-  }
-
-  .mainMenu {
-    flex-direction: column;
-    gap: 15px;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .menuBtn {
-    padding: 12px 24px;
-    font-size: 1.1rem;
-  }
+  
+  .heroHeadline { font-size: 2rem; }
+  .menuBtn { width: 100%; justify-content: center; }
+  
+  .footerContent { flex-direction: column; gap: 5px; }
+  .footerSeparator { display: none; }
 }

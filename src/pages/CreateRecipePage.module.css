@@ -1,136 +1,172 @@
-/* Κεντρικό Container */
+/* --- MAIN LAYOUT --- */
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem;
-  background-color: #fcfcfc;
+  padding: 40px 20px;
   min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  color: #e2e8f0;
+
+  /* Nordic Night Background */
+  background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
+              url('https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  animation: fadeIn 0.5s ease-out;
 }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .title {
   text-align: center;
-  margin-bottom: 2.5rem;
-  color: #2c3e50;
+  margin-bottom: 3rem;
+  color: #fbbf24; /* Gold */
   font-size: 2.2rem;
-  font-weight: 700;
-  border-bottom: 3px solid #e9ecef;
-  padding-bottom: 1rem;
-  display: inline-block;
-  width: 100%;
+  font-weight: 800;
+  text-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-/* Sections */
+/* --- GLASS SECTIONS --- */
 .subSection {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
-  border: 1px solid #e9ecef;
+  background: rgba(30, 41, 59, 0.5); /* Slate Glass */
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  border-radius: 24px;
+  /* Λεπτό χρυσό περίγραμμα */
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.subSection:hover {
+  border-color: rgba(251, 191, 36, 0.4);
 }
 
 .subSection h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
-  color: #34495e;
-  font-size: 1.4rem;
-  border-bottom: 1px solid #f1f1f1;
-  padding-bottom: 0.5rem;
-}
-
-.descriptionText {
-  color: #666;
-  font-size: 0.95rem;
   margin-bottom: 1.5rem;
-  line-height: 1.5;
+  color: #fbbf24; /* Gold Headers */
+  font-size: 1.4rem;
+  border-bottom: 1px dashed rgba(251, 191, 36, 0.3);
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* List Styles (για τα συστατικά που προστέθηκαν) */
+/* --- LISTS (Ingredients) --- */
 .list {
   list-style: none;
   padding: 0;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .list li {
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid #f1f1f1;
-  color: #495057;
-  font-size: 1rem;
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  color: #cbd5e1;
   display: flex;
   align-items: center;
 }
 
-.list li:last-child {
-  border-bottom: none;
+/* --- PHOTO UPLOAD AREA --- */
+.descriptionText {
+  color: #94a3b8;
+  margin-bottom: 20px;
+  font-style: italic;
 }
 
-.list li:nth-child(odd) {
-  background-color: #f9f9f9;
-}
-
-/* Photo Upload Section */
 .photoLabel {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #495057;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+/* Styled File Input Area */
+.fileInputWrapper {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  border: 2px dashed rgba(251, 191, 36, 0.4);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.fileInputWrapper:hover {
+  background: rgba(251, 191, 36, 0.05);
+  border-color: #fbbf24;
 }
 
 .fileInput {
-  width: 100%;
-  padding: 12px;
-  border: 2px dashed #ced4da;
-  border-radius: 8px;
-  background: white;
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  opacity: 0;
   cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
 }
 
-.fileInput:hover {
-  border-color: #adb5bd;
-  background-color: #f8f9fa;
+.uploadIcon {
+  color: #fbbf24;
+  margin-bottom: 10px;
 }
 
-.fileInput:disabled {
-  background: #e9ecef;
-  cursor: not-allowed;
-  opacity: 0.7;
+.uploadText {
+  color: #cbd5e1;
+  font-weight: 600;
 }
 
 .helperText {
-  color: #6c757d;
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
+  color: #64748b;
+  font-size: 0.8rem;
+  margin-top: 5px;
   display: block;
+  text-align: center;
 }
 
-/* Photo Preview Grid */
+/* --- PHOTO PREVIEW GRID --- */
 .photoGridTitle {
-  margin-bottom: 1rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #81e6d9; /* Teal */
   font-size: 1.1rem;
-  color: #343a40;
+  font-weight: 700;
 }
 
 .photoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 
 .photoCard {
-  border: 1px solid #dee2e6;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.3);
   border-radius: 12px;
-  padding: 12px;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 10px;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 
 .photoCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
 .previewImage {
@@ -139,20 +175,28 @@
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .photoDescInput {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ced4da;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 6px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+  color: #fff;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.photoDescInput:focus {
+  outline: none;
+  border-color: #fbbf24;
 }
 
 .photoName {
-  font-size: 0.8rem;
-  color: #6c757d;
+  font-size: 0.75rem;
+  color: #94a3b8;
   margin-bottom: 8px;
   white-space: nowrap;
   overflow: hidden;
@@ -160,110 +204,107 @@
 }
 
 .removePhotoBtn {
-  width: 100%;
+  margin-top: auto;
   padding: 8px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .removePhotoBtn:hover {
-  background-color: #c82333;
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
 }
 
-.removePhotoBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Summary Section */
+/* --- SUMMARY BOX --- */
 .summarySection {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-left: 5px solid #007bff;
+  background: rgba(15, 23, 42, 0.8);
+  border-left: 4px solid #fbbf24;
+  padding: 20px;
 }
 
 .summaryTitle {
+  color: #fbbf24;
   margin-top: 0;
-  color: #495057;
-  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .summaryInfoBox {
-  background-color: #e3f2fd;
+  background: rgba(56, 178, 172, 0.1);
+  border: 1px solid rgba(56, 178, 172, 0.3);
+  color: #81e6d9;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-top: 15px;
-  font-size: 0.95rem;
-  color: #0d47a1;
-  border: 1px solid #bbdefb;
+  font-size: 0.9rem;
 }
 
-/* Submit Button */
+/* --- SUBMIT BUTTON --- */
 .submitBtn {
-  display: block;
   width: 100%;
-  padding: 1rem;
-  background-color: #28a745;
-  color: white;
+  padding: 18px;
+  background: linear-gradient(135deg, #b45309 0%, #fbbf24 100%);
+  color: #0f172a;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   margin-top: 2rem;
-  box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
 }
 
 .submitBtn:hover {
-  background-color: #218838;
-}
-
-.submitBtn:active {
-  transform: scale(0.98);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4);
 }
 
 .submitBtn:disabled {
-  background-color: #94d3a2;
-  cursor: not-allowed;
-  transform: none;
+  opacity: 0.7;
+  cursor: wait;
 }
 
-/* Messages */
+/* --- MESSAGES --- */
 .message {
-  margin-top: 2rem;
-  padding: 1rem;
-  border-radius: 8px;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 12px;
   text-align: center;
-  font-weight: 600;
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  font-weight: 700;
+  animation: fadeIn 0.3s;
 }
 
 .successMessage {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid #34d399;
+  color: #34d399;
 }
 
 .errorMessage {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #f87171;
+  color: #fca5a5;
 }
 
 .infoMessage {
-  background-color: #cce5ff;
-  color: #004085;
-  border: 1px solid #b8daff;
+  background: rgba(56, 178, 172, 0.2);
+  border: 1px solid #2dd4bf;
+  color: #2dd4bf;
 }

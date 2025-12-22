@@ -4,6 +4,19 @@ import { createStep } from "../api/stepApi";
 import { uploadPhotoForRecipe, uploadPhotoForStep } from "../api/PhotoApi";
 import classes from "./CreateRecipePage.module.css";
 
+// Lucide Icons
+import { 
+  PenLine, 
+  Camera, 
+  UploadCloud, 
+  Save, 
+  Trash2, 
+  ChefHat, 
+  ListOrdered,
+  FileText,
+  Info 
+} from "lucide-react";
+
 // Components
 import BasicInfoForm from "../components/recipe-form/BasicInfoForm";
 import IngredientSelector from "../components/recipe-form/IngredientSelector";
@@ -108,8 +121,7 @@ const CreateRecipePage = () => {
 
     try {
       setMessage("Δημιουργία συνταγής...");
-      console.log("Creating recipe with data:", formData);
-
+      
       const recipeData = {
         name: formData.name,
         description: formData.description,
@@ -132,20 +144,15 @@ const CreateRecipePage = () => {
       );
       const totalPhotos = totalRecipePhotos + totalStepPhotos;
 
-      // 2. Upload Recipe Photos (Με index και console.log)
+      // 2. Upload Recipe Photos
       if (pendingRecipePhotos.length > 0) {
         setMessage(
           `Μεταφόρτωση φωτογραφιών συνταγής (${uploadedPhotosCount + 1}/${totalPhotos})...`
         );
 
-        // eslint-disable-next-line no-unused-vars
-        for (const [index, photo] of pendingRecipePhotos.entries()) {
+        // ΔΙΟΡΘΩΣΗ: Αφαίρεση του [index, photo] και .entries() αφού δεν χρησιμοποιούμε το index
+        for (const photo of pendingRecipePhotos) {
           try {
-            console.log(
-              `Uploading recipe photo ${index + 1}/${pendingRecipePhotos.length}:`,
-              photo.name
-            );
-
             await uploadPhotoForRecipe(
               savedRecipe.id,
               photo.file,
@@ -218,11 +225,7 @@ const CreateRecipePage = () => {
       }
 
       // Success
-      const successMessage = [
-        `🎉 Επιτυχία! Η συνταγή "${savedRecipe.name}" δημιουργήθηκε!`,
-        `📋 Βήματα: ${createdSteps.length}/${formData.steps.length}`,
-        `📷 Φωτογραφίες: ${uploadedPhotosCount}/${totalPhotos}`,
-      ].join(" ");
+      const successMessage = `🎉 Επιτυχία! Η συνταγή δημιουργήθηκε με ${createdSteps.length} βήματα και ${uploadedPhotosCount} φωτογραφίες!`;
 
       setMessage(successMessage);
 
@@ -255,55 +258,69 @@ const CreateRecipePage = () => {
   // --- Render ---
   return (
     <div className={classes.container}>
-      <h1 className={classes.title}>Δημιουργία Νέας Συνταγής</h1>
+      <h1 className={classes.title}>
+        <PenLine size={36} /> Δημιουργία Νέας Συνταγής
+      </h1>
 
       <form onSubmit={handleSubmit}>
+        
         {/* Component 1: Βασικά Στοιχεία */}
-        <BasicInfoForm formData={formData} handleChange={handleBasicChange} />
+        <div className={classes.subSection}>
+           <h3><FileText size={24}/> Βασικά Στοιχεία</h3>
+           <BasicInfoForm formData={formData} handleChange={handleBasicChange} />
+        </div>
 
         {/* Component 2: Διαχείριση Υλικών */}
         <div className={classes.subSection}>
-          <h3>Υλικά Συνταγής</h3>
+          <h3><ChefHat size={24}/> Υλικά Συνταγής</h3>
           <IngredientSelector onAdd={handleAddIngredient} />
-          <ul className={classes.list}>
-            {formData.recipeIngredients.map((item, index) => (
-              <li key={index}>
-                - {item.name}: {item.quantity} {item.measurementUnit}
-              </li>
-            ))}
-          </ul>
+          
+          {formData.recipeIngredients.length > 0 && (
+             <ul className={classes.list}>
+               {formData.recipeIngredients.map((item, index) => (
+                 <li key={index}>
+                   <span style={{color: '#fbbf24', marginRight:'10px'}}>•</span> 
+                   <strong>{item.name}</strong>: {item.quantity} {item.measurementUnit}
+                 </li>
+               ))}
+             </ul>
+          )}
         </div>
 
         {/* Component 3: Βήματα με Photos */}
-        <StepsForm
-          steps={formData.steps}
-          onAddStep={handleAddStep}
-          availableIngredients={formData.recipeIngredients}
-          mode="create"
-        />
+        <div className={classes.subSection}>
+           <h3><ListOrdered size={24}/> Εκτέλεση</h3>
+           <StepsForm
+             steps={formData.steps}
+             onAddStep={handleAddStep}
+             availableIngredients={formData.recipeIngredients}
+             mode="create"
+           />
+        </div>
 
         {/* Component 4: Recipe Photos (Upload Section) */}
         <div className={classes.subSection}>
-          <h3>📷 Φωτογραφίες Συνταγής</h3>
+          <h3><Camera size={24}/> Φωτογραφίες Συνταγής</h3>
           <p className={classes.descriptionText}>
-            Προσθέστε κεντρικές φωτογραφίες που αντιπροσωπεύουν τη συνταγή.
+            Προσθέστε κεντρικές φωτογραφίες που θα εμφανίζονται στην κάρτα της συνταγής.
           </p>
 
           <div style={{ marginBottom: "20px" }}>
-            <label htmlFor="recipe-photos" className={classes.photoLabel}>
-              Επιλέξτε φωτογραφίες συνταγής:
-            </label>
-            <input
-              id="recipe-photos"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => handleRecipePhotoSelect(e.target.files)}
-              disabled={uploading}
-              className={classes.fileInput}
-            />
+            <div className={classes.fileInputWrapper} onClick={() => document.getElementById("recipe-photos").click()}>
+                <UploadCloud size={40} className={classes.uploadIcon} />
+                <span className={classes.uploadText}>Κλικ εδώ για επιλογή φωτογραφιών</span>
+                <input
+                  id="recipe-photos"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => handleRecipePhotoSelect(e.target.files)}
+                  disabled={uploading}
+                  className={classes.fileInput}
+                />
+            </div>
             <small className={classes.helperText}>
-              Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέχρι 50MB το καθένα)
+              Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέγιστο 50MB)
             </small>
           </div>
 
@@ -311,7 +328,7 @@ const CreateRecipePage = () => {
           {pendingRecipePhotos.length > 0 && (
             <div>
               <h4 className={classes.photoGridTitle}>
-                📸 Επιλεγμένες φωτογραφίες ({pendingRecipePhotos.length}):
+                📸 Επιλεγμένες ({pendingRecipePhotos.length}):
               </h4>
               <div className={classes.photoGrid}>
                 {pendingRecipePhotos.map((photo) => (
@@ -341,7 +358,7 @@ const CreateRecipePage = () => {
                       disabled={uploading}
                       className={classes.removePhotoBtn}
                     >
-                      ✖ Αφαίρεση
+                      <Trash2 size={16} /> Αφαίρεση
                     </button>
                   </div>
                 ))}
@@ -354,22 +371,14 @@ const CreateRecipePage = () => {
         {(pendingRecipePhotos.length > 0 ||
           formData.steps.some((step) => step.pendingPhotos?.length > 0)) && (
           <div className={`${classes.subSection} ${classes.summarySection}`}>
-            <h4 className={classes.summaryTitle}>📋 Σύνοψη Φωτογραφιών</h4>
+            <h4 className={classes.summaryTitle}><Info size={20}/> Σύνοψη Upload</h4>
             <p>📷 Φωτογραφίες συνταγής: {pendingRecipePhotos.length}</p>
             <p>
               🔢 Βήματα με φωτογραφίες:{" "}
               {formData.steps.filter((step) => step.pendingPhotos?.length > 0).length}
             </p>
-            <p>
-              📸 Συνολικές φωτογραφίες βημάτων:{" "}
-              {formData.steps.reduce(
-                (total, step) => total + (step.pendingPhotos?.length || 0),
-                0
-              )}
-            </p>
             <div className={classes.summaryInfoBox}>
-              💡 <strong>Σημαντικό:</strong> Οι φωτογραφίες βημάτων θα ανέβουν
-              μετά τη δημιουργία κάθε βήματος αυτόματα.
+              💡 <strong>Σημαντικό:</strong> Οι φωτογραφίες ανεβαίνουν αυτόματα αφού δημιουργηθεί επιτυχώς η συνταγή και τα βήματα.
             </div>
           </div>
         )}
@@ -379,7 +388,11 @@ const CreateRecipePage = () => {
           type="submit"
           disabled={uploading}
         >
-          {uploading ? "Αποθήκευση..." : "Αποθήκευση Ολοκληρωμένης Συνταγής"}
+          {uploading ? (
+             <>⏳ Αποθήκευση σε εξέλιξη...</>
+          ) : (
+             <><Save size={24} /> Αποθήκευση Συνταγής</>
+          )}
         </button>
       </form>
 

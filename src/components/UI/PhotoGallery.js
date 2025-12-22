@@ -21,6 +21,7 @@ const PhotoGallery = ({
 
   useEffect(() => {
     fetchPhotos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipeId, stepId]);
 
   const fetchPhotos = async () => {
