@@ -42,18 +42,21 @@ function App() {
   // --- RENDER ---
   return (
     <div className={classes.appContainer}>
-      
       {/* HEADER */}
       <header className={classes.header}>
         <h1 className={classes.appTitle} onClick={goToMenu}>
           {/* ΑΛΛΑΓΗ 1: Lucide Icon αντί για Emoji */}
-          <ChefHat size={36} color="#fbbf24" strokeWidth={2.5} style={{ marginRight: '12px' }} /> 
+          <ChefHat
+            size={36}
+            color="#fbbf24"
+            strokeWidth={2.5}
+            style={{ marginRight: "12px" }}
+          />
           Recipe eBook
         </h1>
       </header>
 
       <main className={classes.mainContent}>
-        
         {/* --- 1. WELCOME SCREEN --- */}
         {activeScreen === "Welcome" && (
           <div className={classes.heroSplitSection}>
@@ -63,12 +66,13 @@ function App() {
 
             <div className={classes.heroContent}>
               <h2 className={classes.heroHeadline}>
-                Μια εφαρμογή Συνταγών<br /> για όλες τις Κουζίνες
+                Μια εφαρμογή Συνταγών
+                <br /> για όλες τις Κουζίνες
               </h2>
               <p className={classes.heroSubHeadline}>
                 Δημιούργησε! <br />
                 Αποθήκευσε! <br />
-                Εκτέλεσε! 
+                Εκτέλεσε!
               </p>
 
               <nav className={classes.mainMenu}>
@@ -135,7 +139,7 @@ function App() {
         {/* --- 5. EDIT RECIPE SCREEN --- */}
         {activeScreen === "Edit_Recipe" && selectedRecipeId && (
           <div className={classes.pageWrapper}>
-             {/* Εδώ δεν βάζουμε Header/BackButton γιατί υπάρχει το κουμπί "Έξοδος" μέσα στο EditRecipe */}
+            {/* Εδώ δεν βάζουμε Header/BackButton γιατί υπάρχει το κουμπί "Έξοδος" μέσα στο EditRecipe */}
             <EditRecipe
               recipeId={selectedRecipeId}
               onCancel={handleEditComplete}
