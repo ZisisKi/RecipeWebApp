@@ -89,7 +89,6 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: #94a3b8; /* Slate text */
-  text-transform: uppercase;
   letter-spacing: 1px;
 }
 
@@ -127,7 +126,7 @@
   color: #e2e8f0;
   font-weight: 700;
   font-size: 0.75rem;
-  text-transform: uppercase;
+ 
   letter-spacing: 0.5px;
 }
 
@@ -231,7 +230,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   color: #cbd5e1;
-  text-transform: uppercase;
+ 
   letter-spacing: 1px;
 }
 
@@ -258,7 +257,6 @@
   border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 

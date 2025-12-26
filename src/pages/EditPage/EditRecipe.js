@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getRecipeById, updateRecipe } from "../../api/recipeApi";
 import BasicInfoForm from "../../components/recipe-form/BasicInfoForm";
-import styles from "./EditRecipe.module.css";
-
-// Lucide Icons
 import { FileText, Save, LogOut, Loader2, PenLine } from "lucide-react";
 
-// Sub-components
 import EditRecipeIngredients from "./EditRecipeIngredients";
 import EditRecipeSteps from "./EditRecipeSteps";
 import EditRecipePhotos from "./EditRecipePhotos";
+
+// CHANGE: import classes
+import classes from "./EditRecipe.module.css";
 
 const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
   const [formData, setFormData] = useState(null);
@@ -74,22 +73,22 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
   };
 
   if (loading || !formData) return (
-    <div className={styles.container} style={{ display:'flex', justifyContent:'center', alignItems:'center' }}>
+    <div className={classes.container} style={{ display:'flex', justifyContent:'center', alignItems:'center' }}>
        <Loader2 size={48} className="spin" color="#fbbf24" />
     </div>
   );
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>
+    <div className={classes.container}>
+      <h1 className={classes.title}>
         <PenLine size={32}/> Επεξεργασία: {formData.name}
       </h1>
 
       {/* 1. Basic Info & Photos */}
-      <div className={styles.sectionCard}>
-        <div className={styles.sectionHeader}>
-          <h3 className={styles.sectionTitle}><FileText size={24}/> Βασικές Πληροφορίες</h3>
-          <button type="button" className={styles.btnPrimary} onClick={onSaveBasicInfo}>
+      <div className={classes.sectionCard}>
+        <div className={classes.sectionHeader}>
+          <h3 className={classes.sectionTitle}><FileText size={24}/> Βασικές Πληροφορίες</h3>
+          <button type="button" className={classes.btnPrimary} onClick={onSaveBasicInfo}>
             <Save size={18} /> Αποθήκευση Βασικών
           </button>
         </div>
@@ -122,15 +121,14 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
         showMessage={showMessage}
       />
 
-      <div className={styles.backButtonContainer}>
-        <button className={styles.btnSecondary} onClick={onSaveSuccess}>
+      <div className={classes.backButtonContainer}>
+        <button className={classes.btnSecondary} onClick={onSaveSuccess}>
           <LogOut size={20} /> Έξοδος Επεξεργασίας
         </button>
       </div>
 
-      {/* Toast Notification */}
       {uiMessage && (
-        <div className={`${styles.messageBar} ${uiMessage.type === 'error' ? styles.msgError : styles.msgSuccess}`}>
+        <div className={`${classes.messageBar} ${uiMessage.type === 'error' ? classes.msgError : classes.msgSuccess}`}>
           <span>{uiMessage.type === 'error' ? '⚠️' : '✅'}</span>
           {uiMessage.text}
         </div>

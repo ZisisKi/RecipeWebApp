@@ -9,21 +9,54 @@
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- HERO SECTION --- */
-.heroSection {
+/* --- HERO SECTION & ACTIONS --- */
+.headerSection {
   position: relative;
-  border-radius: 24px;
-  overflow: hidden;
   margin-bottom: 30px;
-  border: 1px solid rgba(251, 191, 36, 0.3); /* Gold border */
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
+/* TOP RIGHT ACTIONS */
+.topActionBar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.actionBtn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 18px; border-radius: 50px;
+  font-weight: 700; cursor: pointer; border: none;
+  transition: all 0.3s ease; font-size: 0.95rem;
+}
+
+.btnExecute {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+.btnExecute:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5); }
+
+.btnEdit {
+  background: rgba(56, 178, 172, 0.15); color: #81e6d9; border: 1px solid rgba(56, 178, 172, 0.4);
+}
+.btnEdit:hover { background: rgba(56, 178, 172, 0.25); color: #fff; transform: translateY(-2px); }
+
+.btnDelete {
+  background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.btnDelete:hover { background: rgba(239, 68, 68, 0.25); color: #fff; transform: translateY(-2px); }
+
+
+/* HERO IMAGE */
 .heroImageContainer {
   width: 100%;
   height: 350px;
   position: relative;
   background: #1e293b;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
 .heroImage {
@@ -33,214 +66,107 @@
 }
 
 .heroPlaceholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fbbf24;
-  background: radial-gradient(circle at center, rgba(30, 41, 59, 1), rgba(15, 23, 42, 1));
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #fbbf24; background: radial-gradient(circle at center, rgba(30, 41, 59, 1), rgba(15, 23, 42, 1));
 }
 
 .heroOverlay {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
+  position: absolute; bottom: 0; left: 0; right: 0;
   background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
   padding: 80px 30px 30px 30px;
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #fbbf24;
-  margin: 0 0 10px 0;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  line-height: 1.2;
+  font-size: 2.5rem; font-weight: 800; color: #fbbf24; margin: 0 0 10px 0;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5); line-height: 1.2;
 }
 
-.description {
-  font-size: 1.1rem;
-  color: #cbd5e1;
-  max-width: 800px;
-  line-height: 1.6;
-}
+.description { font-size: 1.1rem; color: #cbd5e1; max-width: 800px; line-height: 1.6; }
 
 /* --- META BAR --- */
 .metaBar {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 30px;
+  display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 15px;
+  background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; margin-bottom: 30px;
 }
 
-.metaItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #e2e8f0;
-}
-
+.metaItem { display: flex; align-items: center; gap: 10px; font-size: 1rem; font-weight: 600; color: #e2e8f0; }
 .metaIconWrapper {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: rgba(251, 191, 36, 0.15);
-  display: flex; align-items: center; justify-content: center;
-  color: #fbbf24;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(251, 191, 36, 0.15); display: flex; align-items: center; justify-content: center; color: #fbbf24;
 }
 
-.difficultyTag {
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
+.difficultyTag { padding: 6px 14px; border-radius: 50px; font-size: 0.9rem; font-weight: 700;  }
 .easy { background: rgba(16, 185, 129, 0.2); color: #34d399; }
 .medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
 .hard { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
 /* --- CONTENT GRID --- */
 .contentGrid {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 30px;
-  margin-bottom: 40px;
+  display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; margin-bottom: 40px;
 }
 
 .sectionCard {
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 25px;
+  background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px; padding: 25px;
 }
 
 .sectionHeader {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  padding-bottom: 10px; border-bottom: 2px solid rgba(251, 191, 36, 0.3);
 }
-
-.sectionTitle {
-  font-size: 1.4rem;
-  color: #81e6d9;
-  margin: 0;
-}
+.sectionTitle { font-size: 1.4rem; color: #81e6d9; margin: 0; }
 
 /* Ingredients List */
-.ingredientsList {
-  list-style: none; padding: 0; margin: 0;
-}
-
+.ingredientsList { list-style: none; padding: 0; margin: 0; }
 .ingredientItem {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px dashed rgba(255,255,255,0.1);
-  font-size: 1rem;
+  display: flex; align-items: center; gap: 12px; padding: 12px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.1); font-size: 1rem;
 }
-
 .checkIcon { color: #fbbf24; min-width: 20px; }
 
-/* Steps List */
-.stepsList {
-  display: flex; flex-direction: column; gap: 25px;
-}
+/* Steps List - Enhanced */
+.stepsList { display: flex; flex-direction: column; gap: 25px; }
 
-.stepItem { display: flex; gap: 15px; }
+.stepItem { 
+  display: flex; flex-direction: column; gap: 10px; 
+  padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.stepItem:last-child { border-bottom: none; }
+
+.stepHeaderLine { display: flex; align-items: center; gap: 12px; }
 
 .stepNumber {
-  width: 32px; height: 32px;
-  background: #fbbf24; color: #0f172a;
-  font-weight: 800; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  width: 32px; height: 32px; background: #fbbf24; color: #0f172a;
+  font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 
-.stepContent { flex-grow: 1; }
+.stepTitleText { margin: 0; font-size: 1.1rem; color: #f1f5f9; font-weight: 700; flex-grow: 1; }
+.stepDurationBadge { font-size: 0.85rem; color: #94a3b8; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; }
 
-.stepText {
-  line-height: 1.6; font-size: 1.05rem;
-  color: #e2e8f0; margin: 0 0 10px 0;
-}
+.stepContent { padding-left: 44px; /* Align with text not number */ }
+.stepText { line-height: 1.6; font-size: 1.05rem; color: #e2e8f0; margin: 0 0 10px 0; }
 
 /* Step Ingredients (Tags) */
 .stepIngredientsList {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  align-items: center; margin-top: 5px;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 5px; margin-bottom: 10px;
   background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px;
 }
-
-.stepIngLabel {
-  font-size: 0.8rem; color: #94a3b8; font-weight: 700;
-  margin-right: 5px; text-transform: uppercase;
-}
-
+.stepIngLabel { font-size: 0.8rem; color: #94a3b8; font-weight: 700; margin-right: 5px;  }
 .stepIngPill {
-  font-size: 0.85rem;
-  background: rgba(56, 178, 172, 0.15);
-  color: #81e6d9;
-  padding: 4px 10px; border-radius: 50px;
-  border: 1px solid rgba(56, 178, 172, 0.3);
+  font-size: 0.85rem; background: rgba(56, 178, 172, 0.15); color: #81e6d9;
+  padding: 4px 10px; border-radius: 50px; border: 1px solid rgba(56, 178, 172, 0.3);
 }
 
-/* --- ACTION BAR --- */
-.actionBar {
-  display: flex; justify-content: flex-end;
-  gap: 15px; margin-top: 40px; padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  flex-wrap: wrap;
-}
-
-.actionBtn {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px 24px; border-radius: 12px;
-  font-weight: 700; cursor: pointer; border: none;
-  transition: all 0.3s ease; font-size: 1rem;
-}
-
-/* Execute Button (Green Gradient) */
-.btnExecute {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white; flex-grow: 1; max-width: 250px;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-}
-.btnExecute:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-}
-
-/* Edit & Delete Buttons */
-.btnEdit {
-  background: rgba(56, 178, 172, 0.15); color: #81e6d9;
-  border: 1px solid rgba(56, 178, 172, 0.4);
-}
-.btnEdit:hover { background: rgba(56, 178, 172, 0.25); transform: translateY(-2px); color: #fff; }
-
-.btnDelete {
-  background: rgba(239, 68, 68, 0.15); color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-}
-.btnDelete:hover { background: rgba(239, 68, 68, 0.25); transform: translateY(-2px); color: #fff; }
+/* Step Photos Row */
+.stepPhotosRow { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; margin-top: 10px; }
+.stepPhotoImg { height: 100px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
 
 @media (max-width: 768px) {
   .heroImageContainer { height: 250px; }
   .title { font-size: 1.8rem; }
   .contentGrid { grid-template-columns: 1fr; }
   .metaBar { flex-direction: column; align-items: flex-start; }
-  .actionBar { flex-direction: column; }
-  .actionBtn, .btnExecute { width: 100%; max-width: none; }
+  .stepContent { padding-left: 0; }
 }

@@ -6,7 +6,9 @@ import { getAllRecipes } from "../api/recipeApi";
 
 import RecipeCard from "../components/recipe-list/RecipeCard";
 import RecipeSearch from "../components/recipe-search/RecipeSearch";
-import styles from "./RecipeListPage.module.css";
+
+// Import ως 'classes' όπως ζήτησες
+import classes from "./RecipeListPage.module.css";
 
 const RecipeListPage = ({ onRecipeClick }) => {
   const [allRecipes, setAllRecipes] = useState([]);
@@ -32,7 +34,6 @@ const RecipeListPage = ({ onRecipeClick }) => {
   }, []);
 
   const handleSearch = async (filters) => {
-    // Αν όλα είναι κενά
     if (!filters.name && !filters.category && !filters.difficulty && !filters.maxDuration) {
       setDisplayedRecipes(allRecipes);
       setIsSearching(false);
@@ -83,8 +84,8 @@ const RecipeListPage = ({ onRecipeClick }) => {
 
   if (loading && !isSearching) {
     return (
-      <div className={styles.centerMessage}>
-        <Loader2 size={48} className={styles.spinner} />
+      <div className={classes.centerMessage}>
+        <Loader2 size={48} className={classes.spinner} />
         <p>Φόρτωση βιβλίου συνταγών...</p>
       </div>
     );
@@ -92,7 +93,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
 
   if (error) {
     return (
-      <div className={styles.centerMessage}>
+      <div className={classes.centerMessage}>
         <Frown size={48} color="#f87171" />
         <p>{error}</p>
       </div>
@@ -100,24 +101,24 @@ const RecipeListPage = ({ onRecipeClick }) => {
   }
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.pageTitle}>Οι Συνταγές Μου</h1>
+    <div className={classes.container}>
+      <h1 className={classes.pageTitle}>Οι Συνταγές Μου</h1>
 
-      {/* Χρήση του RecipeSearch Component */}
+      {/* Search Component */}
       <RecipeSearch onSearch={handleSearch} onReset={handleResetSearch} />
 
       {/* Info Bar */}
-      <div className={styles.resultsInfo}>
+      <div className={classes.resultsInfo}>
         {isSearching ? (
-           <span>🔍 Αποτελέσματα: <strong>{displayedRecipes.length}</strong></span>
+           <span>🔍 Αποτελέσματα: <strong className={classes.goldText}>{displayedRecipes.length}</strong></span>
         ) : (
-           <span>📚 Σύνολο: <strong>{allRecipes.length}</strong> συνταγές</span>
+           <span>📚 Σύνολο: <strong className={classes.goldText}>{allRecipes.length}</strong> συνταγές</span>
         )}
       </div>
 
       {/* Grid */}
       {displayedRecipes.length > 0 ? (
-        <div className={styles.grid}>
+        <div className={classes.grid}>
           {displayedRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
@@ -127,9 +128,9 @@ const RecipeListPage = ({ onRecipeClick }) => {
           ))}
         </div>
       ) : (
-        <div className={styles.centerMessage}>
+        <div className={`${classes.centerMessage} ${classes.emptyState}`}>
           <Coffee size={64} style={{ opacity: 0.3 }} />
-          <h3 className={styles.emptyText}>Δεν βρέθηκαν συνταγές</h3>
+          <h3 className={classes.emptyText}>Δεν βρέθηκαν συνταγές</h3>
           <p>Δοκιμάστε να αλλάξετε τα φίλτρα.</p>
         </div>
       )}

@@ -18,17 +18,16 @@ import { getPhotoImageUrl } from "../api/PhotoApi";
 
 // Components
 import PhotoGallery from "../components/UI/PhotoGallery"; 
+import RecipeExecution from "./RecipeExecution"; 
 
-// *** ΔΙΟΡΘΩΣΗ ΕΔΩ ***
-import RecipeExecution from "./RecipeExecution"; // Import από τον ίδιο φάκελο (pages)
-
-import styles from "./RecipeDetailsPage.module.css";
+// CHANGE: import classes instead of styles
+import classes from "./RecipeDetailsPage.module.css";
 
 const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isExecuting, setIsExecuting] = useState(false); // State για το Mode Εκτέλεσης
+  const [isExecuting, setIsExecuting] = useState(false);
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -48,7 +47,7 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
     if (window.confirm("Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη συνταγή;")) {
       try {
         await deleteRecipe(recipeId);
-        onBack(); // Επιστροφή στη λίστα
+        onBack();
       } catch (err) {
         alert("Σφάλμα κατά τη διαγραφή.");
       }
@@ -56,9 +55,9 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   };
 
   const getDifficultyClass = (diff) => {
-    if (diff === "EASY") return styles.easy;
-    if (diff === "MEDIUM") return styles.medium;
-    return styles.hard;
+    if (diff === "EASY") return classes.easy;
+    if (diff === "MEDIUM") return classes.medium;
+    return classes.hard;
   };
   
   const getDifficultyText = (diff) => {
@@ -66,11 +65,11 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
      return texts[diff] || diff;
   };
 
-  if (loading) return <div className={styles.container}>Φόρτωση...</div>;
-  if (error) return <div className={styles.container}>{error}</div>;
-  if (!recipe) return <div className={styles.container}>Η συνταγή δεν βρέθηκε.</div>;
+  if (loading) return <div className={classes.container}>Φόρτωση...</div>;
+  if (error) return <div className={classes.container}>{error}</div>;
+  if (!recipe) return <div className={classes.container}>Η συνταγή δεν βρέθηκε.</div>;
 
-  // --- 1. EXECUTION MODE ---
+  // --- EXECUTION MODE ---
   if (isExecuting) {
     return (
       <RecipeExecution 
@@ -81,30 +80,42 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
     );
   }
 
-  // --- 2. VIEW MODE ---
-  // Βρίσκουμε την εικόνα εξωφύλλου (την πρώτη από τη λίστα)
+  // --- VIEW MODE ---
   const coverImage = recipe.photos && recipe.photos.length > 0 
     ? getPhotoImageUrl(recipe.photos[0].id) 
     : null;
 
   return (
-    <div className={styles.container}>
+    <div className={classes.container}>
       
-      {/* HERO SECTION */}
-      <div className={styles.heroSection}>
-        <div className={styles.heroImageContainer}>
+      {/* HEADER SECTION */}
+      <div className={classes.headerSection}>
+        {/* Actions Bar */}
+        <div className={classes.topActionBar}>
+           <button className={`${classes.actionBtn} ${classes.btnExecute}`} onClick={() => setIsExecuting(true)}>
+             <PlayCircle size={18} /> Εκτέλεση
+           </button>
+           <button className={`${classes.actionBtn} ${classes.btnEdit}`} onClick={onEdit}>
+             <Pencil size={18} /> Επεξεργασία
+           </button>
+           <button className={`${classes.actionBtn} ${classes.btnDelete}`} onClick={handleDelete}>
+             <Trash2 size={18} /> Διαγραφή
+           </button>
+        </div>
+
+        <div className={classes.heroImageContainer}>
           {coverImage ? (
-            <img src={coverImage} alt={recipe.name} className={styles.heroImage} />
+            <img src={coverImage} alt={recipe.name} className={classes.heroImage} />
           ) : (
-            <div className={styles.heroPlaceholder}>
+            <div className={classes.heroPlaceholder}>
               <ImageIcon size={64} style={{ opacity: 0.5 }} />
               <p>Χωρίς Φωτογραφία</p>
             </div>
           )}
           
-          <div className={styles.heroOverlay}>
-             <h1 className={styles.title}>{recipe.name}</h1>
-             <p className={styles.description}>
+          <div className={classes.heroOverlay}>
+             <h1 className={classes.title}>{recipe.name}</h1>
+             <p className={classes.description}>
                {recipe.description || "Δεν υπάρχει περιγραφή."}
              </p>
           </div>
@@ -112,42 +123,42 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
       </div>
 
       {/* META BAR */}
-      <div className={styles.metaBar}>
-        <div className={styles.metaItem}>
-          <div className={styles.metaIconWrapper}><Clock size={20} /></div>
+      <div className={classes.metaBar}>
+        <div className={classes.metaItem}>
+          <div className={classes.metaIconWrapper}><Clock size={20} /></div>
           <span>{recipe.totalDuration} λεπτά</span>
         </div>
 
         {recipe.portions && (
-            <div className={styles.metaItem}>
-            <div className={styles.metaIconWrapper}><Users size={20} /></div>
+            <div className={classes.metaItem}>
+            <div className={classes.metaIconWrapper}><Users size={20} /></div>
             <span>{recipe.portions} Μερίδες</span>
             </div>
         )}
 
-        <div className={styles.metaItem}>
-          <div className={styles.metaIconWrapper}><Gauge size={20} /></div>
-          <span className={`${styles.difficultyTag} ${getDifficultyClass(recipe.difficulty)}`}>
+        <div className={classes.metaItem}>
+          <div className={classes.metaIconWrapper}><Gauge size={20} /></div>
+          <span className={`${classes.difficultyTag} ${getDifficultyClass(recipe.difficulty)}`}>
             {getDifficultyText(recipe.difficulty)}
           </span>
         </div>
       </div>
 
       {/* CONTENT GRID */}
-      <div className={styles.contentGrid}>
+      <div className={classes.contentGrid}>
         
-        {/* Ingredients Column */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
+        {/* Left Column: Ingredients */}
+        <div className={classes.sectionCard}>
+          <div className={classes.sectionHeader}>
             <ChefHat size={24} color="#fbbf24" />
-            <h3 className={styles.sectionTitle}>Υλικά</h3>
+            <h3 className={classes.sectionTitle}>Υλικά</h3>
           </div>
           
-          <ul className={styles.ingredientsList}>
+          <ul className={classes.ingredientsList}>
             {recipe.recipeIngredients && recipe.recipeIngredients.length > 0 ? (
               recipe.recipeIngredients.map((ing, index) => (
-                <li key={index} className={styles.ingredientItem}>
-                  <CheckCircle2 size={18} className={styles.checkIcon} />
+                <li key={index} className={classes.ingredientItem}>
+                  <CheckCircle2 size={18} className={classes.checkIcon} />
                   <span>
                     <strong>{ing.quantity} {ing.measurementUnit}</strong> {ing.name}
                   </span>
@@ -159,34 +170,51 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
           </ul>
         </div>
 
-        {/* Steps Column */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
+        {/* Right Column: Steps */}
+        <div className={classes.sectionCard}>
+          <div className={classes.sectionHeader}>
             <ListOrdered size={24} color="#fbbf24" />
-            <h3 className={styles.sectionTitle}>Εκτέλεση</h3>
+            <h3 className={classes.sectionTitle}>Εκτέλεση</h3>
           </div>
 
-          <div className={styles.stepsList}>
+          <div className={classes.stepsList}>
             {recipe.steps && recipe.steps.length > 0 ? (
               recipe.steps
                 .sort((a, b) => a.stepOrder - b.stepOrder)
                 .map((step, index) => (
-                  <div key={index} className={styles.stepItem}>
-                    <div className={styles.stepNumber}>{index + 1}</div>
+                  <div key={index} className={classes.stepItem}>
                     
-                    <div className={styles.stepContent}>
-                      <p className={styles.stepText}>{step.description}</p>
+                    <div className={classes.stepHeaderLine}>
+                       <div className={classes.stepNumber}>{index + 1}</div>
+                       <h4 className={classes.stepTitleText}>{step.title}</h4>
+                       <span className={classes.stepDurationBadge}>{step.duration}'</span>
+                    </div>
+                    
+                    <div className={classes.stepContent}>
+                      <p className={classes.stepText}>{step.description}</p>
                       
-                      {/* Υλικά Βήματος (Tags) */}
                       {step.stepIngredients && step.stepIngredients.length > 0 && (
-                        <div className={styles.stepIngredientsList}>
-                          <span className={styles.stepIngLabel}>Υλικά:</span>
+                        <div className={classes.stepIngredientsList}>
+                          <span className={classes.stepIngLabel}>Υλικά Βήματος:</span>
                           {step.stepIngredients.map((ing, i) => (
-                            <span key={i} className={styles.stepIngPill}>
+                            <span key={i} className={classes.stepIngPill}>
                               {ing.quantity} {ing.measurementUnit} {ing.name || (ing.ingredient && ing.ingredient.name)}
                             </span>
                           ))}
                         </div>
+                      )}
+
+                      {step.photos && step.photos.length > 0 && (
+                         <div className={classes.stepPhotosRow}>
+                            {step.photos.map(p => (
+                               <img 
+                                 key={p.id} 
+                                 src={getPhotoImageUrl(p.id)} 
+                                 className={classes.stepPhotoImg} 
+                                 alt="Step visual" 
+                               />
+                            ))}
+                         </div>
                       )}
                     </div>
                   </div>
@@ -199,36 +227,18 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
       </div>
 
       {/* PHOTO GALLERY SECTION */}
-      <div className={styles.sectionCard} style={{ marginTop: '30px' }}>
-        <div className={styles.sectionHeader}>
+      <div className={classes.sectionCard} style={{ marginTop: '30px' }}>
+        <div className={classes.sectionHeader}>
           <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
              <ImageIcon size={24} color="#fbbf24" />
-             <h3 className={styles.sectionTitle}>Φωτογραφίες Συνταγής</h3>
+             <h3 className={classes.sectionTitle}>Φωτογραφίες Συνταγής</h3>
           </div>
         </div>
         
         <PhotoGallery 
            recipeId={recipeId} 
-           allowDelete={false} // View Mode
+           allowDelete={false} 
         />
-      </div>
-
-      {/* ACTIONS BAR */}
-      <div className={styles.actionBar}>
-        {/* Κουμπί Εκτέλεσης */}
-        <button className={`${styles.actionBtn} ${styles.btnExecute}`} onClick={() => setIsExecuting(true)}>
-          <PlayCircle size={20} />
-          Ξεκίνα Μαγείρεμα!
-        </button>
-
-        <button className={`${styles.actionBtn} ${styles.btnEdit}`} onClick={onEdit}>
-          <Pencil size={18} />
-          Επεξεργασία
-        </button>
-        <button className={`${styles.actionBtn} ${styles.btnDelete}`} onClick={handleDelete}>
-          <Trash2 size={18} />
-          Διαγραφή
-        </button>
       </div>
 
     </div>

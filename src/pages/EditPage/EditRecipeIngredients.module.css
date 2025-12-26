@@ -1,7 +1,7 @@
 .card {
   background: rgba(30, 41, 59, 0.5);
   backdrop-filter: blur(12px);
-  padding: 30px;
+  padding: 25px;
   border-radius: 24px;
   border: 1px solid rgba(251, 191, 36, 0.2);
   margin-bottom: 40px;
@@ -38,7 +38,6 @@
 }
 .item:last-child { border-bottom: none; }
 .item:hover { background: rgba(251, 191, 36, 0.05); }
-.item strong { color: #e2e8f0; font-weight: 700; }
 
 .btnDanger {
   background: rgba(239, 68, 68, 0.2); color: #fca5a5;

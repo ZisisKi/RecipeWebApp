@@ -1,14 +1,10 @@
-/* Container που περιβάλλει Gallery και Uploader */
 .container {
   margin-top: 30px;
   padding-top: 20px;
-  
-  /* Διαχωριστική γραμμή από τα Basic Info */
   border-top: 1px solid rgba(251, 191, 36, 0.2); 
-  
   display: flex;
   flex-direction: column;
-  gap: 30px; /* Κενό ανάμεσα σε Gallery και Uploader */
+  gap: 30px;
 }
 
 .gallerySection {
