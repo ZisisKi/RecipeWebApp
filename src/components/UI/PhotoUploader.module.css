@@ -13,6 +13,14 @@
   border-color: #fbbf24;
 }
 
+.title,
+.button{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
 .title {
   margin: 0 0 15px 0;
   color: #fbbf24;

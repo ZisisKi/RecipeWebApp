@@ -6,6 +6,11 @@ import {
   deletePhoto,
 } from "../../api/PhotoApi";
 import classes from "./PhotoGallery.module.css";
+import { useConfirm } from "./ConfirmProvider";
+import { useToast } from "./ToastProvider";
+import { Images, X } from "lucide-react";
+
+
 
 const PhotoGallery = ({
   recipeId = null,
@@ -17,7 +22,11 @@ const PhotoGallery = ({
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedPhoto, setSelectedPhoto] = useState(null); // For modal view
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  const confirmDialog = useConfirm();
+  const showToast = useToast();
+
 
   useEffect(() => {
     fetchPhotos();
@@ -51,18 +60,26 @@ const PhotoGallery = ({
   };
 
   const handleDeletePhoto = async (photoId) => {
-    const confirmed = window.confirm(
-      "Είστε σίγουρος ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;"
-    );
-    if (!confirmed) return;
+    const ok = await confirmDialog({
+  title: "Διαγραφή φωτογραφίας",
+  message: "Είστε σίγουρος ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;",
+  confirmText: "Ναι, διαγραφή",
+  cancelText: "Ακύρωση",
+});
+
+if (!ok) return;
+
 
     try {
       await deletePhoto(photoId);
       setPhotos(photos.filter((photo) => photo.id !== photoId));
       onPhotoDeleted(photoId);
     } catch (err) {
-      console.error("Failed to delete photo:", err);
-      alert("Αποτυχία διαγραφής φωτογραφίας");
+             showToast({
+  type: "error",
+  title: "Σφάλμα",
+  message: error?.message ? `Σφάλμα: ${error.message}` : "Κάτι πήγε στραβά.",
+});
     }
   };
 
@@ -89,7 +106,10 @@ const PhotoGallery = ({
   return (
     <>
       <div className={classes.gallery}>
-        <h4 className={classes.title}>🖼️ Φωτογραφίες ({photos.length})</h4>
+        <h4 className={classes.title}>
+  <Images size={18} /> Φωτογραφιες ({photos.length})
+</h4>
+
 
         <div className={classes.grid}>
           {photos.map((photo) => (
@@ -107,12 +127,15 @@ const PhotoGallery = ({
 
               {allowDelete && (
                 <button
-                  className={classes.deleteButton}
-                  onClick={() => handleDeletePhoto(photo.id)}
-                  title="Διαγραφή φωτογραφίας"
-                >
-                  ✖
-                </button>
+  className={classes.deleteButton}
+  onClick={() => handleDeletePhoto(photo.id)}
+  title="Διαγραφή φωτογραφίας"
+  type="button"
+  aria-label="Διαγραφή φωτογραφίας"
+>
+  <X size={16} />
+</button>
+
               )}
             </div>
           ))}
@@ -126,9 +149,15 @@ const PhotoGallery = ({
             className={classes.modalContent}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className={classes.closeButton} onClick={closeModal}>
-              ✖
-            </button>
+            <button
+  className={classes.closeButton}
+  onClick={closeModal}
+  type="button"
+  aria-label="Κλείσιμο"
+>
+  <X size={18} />
+</button>
+
 
             <img
               src={getPhotoImageUrl(selectedPhoto.id)}

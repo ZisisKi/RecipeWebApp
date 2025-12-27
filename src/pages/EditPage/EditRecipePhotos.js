@@ -17,7 +17,7 @@ const EditRecipePhotos = ({ recipeId, onRefresh, showMessage }) => {
   };
 
   const handlePhotoDeleted = (photoId) => {
-    showMessage("🗑️ Η φωτογραφία διαγράφηκε.");
+    showMessage("Η φωτογραφία διαγράφηκε.");
     if (onRefresh) onRefresh();
   };
 

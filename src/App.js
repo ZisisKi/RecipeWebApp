@@ -69,11 +69,15 @@ function App() {
                 Μια εφαρμογή Συνταγών
                 <br /> για όλες τις Κουζίνες
               </h2>
-              <p className={classes.heroSubHeadline}>
-                Δημιούργησε! <br />
-                Αποθήκευσε! <br />
-                Εκτέλεσε!
-              </p>
+             <p className={classes.heroSubHeadline}>
+              <span className={classes.heroWord}>Δημιούργησε</span>
+              <span className={classes.heroDot}>•</span>
+              <span className={classes.heroWord}>Αποθήκευσε</span>
+              <span className={classes.heroDot}>•</span>
+              <span className={classes.heroWord}>Εκτέλεσε</span>
+            </p>
+
+
 
               <nav className={classes.mainMenu}>
                 <button

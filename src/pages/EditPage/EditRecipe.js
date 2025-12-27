@@ -7,7 +7,6 @@ import EditRecipeIngredients from "./EditRecipeIngredients";
 import EditRecipeSteps from "./EditRecipeSteps";
 import EditRecipePhotos from "./EditRecipePhotos";
 
-// CHANGE: import classes
 import classes from "./EditRecipe.module.css";
 
 const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {

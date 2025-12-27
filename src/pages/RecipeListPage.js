@@ -102,7 +102,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
 
   return (
     <div className={classes.container}>
-      <h1 className={classes.pageTitle}>Οι Συνταγές Μου</h1>
+      <h1 className={classes.pageTitle}>Οι Συνταγες Μου</h1>
 
       {/* Search Component */}
       <RecipeSearch onSearch={handleSearch} onReset={handleResetSearch} />

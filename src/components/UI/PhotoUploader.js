@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { uploadPhotoForRecipe, uploadPhotoForStep } from "../../api/PhotoApi";
 import classes from "./PhotoUploader.module.css";
 
+// Lucide Icons
+import { Camera, UploadCloud, X } from "lucide-react";
+
 const PhotoUploader = ({
   recipeId = null,
   stepId = null,
@@ -20,7 +23,7 @@ const PhotoUploader = ({
       throw new Error("Παρακαλώ επιλέξτε ένα αρχείο");
     }
 
-    const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+    const maxSize = 50 * 1024 * 1024;
     if (file.size > maxSize) {
       throw new Error("Το αρχείο είναι πολύ μεγάλο. Μέγιστο όριο: 50MB");
     }
@@ -33,6 +36,7 @@ const PhotoUploader = ({
       "image/bmp",
       "image/webp",
     ];
+
     if (!allowedTypes.includes(file.type.toLowerCase())) {
       throw new Error(
         "Μη αποδεκτός τύπος αρχείου. Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP"
@@ -56,7 +60,6 @@ const PhotoUploader = ({
   const handleUpload = async () => {
     try {
       setUploading(true);
-
       validateFile(selectedFile);
 
       if (!recipeId && !stepId) {
@@ -79,9 +82,9 @@ const PhotoUploader = ({
       setSelectedFile(null);
       setPreview(null);
       setDescription("");
+
       const fileInput = document.getElementById("photo-input");
-      if(fileInput) fileInput.value = "";
-      
+      if (fileInput) fileInput.value = "";
     } catch (error) {
       console.error("Upload failed:", error);
       onUploadError(error.message || "Αποτυχία μεταφόρτωσης φωτογραφίας");
@@ -94,13 +97,16 @@ const PhotoUploader = ({
     setSelectedFile(null);
     setPreview(null);
     setDescription("");
+
     const fileInput = document.getElementById("photo-input");
-    if(fileInput) fileInput.value = "";
+    if (fileInput) fileInput.value = "";
   };
 
   return (
     <div className={classes.container}>
-      <h4 className={classes.title}>📷 Προσθήκη Φωτογραφίας</h4>
+      <h4 className={classes.title}>
+        <Camera size={18} /> Προσθήκη Φωτογραφίας
+      </h4>
 
       {/* File Input */}
       <div className={classes.inputGroup}>
@@ -150,16 +156,24 @@ const PhotoUploader = ({
           onClick={handleUpload}
           disabled={!selectedFile || disabled || uploading}
           className={`${classes.button} ${classes.uploadButton}`}
+          type="button"
         >
-          {uploading ? "Μεταφόρτωση..." : "📤 Ανέβασμα"}
+          {uploading ? (
+            "Μεταφόρτωση..."
+          ) : (
+            <>
+              <UploadCloud size={16} /> Ανέβασμα
+            </>
+          )}
         </button>
 
         <button
           onClick={handleCancel}
           disabled={disabled || uploading}
           className={`${classes.button} ${classes.cancelButton}`}
+          type="button"
         >
-          ✖ Ακύρωση
+          <X size={16} /> Ακύρωση
         </button>
       </div>
     </div>

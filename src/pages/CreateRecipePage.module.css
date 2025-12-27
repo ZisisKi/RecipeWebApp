@@ -60,6 +60,29 @@
   gap: 10px;
 }
 
+.summaryRow{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.summaryInfoBox{
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* spinner animation */
+.spinner{
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+
 /* --- LISTS (Ingredients) --- */
 .list {
   list-style: none;

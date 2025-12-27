@@ -14,7 +14,8 @@ import {
   ChefHat, 
   ListOrdered,
   FileText,
-  Info 
+  Info,
+  Images, Hash, Lightbulb, Loader2  
 } from "lucide-react";
 
 // Components
@@ -28,7 +29,7 @@ const CreateRecipePage = () => {
     description: "",
     difficulty: "EASY",
     category: "MAIN_COURSE",
-    totalDuration: 1,
+    totalDuration: "1",
     steps: [],
     recipeIngredients: [],
     photos: [],
@@ -39,13 +40,19 @@ const CreateRecipePage = () => {
   const [uploading, setUploading] = useState(false);
 
   // --- Handlers ---
-  const handleBasicChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === "totalDuration" ? Number(value) : value,
-    });
-  };
+const handleBasicChange = (e) => {
+  const { name, value } = e.target;
+
+  // ειδικά για minutes: κράτα string ώστε να επιτρέπεται "" χωρίς να γίνεται 0
+  if (name === "totalDuration") {
+    // κράτα μόνο digits
+    const onlyDigits = value.replace(/[^\d]/g, "");
+    setFormData((prev) => ({ ...prev, totalDuration: onlyDigits }));
+    return;
+  }
+
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
 
   const handleAddIngredient = (newIngredient) => {
     setFormData({
@@ -127,7 +134,7 @@ const CreateRecipePage = () => {
         description: formData.description,
         difficulty: formData.difficulty,
         category: formData.category,
-        totalDuration: formData.totalDuration,
+        totalDuration: Math.max(1, parseInt(formData.totalDuration || "1", 10)),
         recipeIngredients: formData.recipeIngredients,
         steps: [],
         photos: [],
@@ -235,7 +242,7 @@ const CreateRecipePage = () => {
         description: "",
         difficulty: "EASY",
         category: "MAIN_COURSE",
-        totalDuration: 1,
+        totalDuration: "1",
         steps: [],
         recipeIngredients: [],
         photos: [],
@@ -371,15 +378,28 @@ const CreateRecipePage = () => {
         {(pendingRecipePhotos.length > 0 ||
           formData.steps.some((step) => step.pendingPhotos?.length > 0)) && (
           <div className={`${classes.subSection} ${classes.summarySection}`}>
-            <h4 className={classes.summaryTitle}><Info size={20}/> Σύνοψη Upload</h4>
-            <p>📷 Φωτογραφίες συνταγής: {pendingRecipePhotos.length}</p>
-            <p>
-              🔢 Βήματα με φωτογραφίες:{" "}
-              {formData.steps.filter((step) => step.pendingPhotos?.length > 0).length}
-            </p>
-            <div className={classes.summaryInfoBox}>
-              💡 <strong>Σημαντικό:</strong> Οι φωτογραφίες ανεβαίνουν αυτόματα αφού δημιουργηθεί επιτυχώς η συνταγή και τα βήματα.
-            </div>
+            <h4 className={classes.summaryTitle}>
+  <Info size={20} /> Σύνοψη Upload
+</h4>
+
+<p className={classes.summaryRow}>
+  <Images size={16} />
+  Φωτογραφίες συνταγής: <strong>{pendingRecipePhotos.length}</strong>
+</p>
+
+<p className={classes.summaryRow}>
+  <Hash size={16} />
+  Βήματα με φωτογραφίες:{" "}
+  <strong>{formData.steps.filter((step) => step.pendingPhotos?.length > 0).length}</strong>
+</p>
+
+<div className={classes.summaryInfoBox}>
+  <Lightbulb size={16} />
+  <div>
+    <strong>Σημαντικό:</strong> Οι φωτογραφίες ανεβαίνουν αυτόματα αφού δημιουργηθεί επιτυχώς η συνταγή και τα βήματα.
+  </div>
+</div>
+
           </div>
         )}
 
@@ -389,10 +409,17 @@ const CreateRecipePage = () => {
           disabled={uploading}
         >
           {uploading ? (
-             <>⏳ Αποθήκευση σε εξέλιξη...</>
-          ) : (
-             <><Save size={24} /> Αποθήκευση Συνταγής</>
-          )}
+  <>
+    <Loader2 size={22} className={classes.spinner} />
+    Αποθήκευση σε εξέλιξη...
+  </>
+) : (
+  <>
+    <Save size={24} />
+    Αποθήκευση Συνταγής
+  </>
+)}
+
         </button>
       </form>
 

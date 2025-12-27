@@ -234,6 +234,57 @@
 .btnMenu { background: #fbbf24; color: #0f172a; padding: 12px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; }
 .btnReturn { background: transparent; color: #94a3b8; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; }
 
+.photoThumbBtn{
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: 10px;
+}
+
+.photoThumbBtn:focus-visible{
+  outline: 2px solid rgba(251,191,36,0.9);
+  outline-offset: 3px;
+}
+
+/* Lightbox */
+.lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  background: rgba(0,0,0,0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lightboxImg{
+  max-width: min(1100px, 94vw);
+  max-height: 88vh;
+  border-radius: 18px;
+  object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.lightboxClose{
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+
 @media (max-width: 768px) {
   .stepCardWrapper { max-height: 100vh; border-radius: 0; }
   .stepPhoto { height: 100px; }

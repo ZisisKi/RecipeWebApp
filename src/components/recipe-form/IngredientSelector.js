@@ -3,6 +3,8 @@ import { Search, Plus, Scale, Tag } from "lucide-react";
 import { MEASUREMENT_OPTIONS } from "../../utils/enums";
 import { searchIngredients, createIngredient } from "../../api/ingredientApi";
 import classes from "./IngredientSelector.module.css";
+import { useToast } from "../UI/ToastProvider";
+
 
 const IngredientSelector = ({ onAdd }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +15,9 @@ const IngredientSelector = ({ onAdd }) => {
   const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+
+  const showToast = useToast();
+
 
   useEffect(() => {
     const timerId = setTimeout(async () => {
@@ -56,7 +61,12 @@ const IngredientSelector = ({ onAdd }) => {
   const handleAddClick = async (e) => {
     e.preventDefault();
     if (!searchTerm.trim() || !quantity) {
-      alert("Παρακαλώ συμπληρώστε όνομα υλικού και ποσότητα.");
+      showToast({
+  type: "warning",
+  title: "Λείπουν στοιχεία",
+  message: "Παρακαλώ συμπληρώστε όνομα υλικού και ποσότητα.",
+});
+
       return;
     }
     try {
@@ -80,7 +90,12 @@ const IngredientSelector = ({ onAdd }) => {
       setSelectedIngredient(null);
       setIsCreatingNew(false);
     } catch (error) {
-      alert("Σφάλμα: " + error.message);
+      showToast({
+  type: "error",
+  title: "Σφάλμα",
+  message: error?.message ? `Σφάλμα: ${error.message}` : "Κάτι πήγε στραβά.",
+});
+
     }
   };
 

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { updateStep, createStep, deleteStep } from "../../api/stepApi";
 import { uploadPhotoForStep, deletePhoto, getPhotoImageUrl } from "../../api/PhotoApi";
 import { ListOrdered, Plus, Edit2, Trash2, Save, X, Clock, Camera } from "lucide-react";
-import classes from "./EditRecipeSteps.module.css"; // CHANGE
+import classes from "./EditRecipeSteps.module.css";
+import { useConfirm } from "../../components/UI/ConfirmProvider";
+
 
 const MEASUREMENT_UNITS = [
   { value: "GRAMS", label: "g" },
@@ -17,6 +19,7 @@ const MEASUREMENT_UNITS = [
   { value: "PINCH", label: "πρέζα" }
 ];
 
+
 const TO_BACKEND_UNIT_MAP = {
   "GRAMS": "γραμμάρια", "KILOGRAMS": "κιλά", "MILLILITERS": "ml", "LITERS": "λίτρα",
   "CUPS": "φλιτζάνια", "TABLESPOONS": "κουταλιές σούπας", "TEASPOONS": "κουταλάκια γλυκού",
@@ -27,6 +30,8 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
   const [editingStepId, setEditingStepId] = useState(null);
   const [localSteps, setLocalSteps] = useState(steps);
   const [newStepIng, setNewStepIng] = useState({ ingredientId: "", name: "", quantity: "", measurementUnit: "GRAMS" });
+
+  const confirmDialog = useConfirm();
 
   useEffect(() => {
     setLocalSteps(steps);
@@ -65,11 +70,19 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
 
   const onDeleteStep = async (e, stepId) => {
     e.stopPropagation();
-    if (!window.confirm("Διαγραφή βήματος;")) return;
+    const ok = await confirmDialog({
+  title: "Διαγραφή βήματος",
+  message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το βήμα;",
+  confirmText: "Ναι, διαγραφή",
+  cancelText: "Ακύρωση",
+});
+
+if (!ok) return;
+
     try {
       await deleteStep(stepId);
       onRefresh();
-      showMessage("🗑️ Το βήμα διαγράφηκε.");
+      showMessage("Το βήμα διαγράφηκε.");
     } catch (error) {
       showMessage("❌ Σφάλμα διαγραφής.", "error");
     }
@@ -181,11 +194,19 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
   };
 
   const onDeletePhoto = async (photoId) => {
-    if (!window.confirm("Διαγραφή φωτογραφίας;")) return;
+    const ok = await confirmDialog({
+  title: "Διαγραφή φωτογραφίας",
+  message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;",
+  confirmText: "Ναι, διαγραφή",
+  cancelText: "Ακύρωση",
+});
+
+if (!ok) return;
+
     try {
       await deletePhoto(photoId);
       onRefresh();
-      showMessage("🗑️ Η φωτογραφία διαγράφηκε.");
+      showMessage("Η φωτογραφία διαγράφηκε.");
     } catch (error) {
       showMessage("❌ Σφάλμα διαγραφής.", "error");
     }

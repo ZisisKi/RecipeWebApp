@@ -20,7 +20,9 @@ import { getPhotoImageUrl } from "../api/PhotoApi";
 import PhotoGallery from "../components/UI/PhotoGallery"; 
 import RecipeExecution from "./RecipeExecution"; 
 
-// CHANGE: import classes instead of styles
+import { useConfirm } from "../components/UI/ConfirmProvider";
+import { useToast } from "../components/UI/ToastProvider";
+
 import classes from "./RecipeDetailsPage.module.css";
 
 const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
@@ -28,6 +30,9 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isExecuting, setIsExecuting] = useState(false);
+
+  const confirmDialog = useConfirm();
+   const showToast = useToast();
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -44,15 +49,27 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   }, [recipeId]);
 
   const handleDelete = async () => {
-    if (window.confirm("Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη συνταγή;")) {
-      try {
-        await deleteRecipe(recipeId);
-        onBack();
-      } catch (err) {
-        alert("Σφάλμα κατά τη διαγραφή.");
-      }
-    }
-  };
+  const ok = await confirmDialog({
+    title: "Διαγραφή συνταγής",
+    message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη συνταγή;",
+    confirmText: "Ναι, διαγραφή",
+    cancelText: "Ακύρωση",
+  });
+
+  if (!ok) return;
+
+  try {
+    await deleteRecipe(recipeId);
+    onBack();
+  } catch (err) {
+          showToast({
+  type: "error",
+  title: "Σφάλμα",
+  message: error?.message ? `Σφάλμα: ${error.message}` : "Κάτι πήγε στραβά.",
+});
+  }
+};
+
 
   const getDifficultyClass = (diff) => {
     if (diff === "EASY") return classes.easy;
