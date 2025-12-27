@@ -1,142 +1,57 @@
-#  Recipe Ebook Application
+#  Recipe Ebook WebApp
 
-Μια πλήρης Full Stack εφαρμογή διαχείρισης και εκτέλεσης συνταγών μαγειρικής. Η εφαρμογή επιτρέπει στους χρήστες να δημιουργούν, να επεξεργάζονται και να εκτελούν συνταγές μέσω ενός custom και διαδραστικού περιβάλλοντος.
+Πρόκειται για μία εφαρμογή διαχείρισης συνταγών , η οποία περιλαμβάνει την δημιουργία μιας συνταγής , την επεξεργασίας της αλλα και την εκτέλεση της.
 
-##  Βασικά Χαρακτηριστικά (Features)
+##  Τεχνολογίες που χρησιμοποιήθηκαν
 
-* **Διαχείριση Συνταγών (CRUD):** Δημιουργία, Ανάγνωση, Ενημέρωση και Διαγραφή συνταγών.
-* **Εκτέλεση Συνταγών:** Λειτουργία "Εκτέλεσης" με βήμα-προς-βήμα καθοδήγησηα και progress bar.
-* **Φωτογραφίες:** Υποστήριξη πολλαπλών φωτογραφιών ανά συνταγή και ανά βήμα εκτέλεσης.
-* **Υλικά & Βήματα:** Λεπτομερής καταγραφή υλικών με μονάδες μέτρησης και αντιστοίχιση υλικών σε βήματα.
+### Frontend 
+  `React.js` ( Axios, Components, Css modules)
+  `Lucide React`(React Icons)
 
-
-##  Τεχνολογίες (Tech Stack)
-
-### Frontend (Client)
-* **React.js** (Hooks, Components)
-* **CSS Modules** (Styling για κάθε component)
-* **Axios** (HTTP Requests προς το Backend)
-* **Lucide React** (React Icons)
-
-### Backend (Server)
-* **Java Spring Boot** (REST API)
-* **Hibernate / JPA** (Database ORM)
-* **MySQL 8.0** (Database)
+### Backend 
+  Java Spring Boot (REST API)
+  Hibernate / JPA (Database ORM)
+  MySQL 8.0 (Database)
 
 ### DevOps
-* **Docker & Docker Compose** (Containerization όλης της εφαρμογής)
+  Docker & Docker Compose (Containerization όλης της εφαρμογής)
 
 
-## Εγκατάσταση & Εκτέλεση (Installation)
+## Εγκατάσταση & Εκτέλεση 
 
-Η εφαρμογή είναι σχεδιασμένη να τρέχει άμεσα μέσω Docker, χωρίς να χρειάζεται εγκατάσταση Java ή Node.js στον υπολογιστή σας.
-
-### Προαπαιτούμενα
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) (Εγκατεστημένο και να τρέχει).
-
-## Εγκατάσταση & Εκτέλεση (Installation)
-
-Η εφαρμογή είναι σχεδιασμένη να τρέχει άμεσα μέσω Docker.
+Η εφαρμογή είναι σχεδιασμένη να τρέχει ολοκληρωτικά μέσω Docker και στο backEnd και στο frontEnd.
 
 ### Προαπαιτούμενα
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) (Εγκατεστημένο και να τρέχει).
-## 🚀 Εγκατάσταση & Εκτέλεση (Installation)
+Βήμα 1: Εγκατάσταση του docker!
+ Docker Desktop --> https://www.docker.com/products/docker-desktop
 
-Η εφαρμογή είναι σχεδιασμένη να τρέχει άμεσα μέσω Docker.
+Βήμα 2: Ανοίξτε τερματικό και εκτελέστε τις παρακάτω εντολές για να κατεβάσετε το project:
 
-### Προαπαιτούμενα
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) (Εγκατεστημένο και να τρέχει).
+    A) git clone https://github.com/ZisisKi/recipeWebApp.git
+    B) cd recipeWebApp
 
-### Οδηγίες Βήμα-προς-Βήμα
+Βήμα 3: Δημιουργία (.env) αρχέιου:
 
-1.  **Κατεβάστε τον Κώδικα:**
-    Ανοίξτε τερματικό και εκτελέστε τις παρακάτω εντολές για να κατεβάσετε το project:
-    ```bash
-    git clone [https://github.com/](https://github.com/)[το-username-σου]/recipeWebApp.git
-    cd recipeWebApp
-    ```
-    *(Αντικαταστήστε το `[το-username-σου]` με το όνομά σας στο GitHub)*
+    Μέσα στον φάκελο recipeWebApp δημιουργήστε ένα νέο αρχείο με όνομα ".env".  
+    * Αντιγράψτε και επικολλήστε μέσα τον παρακάτω :
 
-2.  **Δημιουργία Αρχείου Περιβάλλοντος (.env):**
-    ⚠️ **Σημαντικό:** Το αρχείο `.env` λείπει για λόγους ασφαλείας. Πρέπει να το δημιουργήσετε εσείς.
-    
-    * Μέσα στον φάκελο `recipeWebApp` (δίπλα στο `docker-compose.yml`), δημιουργήστε ένα νέο αρχείο με όνομα `.env`.
-    * Αντιγράψτε και επικολλήστε μέσα τον παρακάτω κώδικα:
+        REACT_APP_API_URL=http://localhost:8080/api
 
-    ```env
-    # --- Ρυθμίσεις Frontend ---
-    REACT_APP_API_URL=http://localhost:8080/api
-    WDS_SOCKET_PORT=0
-    
-    # --- Ρυθμίσεις Βάσης Δεδομένων (MySQL) ---
-    MYSQL_ROOT_PASSWORD=root
-    MYSQL_DATABASE=recipedb
-    MYSQL_USER=user
-    MYSQL_PASSWORD=password
-    ```
+Βήμα 4: Ανοίξτε το terminal (menubar --> new terminal) και τρέξτε την παρακάτων εντολή:
 
-3.  **Εκκίνηση Εφαρμογής:**
-    Στο τερματικό (μέσα στον φάκελο `recipeWebApp`), τρέξτε:
-    ```bash
-    docker-compose up -d --build
-    ```
-    *Η εντολή αυτή θα χτίσει τα images και θα ξεκινήσει τα containers για το Frontend (`recipe`), το Backend (`recipe-management-system`) και τη Βάση.*
+        docker-compose up -d --build
 
-4.  **Πρόσβαση:**
-    Περιμένετε λίγα λεπτά να ξεκινήσουν όλα τα services και μπείτε εδώ:
-    * 🌐 **Frontend (Web App):** [http://localhost:3000](http://localhost:3000)
-    * ⚙️ **Backend (API):** [http://localhost:8080](http://localhost:8080)
+Βήμα 5: Αφού ολοκλρωθέι η εκτέλεση της εντολής του 4ου Βήματος στο terminal θα δείτε το παρακάτω link :
 
-5.  **Τερματισμός:**
-    Για να σταματήσετε την εφαρμογή:
-    ```bash
-    docker-compose down
-    ```
-### Οδηγίες Βήμα-προς-Βήμα
+        http://localhost:3000
+        
+        Αντιγράψτε το και κάνετε το επικόλληση στη διεύθυνση URL του browser σας.
+        Πατήστε Enter και θα εμφανιστεί το UI της εφαρμογής.
 
-1.  **Κατεβάστε τον Κώδικα:**
-    Ανοίξτε τερματικό και εκτελέστε τις παρακάτω εντολές για να κατεβάσετε το project:
-    ```bash
-    git clone [https://github.com/](https://github.com/)[το-username-σου]/recipeWebApp.git
-    cd recipeWebApp
-    ```
-    *(Αντικαταστήστε το `[το-username-σου]` με το όνομά σας στο GitHub)*
+Περίπτωση τερματισμού : 
 
-2.  **Δημιουργία Αρχείου Περιβάλλοντος (.env):**
-     **Σημαντικό:** Το αρχείο `.env` λείπει για λόγους ασφαλείας. Πρέπει να το δημιουργήσετε εσείς.
-    
-    * Μέσα στον φάκελο `recipeWebApp` (δίπλα στο `docker-compose.yml`), δημιουργήστε ένα νέο αρχείο με όνομα `.env`.
-    * Αντιγράψτε και επικολλήστε μέσα τον παρακάτω κώδικα:
-
-    ```env
-    # --- Ρυθμίσεις Frontend ---
-    REACT_APP_API_URL=http://localhost:8080/api
-
-    
-    # --- Ρυθμίσεις Βάσης Δεδομένων (MySQL) ---
-    MYSQL_ROOT_PASSWORD=root
-    MYSQL_DATABASE=recipedb
-    MYSQL_USER=user
-    MYSQL_PASSWORD=password
-    ```
-
-3.  **Εκκίνηση Εφαρμογής:**
-    Στο τερματικό (μέσα στον φάκελο `recipeWebApp`), τρέξτε:
-    ```bash
-    docker-compose up -d --build
-    ```
-    *Η εντολή αυτή θα χτίσει τα images και θα ξεκινήσει τα containers για το Frontend (`recipe`), το Backend (`recipe-management-system`) και τη Βάση.*
-
-4.  **Πρόσβαση:**
-    Περιμένετε λίγα λεπτά να ξεκινήσουν όλα τα services και μπείτε εδώ:
-    *  **Frontend (Web App):** [http://localhost:3000](http://localhost:3000)
-    *  **Backend (API):** [http://localhost:8080](http://localhost:8080)
-
-5.  **Τερματισμός:**
-    Για να σταματήσετε την εφαρμογή:
-    ```bash
-    docker-compose down
-    ```
+    Για να σταματήσετε την εφαρμογή στο terminal πληκτρολογείτε : docker compose down -v
+  
 
 ##  Δομή Κώδικα (Project Structure)
 
@@ -184,42 +99,42 @@ RECIPE/
 └── package.json                      # Dependencies & Scripts
 ```
 
-## 📖 Αναλυτική Περιγραφή Components
+Περιγραφή της Δομής του Project : 
 
-### 🔌 API Services (`src/api/`)
-Αρχεία που διαχειρίζονται την επικοινωνία με το Backend μέσω **Axios**.
-* **`recipeApi.js`**: Διαχειρίζεται όλες τις CRUD ενέργειες για τις συνταγές (GET, POST, PUT, DELETE).
-* **`PhotoApi.js`**: Υπεύθυνο για το upload και τη διαγραφή φωτογραφιών στον server.
-* **`stepApi.js`**: Διαχειρίζεται τη δημιουργία και επεξεργασία των βημάτων εκτέλεσης ξεχωριστά.
-* **`ingredientApi.js` & `recipeIngredientApi.js`**: Ανακτούν τη λίστα διαθέσιμων υλικών και διαχειρίζονται τα υλικά μιας συγκεκριμένης συνταγής.
+Φάκελος pages : 
 
-### 🧩 UI & Forms (`src/components/`)
-* **`recipe-form/BasicInfoForm.js`**: Φόρμα εισαγωγής βασικών στοιχείων (Τίτλος, Περιγραφή, Χρόνος, Δυσκολία).
-* **`recipe-form/IngredientSelector.js`**: Component για την επιλογή υλικών καθώς και της μονάδας μέτρησης του εκάστοτε υλικού.
-* **`recipe-list/RecipeCard.js`**: Κάρτα προβολής της συνταγής που εμφανίζει τη σύνοψή της, εμπεριέχοντας χαρακτηριστικά όπως φωτογραφία, τίτλο και tags.
-* **`recipe-search/RecipeSearch.js`**: Component αναζήτησης με φίλτρα για κατηγορία και επίπεδο δυσκολίας.
-* **`UI/PhotoGallery.js`**: Επαναχρησιμοποιούμενο component που εμφανίζει πλέγμα (grid) φωτογραφιών με δυνατότητα προβολής σε πλήρη οθόνη.
-* **`UI/PhotoUploader.js`**: Component για Drag & Drop μεταφόρτωση εικόνων με προεπισκόπηση.
+Οι βασικές λειτουργίες της εφαρμογής : 
 
-### 📱 Pages & Screens (`src/pages/`)
-Οι κεντρικές οθόνες της εφαρμογής που συνθέτουν τα επιμέρους components.
+`CreateRecipePage.js`: Το view για την δημιουργία της συνταγής.
+`RecipeDetailsPage.js`: Σελίδα προβολής μιας συνταγής. Περιλαμβάνει τα υλικά, την εκτέλεση και τις φωτογραφίες.
+`RecipeListPage.js`: View το οποίο περιλαμβάνει όλες τις αποθηκευμένες συνταγές μας.
+`RecipeExecution.js`: Η σελίδα στην οποία προβάλεται η εκτέλεση της συνταγής συνοδευόμενη από το progressbar.
 
-#### Επεξεργασία (`EditPage/`)
-* **`EditRecipe.js`**: Η κεντρική σελίδα επεξεργασίας. Διαχειρίζεται τη συνταγή και συντονίζει τα υπόλοιπα components.
-* **`EditRecipeIngredients.js`**: Διαχειρίζεται τη λίστα των υλικών (προσθήκη, αφαίρεση, ποσότητες) κατά την επεξεργασία.
-* **`EditRecipeSteps.js`**: Σύνθετο component για τη διαχείριση βημάτων. Επιτρέπει την προσθήκη κειμένου, φωτογραφιών και αντιστοίχιση υλικών σε κάθε βήμα.
-* **`EditRecipePhotos.js`**: Διαχειριστής της συλλογής φωτογραφιών της συνταγής.
+Φάκελος EditPage:
 
-#### Κύριες Σελίδες
-* **`RecipeListPage.js`**: Η αρχική σελίδα (Home). Φορτώνει και εμφανίζει όλες τις συνταγές σε πλέγμα.
-* **`RecipeDetailsPage.js`**: Σελίδα λεπτομερειών. Εμφανίζει πλήρως τα υλικά, τη διαδικασία και τις φωτογραφίες σε View Mode.
-* **`RecipeExecution.js`**: Λειτουργία εκτέλεσης συνταγής η οποία όταν εφαρμοστεί καλύπτει πλήρως το UI, εμφανίζει βήμα-προς-βήμα οδηγίες και διαθέτει progress bar.
-* **`CreateRecipePage.js`**: Οδηγός για τη δημιουργία νέας συνταγής από το μηδέν.
+    Σε αυτόν τον φάκελο υπάρχουν 4 components που αφορούν την επεξεργασία μια συνταγής .
 
-### 🛠️ Utilities (`src/utils/`)
-* **`enums.js`**: Περιέχει σταθερές τιμές (π.χ. Μονάδες Μέτρησης, Επίπεδα Δυσκολίας) που χρησιμοποιούνται σε όλη την εφαρμογή για αποφυγή hard-coded strings.
+Φάκελος  recipe-form: 
 
-## Φωτογραφίες Καθοδήγης και Ενημέρωσης της Εφαρμογής
+    Περιέχει τις φόρμες για την εισαγωγή των δεδομένων μιας συνταγής.
+
+Φάκελος recipe-card:
+
+    Περιέχει component σχετικά με την καρτέλα της συνταγής.
+
+Φάκελος UI :
+
+    Περιέχει αρχεία που αφορούν την διαχείριση των φωτογραφίων της εφαρμογής .
+
+Φάκελος api: 
+
+    Περιέχει τα Axios services (`recipeApi`, `stepApi`, `photoApi`) που διαχειρίζονται την επικοινωνία με το Backend.
+
+Φάκελος Utils: 
+
+    Περίέχει component για την κεντρική διαχείριση σταθερών τιμών (π.χ. Επίπεδα Δυσκολίας, Κατηγορίες).
+
+## Φωτογραφίες Καθοδήγης της Εφαρμογής
 
 ### Αρχική & UI
 Επισκόπηση της αρχικής σελίδας, της αναζήτησης μια συνταγής και της λίστας των Συνταγών.
