@@ -34,6 +34,27 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
   const confirmDialog = useConfirm();
    const showToast = useToast();
 
+   const UNIT_LABELS = {
+  "κομμάτια": { singular: "κομμάτι", plural: "κομμάτια" },
+  "γραμμάρια": { singular: "γραμμάριο", plural: "γραμμάρια" },
+  "ml": { singular: "ml", plural: "ml" },
+  "κουταλιές σούπας": { singular: "κουταλιά σούπας", plural: "κουταλιές σούπας" },
+  "κουταλάκια γλυκού": { singular: "κουταλάκι γλυκού", plural: "κουταλάκια γλυκού" },
+  "πρέζες": { singular: "πρέζα", plural: "πρέζες" },
+  "φέτες": { singular: "φέτα", plural: "φέτες" },
+  "φλιτζάνια": { singular: "φλιτζάνι", plural: "φλιτζάνια" },
+  "λίτρα": { singular: "λίτρο", plural: "λίτρα" },
+  "κιλά": { singular: "κιλό", plural: "κιλά" },
+};
+
+const formatUnit = (quantity, unit) => {
+  const entry = UNIT_LABELS[unit];
+  if (!entry) return unit;
+  return quantity === 1 ? entry.singular : entry.plural;
+};
+
+
+
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
@@ -102,6 +123,9 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
     ? getPhotoImageUrl(recipe.photos[0].id) 
     : null;
 
+    const pluralize = (count, singular, plural) => (count === 1 ? singular : plural);
+
+
   return (
     <div className={classes.container}>
       
@@ -143,13 +167,19 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
       <div className={classes.metaBar}>
         <div className={classes.metaItem}>
           <div className={classes.metaIconWrapper}><Clock size={20} /></div>
-          <span>{recipe.totalDuration} λεπτά</span>
+          <span>
+  {recipe.totalDuration} {recipe.totalDuration === 1 ? "λεπτό" : "λεπτά"}
+</span>
+
         </div>
 
         {recipe.portions && (
             <div className={classes.metaItem}>
             <div className={classes.metaIconWrapper}><Users size={20} /></div>
-            <span>{recipe.portions} Μερίδες</span>
+            <span>
+  {recipe.portions} {recipe.portions === 1 ? "Μερίδα" : "Μερίδες"}
+</span>
+
             </div>
         )}
 
@@ -177,7 +207,11 @@ const RecipeDetailsPage = ({ recipeId, onEdit, onBack }) => {
                 <li key={index} className={classes.ingredientItem}>
                   <CheckCircle2 size={18} className={classes.checkIcon} />
                   <span>
-                    <strong>{ing.quantity} {ing.measurementUnit}</strong> {ing.name}
+                   <strong>
+  {ing.quantity} {formatUnit(ing.quantity, ing.measurementUnit)}
+</strong>{" "}
+{ing.name || (ing.ingredient && ing.ingredient.name)}
+
                   </span>
                 </li>
               ))
