@@ -327,7 +327,7 @@ const handleBasicChange = (e) => {
                 />
             </div>
             <small className={classes.helperText}>
-              Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέγιστο 50MB)
+              Επιτρέπονται: JPEG, PNG, JPG (μέγιστο 10MB)
             </small>
           </div>
 
