@@ -69,15 +69,13 @@ function App() {
                 Μια εφαρμογή Συνταγών
                 <br /> για όλες τις Κουζίνες
               </h2>
-             <p className={classes.heroSubHeadline}>
-              <span className={classes.heroWord}>Δημιούργησε</span>
-              <span className={classes.heroDot}>•</span>
-              <span className={classes.heroWord}>Αποθήκευσε</span>
-              <span className={classes.heroDot}>•</span>
-              <span className={classes.heroWord}>Εκτέλεσε</span>
-            </p>
-
-
+              <p className={classes.heroSubHeadline}>
+                <span className={classes.heroWord}>Δημιούργησε</span>
+                <span className={classes.heroDot}>•</span>
+                <span className={classes.heroWord}>Αποθήκευσε</span>
+                <span className={classes.heroDot}>•</span>
+                <span className={classes.heroWord}>Εκτέλεσε</span>
+              </p>
 
               <nav className={classes.mainMenu}>
                 <button
@@ -156,7 +154,7 @@ function App() {
       {/* FOOTER */}
       <footer className={classes.footer}>
         <div className={classes.footerContent}>
-          <span>© 2025 Recipe eBook Project</span>
+          <span>© 2026 Recipe eBook Project</span>
           <span className={classes.footerSeparator}>|</span>
           <span className={classes.footerTeam}>
             Powered by: <strong>Alex / Zisis / Stelios / Argiris</strong>
