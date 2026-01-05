@@ -5,7 +5,6 @@ import { searchIngredients, createIngredient } from "../../api/ingredientApi";
 import classes from "./IngredientSelector.module.css";
 import { useToast } from "../UI/ToastProvider";
 
-
 const IngredientSelector = ({ onAdd }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -17,7 +16,6 @@ const IngredientSelector = ({ onAdd }) => {
   const [showResults, setShowResults] = useState(false);
 
   const showToast = useToast();
-
 
   useEffect(() => {
     const timerId = setTimeout(async () => {
@@ -50,7 +48,7 @@ const IngredientSelector = ({ onAdd }) => {
     setIsCreatingNew(false);
   };
 
-  const handleSelectIngredient = (ingredient) => {
+  const createSelectHandler = (ingredient) => () => {
     setSearchTerm(ingredient.name);
     setSelectedIngredient(ingredient);
     setIsCreatingNew(false);
@@ -62,11 +60,10 @@ const IngredientSelector = ({ onAdd }) => {
     e.preventDefault();
     if (!searchTerm.trim() || !quantity) {
       showToast({
-  type: "warning",
-  title: "Λείπουν στοιχεία",
-  message: "Παρακαλώ συμπληρώστε όνομα υλικού και ποσότητα.",
-});
-
+        type: "warning",
+        title: "Λείπουν στοιχεία",
+        message: "Παρακαλώ συμπληρώστε όνομα υλικού και ποσότητα.",
+      });
       return;
     }
     try {
@@ -91,13 +88,24 @@ const IngredientSelector = ({ onAdd }) => {
       setIsCreatingNew(false);
     } catch (error) {
       showToast({
-  type: "error",
-  title: "Σφάλμα",
-  message: error?.message ? `Σφάλμα: ${error.message}` : "Κάτι πήγε στραβά.",
-});
-
+        type: "error",
+        title: "Σφάλμα",
+        message: error?.message ? `Σφάλμα: ${error.message}` : "Κάτι πήγε στραβά.",
+      });
     }
   };
+
+  // Handlers for Focus/Blur
+  const handleInputBlur = () => {
+    setTimeout(() => setShowResults(false), 200);
+  };
+
+  const handleInputFocus = () => {
+    if (searchTerm.length >= 2) setShowResults(true);
+  };
+
+  const handleQuantityChange = (e) => setQuantity(e.target.value);
+  const handleUnitChange = (e) => setUnit(e.target.value);
 
   return (
     <div className={classes.container}>
@@ -110,8 +118,8 @@ const IngredientSelector = ({ onAdd }) => {
           className={classes.inputWithIcon}
           value={searchTerm}
           onChange={handleSearchChange}
-          onBlur={() => setTimeout(() => setShowResults(false), 200)}
-          onFocus={() => searchTerm.length >= 2 && setShowResults(true)}
+          onBlur={handleInputBlur}
+          onFocus={handleInputFocus}
         />
         
         {/* Dropdown Results */}
@@ -121,7 +129,7 @@ const IngredientSelector = ({ onAdd }) => {
               <li
                 key={ing.id}
                 className={classes.searchResultItem}
-                onMouseDown={() => handleSelectIngredient(ing)}
+                onMouseDown={createSelectHandler(ing)}
               >
                 {ing.name}
               </li>
@@ -145,7 +153,7 @@ const IngredientSelector = ({ onAdd }) => {
            placeholder="Ποσότητα"
            className={classes.inputWithIcon}
            value={quantity}
-           onChange={(e) => setQuantity(e.target.value)}
+           onChange={handleQuantityChange}
            min="0"
            step="0.1"
          />
@@ -157,7 +165,7 @@ const IngredientSelector = ({ onAdd }) => {
          <select
            className={classes.selectWithIcon}
            value={unit}
-           onChange={(e) => setUnit(e.target.value)}
+           onChange={handleUnitChange}
          >
            {MEASUREMENT_OPTIONS.map((opt) => (
              <option key={opt.value} value={opt.value}>

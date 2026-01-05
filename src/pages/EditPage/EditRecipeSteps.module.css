@@ -1,84 +1,417 @@
+/* --- CARD & HEADER (Container Styles) --- */
 .card {
-  background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px);
-  padding: 25px; border-radius: 24px; border: 1px solid rgba(251, 191, 36, 0.2);
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 25px;
+  border-radius: 24px;
+  /* Χρυσό περίγραμμα στο κεντρικό container */
+  border: 1px solid rgba(251, 191, 36, 0.3); 
   margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 25px; border-bottom: 1px dashed rgba(251, 191, 36, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 1px dashed rgba(251, 191, 36, 0.4);
   padding-bottom: 15px;
 }
-.title { color: #fbbf24; font-size: 1.4rem; display: flex; gap: 10px; margin: 0; }
+
+.title {
+  color: #fbbf24;
+  font-size: 1.4rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(251, 191, 36, 0.2);
+}
 
 .btnSuccess {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;
-  border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer;
-  font-weight: 700; display: flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.2s ease, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
-.btnSuccess:hover { transform: translateY(-2px); }
 
-/* STEP ITEM */
+.btnSuccess:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* --- STEP ITEM CONTAINER (Gold Border Added) --- */
 .stepContainer {
-  background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px; margin-bottom: 15px; overflow: hidden;
-  transition: border-color 0.2s;
+  background: rgba(15, 23, 42, 0.6);
+  /* Χρυσό περίγραμμα σε κάθε βήμα */
+  border: 1px solid rgba(251, 191, 36, 0.3); 
+  border-radius: 12px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: border-color 0.3s, background-color 0.3s, transform 0.2s;
 }
-.activeEdit { border-color: #fbbf24; background: rgba(15, 23, 42, 0.6); }
 
+.stepContainer:hover {
+  border-color: rgba(251, 191, 36, 0.6);
+}
+
+.activeEdit {
+  /* Πιο έντονο χρυσό όταν κάνουμε edit */
+  border: 1px solid #fbbf24; 
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.15);
+}
+
+/* --- STEP HEADER DISPLAY (Collapsed) --- */
 .stepHeaderDisplay {
-  background: rgba(30, 41, 59, 0.4); padding: 15px 20px;
-  display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
 }
-.stepHeaderInfo { display: flex; align-items: center; gap: 15px; }
-.stepNumberBadge { 
-  background: #fbbf24; color: #0f172a; width: 28px; height: 28px; 
-  border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; 
+
+/* Add separator line only if expanding */
+.activeEdit .stepHeaderDisplay {
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
 }
-.stepTitleText { font-weight: 700; color: #e2e8f0; font-size: 1.1rem; }
-.durationBadge { background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; color: #cbd5e1; display: flex; gap:5px; align-items:center; }
 
-.actions { display: flex; gap: 10px; }
-.iconBtn { display: flex; align-items: center; justify-content: center; }
-.btnDangerIcon { background: none; border: none; color: #fca5a5; cursor: pointer; }
-.btnDangerIcon:hover { color: #ef4444; }
-
-/* VIEW CONTENT */
-.viewContainer { padding: 20px; }
-.viewDesc { color: #94a3b8; font-style: italic; margin-bottom: 15px; }
-.tagList { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.ingTag { background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; }
-.viewPhotos { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
-.viewPhotoImg { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
-
-/* EDIT FORM */
-.editForm { padding: 20px; border-top: 1px solid rgba(251, 191, 36, 0.2); }
-.row { display: flex; gap: 15px; margin-bottom: 15px; }
-.inputGroup { display: flex; flex-direction: column; }
-.label { color: #fbbf24; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem; }
-
-.input, .textarea, .select {
-  background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255,255,255,0.1);
-  color: #fff; padding: 10px; border-radius: 8px; width: 100%; box-sizing: border-box;
+.stepHeaderInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
-.input:focus, .textarea:focus, .select:focus { outline: none; border-color: #fbbf24; }
-.textarea { min-height: 80px; resize: vertical; }
 
-.ingredientsBox { background: rgba(15, 23, 42, 0.3); padding: 15px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); margin-bottom: 15px; }
-.ingList { list-style: none; padding: 0; margin-bottom: 10px; }
-.ingItem { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; font-size: 0.9rem; }
-.btnDangerSmall { background: none; border: none; color: #f87171; cursor: pointer; }
+.stepNumberBadge {
+  background: #fbbf24;
+  color: #0f172a;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
 
-.addRow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.flex2 { flex: 2; min-width: 120px; } .flex1 { flex: 1; min-width: 80px; }
-.btnAdd { background: #10b981; border: none; color: white; border-radius: 6px; padding: 10px; cursor: pointer; display: flex; align-items: center; }
+.stepTitleText {
+  font-weight: 700;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+}
 
-.photoEditSection { margin-top: 15px; }
-.photoGrid { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-.photoWrapper { position: relative; width: 70px; height: 70px; }
-.photoDeleteBtn { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.fileInput { color: #94a3b8; }
+.durationBadge {
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #fbbf24;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-weight: 600;
+}
 
-.buttonsRow { display: flex; gap: 15px; margin-top: 20px; }
-.btnSecondary { background: rgba(255,255,255,0.1); color: #cbd5e1; border: none; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-weight: 600; display: flex; gap: 5px; align-items: center; }
-.btnSecondary:hover { background: rgba(255,255,255,0.2); }
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnDangerIcon {
+  background: none;
+  border: none;
+  color: #fca5a5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.btnDangerIcon:hover {
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+/* --- VIEW CONTENT MODE --- */
+.viewContainer {
+  padding: 20px;
+}
+
+.viewDesc {
+  color: #cbd5e1;
+  font-style: italic;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ingTag {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.viewPhotos {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  margin-top: 10px;
+}
+
+.viewPhotoImg {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(251, 191, 36, 0.3); /* Gold border for photos */
+}
+
+/* --- EDIT FORM MODE --- */
+.editForm {
+  padding: 20px;
+  /* Gold separator */
+  border-top: 1px dashed rgba(251, 191, 36, 0.3); 
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Layout helpers for inputs */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroupLarge {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroupSmall {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: #fbbf24;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input,
+.textarea {
+  background: rgba(15, 23, 42, 0.6);
+  /* Gold border on inputs */
+  border: 1px solid rgba(251, 191, 36, 0.3); 
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #fbbf24;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
+}
+
+.textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* --- INGREDIENTS EDIT SECTION --- */
+.ingredientsBox {
+  background: rgba(15, 23, 42, 0.4);
+  padding: 20px;
+  border-radius: 10px;
+  /* Gold dashed border for the box */
+  border: 1px dashed rgba(251, 191, 36, 0.4); 
+  margin-bottom: 20px;
+}
+
+.selectorWrapper {
+  margin-bottom: 15px;
+}
+
+.ingList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 3px solid #fbbf24; /* Left gold accent */
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.btnDangerSmall {
+  background: transparent;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btnDangerSmall:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+/* --- PHOTOS EDIT SECTION --- */
+.photoEditSection {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed rgba(251, 191, 36, 0.2);
+}
+
+.photoGrid {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.photoWrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  border: 1px solid #fbbf24; /* Gold border around photos */
+  overflow: hidden;
+}
+
+.photoDeleteBtn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
+}
+
+.photoDeleteBtn:hover {
+  transform: scale(1.1);
+  background: #ef4444;
+}
+
+.fileInput {
+  margin-top: 10px;
+  background: rgba(15, 23, 42, 0.8);
+  color: #fbbf24;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px dashed rgba(251, 191, 36, 0.4);
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.fileInput:hover {
+  border-color: #fbbf24;
+  background: rgba(15, 23, 42, 1);
+}
+
+/* --- ACTION BUTTONS ROW --- */
+.buttonsRow {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-end;
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: #fbbf24;
+}

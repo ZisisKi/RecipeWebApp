@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-// Lucide Icons
-import { Loader2, Frown, Coffee } from "lucide-react";
+// 1. Lucide Icons
+import { 
+  Loader2, 
+  Frown, 
+  Coffee, 
+  Search, 
+  BookOpen 
+} from "lucide-react";
 
 import { getAllRecipes } from "../api/recipeApi";
 
 import RecipeCard from "../components/recipe-list/RecipeCard";
 import RecipeSearch from "../components/recipe-search/RecipeSearch";
 
-// Import ως 'classes' όπως ζήτησες
 import classes from "./RecipeListPage.module.css";
 
 const RecipeListPage = ({ onRecipeClick }) => {
@@ -94,7 +99,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
   if (error) {
     return (
       <div className={classes.centerMessage}>
-        <Frown size={48} color="#f87171" />
+        <Frown size={48} className={classes.errorIcon} />
         <p>{error}</p>
       </div>
     );
@@ -102,7 +107,7 @@ const RecipeListPage = ({ onRecipeClick }) => {
 
   return (
     <div className={classes.container}>
-      <h1 className={classes.pageTitle}>Οι Συνταγες Μου</h1>
+      <h1 className={classes.pageTitle}>Οι Συνταγές Μου</h1>
 
       {/* Search Component */}
       <RecipeSearch onSearch={handleSearch} onReset={handleResetSearch} />
@@ -110,9 +115,13 @@ const RecipeListPage = ({ onRecipeClick }) => {
       {/* Info Bar */}
       <div className={classes.resultsInfo}>
         {isSearching ? (
-           <span>🔍 Αποτελέσματα: <strong className={classes.goldText}>{displayedRecipes.length}</strong></span>
+           <span className={classes.infoText}>
+             <Search size={18} /> Αποτελέσματα: <strong className={classes.goldText}>{displayedRecipes.length}</strong>
+           </span>
         ) : (
-           <span>📚 Σύνολο: <strong className={classes.goldText}>{allRecipes.length}</strong> συνταγές</span>
+           <span className={classes.infoText}>
+             <BookOpen size={18} /> Σύνολο: <strong className={classes.goldText}>{allRecipes.length}</strong> συνταγές
+           </span>
         )}
       </div>
 
@@ -129,7 +138,8 @@ const RecipeListPage = ({ onRecipeClick }) => {
         </div>
       ) : (
         <div className={`${classes.centerMessage} ${classes.emptyState}`}>
-          <Coffee size={64} style={{ opacity: 0.3 }} />
+          {/* 2. No Inline Style: Η κλάση emptyIcon χειρίζεται το opacity */}
+          <Coffee size={64} className={classes.emptyIcon} />
           <h3 className={classes.emptyText}>Δεν βρέθηκαν συνταγές</h3>
           <p>Δοκιμάστε να αλλάξετε τα φίλτρα.</p>
         </div>

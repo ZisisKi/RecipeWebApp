@@ -83,17 +83,19 @@
 /* DROPDOWN */
 .searchResultsList {
   position: absolute;
-  top: 100%; left: 0; right: 0;
-  margin-top: 5px;
+  top: 100%; 
+  left: 0;
+  right: 0;
   background: #1e293b;
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  border-radius: 8px;
-  z-index: 50;
+  border: 1px solid #475569;
+  border-radius: 0 0 8px 8px;
   max-height: 200px;
   overflow-y: auto;
+  z-index: 1000; 
   list-style: none;
   padding: 0;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  margin: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .searchResultItem {
@@ -110,16 +112,19 @@
 
 .createNewIndicator {
   position: absolute;
-  top: 100%; left: 0; right: 0;
+  top: 100%; 
+  right: 0;
   margin-top: 5px;
-  background: rgba(16, 185, 129, 0.15);
+  background: #059669;
   border: 1px solid #10b981;
-  color: #6ee7b7;
-  padding: 10px;
-  border-radius: 8px;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 0 0 8px 8px;
   font-size: 0.9rem;
-  z-index: 50;
-  display: flex; gap: 5px; align-items: center;
+  font-weight:600;
+  z-index: 1001;
+  pointer-events: none; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 600px) {

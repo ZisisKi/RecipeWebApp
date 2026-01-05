@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import classes from "./RecipeCard.module.css";
-// Βεβαιώσου ότι τα εικονίδια είναι εγκατεστημένα (npm install lucide-react)
 import {
   Clock,
   Salad,
@@ -10,7 +9,6 @@ import {
   Popcorn,
   Sandwich,
   ChevronRight,
-  // ΑΦΑΙΡΕΣΑΜΕ τα ListChecks και ShoppingBasket που δεν χρησιμοποιούνταν
   Gauge,
   Image as ImageIcon,
 } from "lucide-react";
@@ -53,7 +51,6 @@ const getCategoryIcon = (category) => {
 const RecipeCard = ({ recipe, onClick }) => {
   const [coverPhotoId, setCoverPhotoId] = useState(null);
 
-  // Cache key per recipe ID to avoid re-fetching
   const cacheKey = useMemo(() => `recipe_cover_${recipe?.id}`, [recipe?.id]);
 
   useEffect(() => {
@@ -62,7 +59,6 @@ const RecipeCard = ({ recipe, onClick }) => {
     const loadCover = async () => {
       if (!recipe?.id) return;
 
-      // Try cache first
       const cached = sessionStorage.getItem(cacheKey);
       if (cached) {
         if (!cancelled) setCoverPhotoId(cached === "null" ? null : cached);
@@ -71,8 +67,7 @@ const RecipeCard = ({ recipe, onClick }) => {
 
       try {
         const photos = await getPhotosByRecipeId(recipe.id);
-        const first =
-          Array.isArray(photos) && photos.length > 0 ? photos[0] : null;
+        const first = Array.isArray(photos) && photos.length > 0 ? photos[0] : null;
         const firstId = first?.id ? String(first.id) : null;
 
         sessionStorage.setItem(cacheKey, firstId ?? "null");
@@ -89,10 +84,16 @@ const RecipeCard = ({ recipe, onClick }) => {
     };
   }, [recipe?.id, cacheKey]);
 
+  const handleClick = () => {
+    if (onClick) onClick(recipe.id);
+  };
+
+  const handleError = () => setCoverPhotoId(null);
+
   const coverUrl = coverPhotoId ? getPhotoImageUrl(coverPhotoId) : "";
 
   return (
-    <div className={classes.card} onClick={() => onClick(recipe.id)}>
+    <div className={classes.card} onClick={handleClick}>
       {/* Cover Image Section */}
       <div className={classes.cover}>
         {coverUrl ? (
@@ -100,7 +101,7 @@ const RecipeCard = ({ recipe, onClick }) => {
             src={coverUrl}
             alt={recipe.name}
             className={classes.coverImg}
-            onError={() => setCoverPhotoId(null)}
+            onError={handleError}
             loading="lazy"
           />
         ) : (
@@ -124,7 +125,6 @@ const RecipeCard = ({ recipe, onClick }) => {
           </div>
         </div>
 
-        {/* Shine Effect */}
         <div className={classes.shine} aria-hidden="true" />
       </div>
 
@@ -132,8 +132,9 @@ const RecipeCard = ({ recipe, onClick }) => {
       <div className={classes.cardBody}>
         <h3 className={classes.title}>{recipe.name}</h3>
 
+        {/* ΑΦΑΙΡΕΣΗ ΤΟΥ FALLBACK ΚΕΙΜΕΝΟΥ */}
         <p className={classes.description}>
-          {recipe.description || "Μια υπέροχη συνταγή που περιμένει να ανακαλυφθεί!"}
+          {recipe.description}
         </p>
 
         {/* Quick Stats Grid */}
@@ -159,11 +160,9 @@ const RecipeCard = ({ recipe, onClick }) => {
       {/* Footer Section */}
       <div className={classes.cardFooter}>
         <span
-          className={`${classes.difficultyTag} ${getDifficultyClass(
-            recipe.difficulty
-          )}`}
+          className={`${classes.difficultyTag} ${getDifficultyClass(recipe.difficulty)}`}
         >
-          <Gauge size={14} style={{ marginRight: '4px' }} />
+          <Gauge size={14} className={classes.gaugeIcon} />
           {getDifficultyText(recipe.difficulty)}
         </span>
 

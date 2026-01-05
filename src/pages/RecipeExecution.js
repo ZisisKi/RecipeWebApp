@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { getPhotosByStepId, getPhotoImageUrl } from "../api/PhotoApi";
 import classes from "./RecipeExecution.module.css";
 
-// Lucide Icons
 import {
   X,
   ChevronLeft,
@@ -26,7 +25,7 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
   const [stepPhotos, setStepPhotos] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
 
-  // Lightbox viewer
+  
   const [viewer, setViewer] = useState({
     open: false,
     src: "",
@@ -49,7 +48,7 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
 
   const progressPercentage = calculateProgress();
 
-  // Load photos for current step
+
   useEffect(() => {
     if (!currentStep) return;
 
@@ -58,7 +57,7 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
     });
   }, [currentStep]);
 
-  // Build photo sources (urls) for this step
+
   const photoSources = useMemo(() => {
     return (stepPhotos || []).map((p) => getPhotoImageUrl(p.id));
   }, [stepPhotos]);
@@ -77,7 +76,7 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
   const closeViewer = () =>
     setViewer({ open: false, src: "", alt: "", index: 0, sources: [] });
 
-  // Close with ESC + (optional) arrows for next/prev inside lightbox
+
   useEffect(() => {
     const onKeyDown = (e) => {
       if (!viewer.open) return;
@@ -123,7 +122,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
     }
   };
 
-  // Completed view
   if (isFinished) {
     return (
       <div className={classes.completedOverlay}>
@@ -152,7 +150,7 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
 
   return (
     <div className={classes.overlay}>
-      {/* Header */}
+    
       <div className={classes.header}>
         <button className={classes.closeBtn} onClick={onClose}>
           <X size={18} /> Ακύρωση
@@ -173,10 +171,9 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
         <div style={{ width: "80px" }}></div>
       </div>
 
-      {/* Main Content Area */}
+      
       <div className={classes.content}>
         <div className={classes.stepCardWrapper}>
-          {/* Scrollable Inner Section */}
           <div className={classes.cardInnerScroll} id="inner-scroll">
             <h2 className={classes.stepHeaderTitle}>
               {currentStep.stepOrder}. {currentStep.title}
@@ -187,7 +184,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
               <span>{currentStep.duration} λεπτά</span>
             </div>
 
-            {/* Photos (Compact Row) */}
             {photoSources.length > 0 && (
               <div className={classes.photosGrid}>
                 {photoSources.map((src, idx) => (
@@ -204,7 +200,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
               </div>
             )}
 
-            {/* Ingredients (Compact Grid) */}
             {currentStep.stepIngredients && currentStep.stepIngredients.length > 0 ? (
               <div className={classes.ingredientsBox}>
                 <h4 className={classes.ingTitle}>
@@ -213,7 +208,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
                 <ul className={classes.ingList}>
                   {currentStep.stepIngredients.map((ing, idx) => (
                     <li key={idx} className={classes.ingItem}>
-                      <input type="checkbox" className={classes.checkbox} />
                       <span>
                         <strong>
                           {ing.quantity} {ing.measurementUnit}
@@ -231,7 +225,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className={classes.footer}>
         <button
           className={classes.btnBack}
@@ -258,7 +251,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
         </button>
       </div>
 
-      {/* LIGHTBOX (Portal -> body) */}
       {viewer.open &&
         createPortal(
           <div

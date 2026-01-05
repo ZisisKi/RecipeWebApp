@@ -1,7 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getRecipeById, updateRecipe } from "../../api/recipeApi";
 import BasicInfoForm from "../../components/recipe-form/BasicInfoForm";
-import { FileText, Save, LogOut, Loader2, PenLine } from "lucide-react";
+import { 
+  FileText, 
+  Save, 
+  ArrowLeft, // <--- ΑΛΛΑΓΗ: Χρήση του ArrowLeft
+  Loader2, 
+  PenLine,
+  CheckCircle2,
+  AlertCircle 
+} from "lucide-react";
 
 import EditRecipeIngredients from "./EditRecipeIngredients";
 import EditRecipeSteps from "./EditRecipeSteps";
@@ -65,20 +73,28 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
   const onSaveBasicInfo = async () => {
     try {
       await updateRecipe(recipeId, { ...formData, steps: [] });
-      showMessage("✅ Τα βασικά στοιχεία αποθηκεύτηκαν!");
+      showMessage("Τα βασικά στοιχεία αποθηκεύτηκαν!");
     } catch (error) {
-      showMessage("❌ Σφάλμα κατά την αποθήκευση.", "error");
+      showMessage("Σφάλμα κατά την αποθήκευση.", "error");
     }
   };
 
   if (loading || !formData) return (
-    <div className={classes.container} style={{ display:'flex', justifyContent:'center', alignItems:'center' }}>
-       <Loader2 size={48} className="spin" color="#fbbf24" />
+    <div className={classes.loadingContainer}>
+       <Loader2 size={48} className={classes.spinner} />
     </div>
   );
 
   return (
     <div className={classes.container}>
+      
+      {/* Top Action Bar - Επιστροφή */}
+      <div className={classes.backButtonContainer}>
+        <button className={classes.btnSecondary} onClick={onSaveSuccess}>
+          <ArrowLeft size={20} /> Επιστροφή
+        </button>
+      </div>
+
       <h1 className={classes.title}>
         <PenLine size={32}/> Επεξεργασία: {formData.name}
       </h1>
@@ -86,9 +102,9 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
       {/* 1. Basic Info & Photos */}
       <div className={classes.sectionCard}>
         <div className={classes.sectionHeader}>
-          <h3 className={classes.sectionTitle}><FileText size={24}/> Βασικές Πληροφορίες</h3>
+          <h3 className={classes.sectionTitle}><FileText size={24}/> </h3>
           <button type="button" className={classes.btnPrimary} onClick={onSaveBasicInfo}>
-            <Save size={18} /> Αποθήκευση Βασικών
+            <Save size={18} /> Αποθήκευση
           </button>
         </div>
         
@@ -120,15 +136,10 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
         showMessage={showMessage}
       />
 
-      <div className={classes.backButtonContainer}>
-        <button className={classes.btnSecondary} onClick={onSaveSuccess}>
-          <LogOut size={20} /> Έξοδος Επεξεργασίας
-        </button>
-      </div>
-
+      {/* Message Toast */}
       {uiMessage && (
         <div className={`${classes.messageBar} ${uiMessage.type === 'error' ? classes.msgError : classes.msgSuccess}`}>
-          <span>{uiMessage.type === 'error' ? '⚠️' : '✅'}</span>
+          {uiMessage.type === 'error' ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
           {uiMessage.text}
         </div>
       )}

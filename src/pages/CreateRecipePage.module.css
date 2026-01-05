@@ -1,220 +1,166 @@
-/* --- MAIN LAYOUT --- */
 .container {
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 40px 20px;
-  min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
   color: #e2e8f0;
-
-  /* Nordic Night Background */
-  background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.95)),
-              url('https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  animation: fadeIn 0.5s ease-out;
 }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .title {
-  text-align: center;
-  margin-bottom: 3rem;
-  color: #fbbf24; /* Gold */
-  font-size: 2.2rem;
-  font-weight: 800;
-  text-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 15px;
+  gap: 12px;
+  margin-bottom: 30px;
+  color: #fbbf24;
 }
 
-/* --- GLASS SECTIONS --- */
 .subSection {
-  background: rgba(30, 41, 59, 0.5); /* Slate Glass */
-  backdrop-filter: blur(12px);
-  padding: 2.5rem;
-  border-radius: 24px;
-  /* Λεπτό χρυσό περίγραμμα */
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  margin-bottom: 2.5rem;
-  transition: transform 0.3s ease;
-}
-
-.subSection:hover {
-  border-color: rgba(251, 191, 36, 0.4);
+  background: rgba(30, 41, 59, 0.4);
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .subSection h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 0;
-  margin-bottom: 1.5rem;
-  color: #fbbf24; /* Gold Headers */
-  font-size: 1.4rem;
-  border-bottom: 1px dashed rgba(251, 191, 36, 0.3);
-  padding-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  margin-bottom: 20px;
+  color: #81e6d9;
 }
 
-.summaryRow{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 8px 0;
-}
-
-.summaryInfoBox{
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-/* spinner animation */
-.spinner{
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin{
-  to { transform: rotate(360deg); }
-}
-
-
-/* --- LISTS (Ingredients) --- */
 .list {
   list-style: none;
   padding: 0;
-  margin-top: 1.5rem;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.list li {
-  padding: 12px 16px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  margin-bottom: 8px;
-  color: #cbd5e1;
+.ingredientListItem {
   display: flex;
   align-items: center;
-}
-
-/* --- PHOTO UPLOAD AREA --- */
-.descriptionText {
-  color: #94a3b8;
-  margin-bottom: 20px;
-  font-style: italic;
-}
-
-.photoLabel {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 700;
+  gap: 8px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.95rem;
   color: #e2e8f0;
 }
 
-/* Styled File Input Area */
-.fileInputWrapper {
-  position: relative;
-  width: 100%;
-  height: 120px;
-  border: 2px dashed rgba(251, 191, 36, 0.4);
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.4);
+.ingredientText {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.deleteIconBtn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s;
+}
+
+.deleteIconBtn:hover {
+  transform: scale(1.2);
+}
+
+.descriptionText {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+
+.fileInputContainer {
+  margin-bottom: 20px;
+}
+
+.fileInputWrapper {
+  border: 2px dashed rgba(251, 191, 36, 0.3);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  overflow: hidden;
+  transition: all 0.3s;
+  background: rgba(15, 23, 42, 0.4);
 }
 
 .fileInputWrapper:hover {
-  background: rgba(251, 191, 36, 0.05);
   border-color: #fbbf24;
+  background: rgba(15, 23, 42, 0.6);
 }
 
 .fileInput {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  opacity: 0;
-  cursor: pointer;
+  display: none;
 }
 
 .uploadIcon {
   color: #fbbf24;
   margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .uploadText {
-  color: #cbd5e1;
   font-weight: 600;
+  color: #e2e8f0;
 }
 
 .helperText {
-  color: #64748b;
-  font-size: 0.8rem;
-  margin-top: 5px;
   display: block;
   text-align: center;
-}
-
-/* --- PHOTO PREVIEW GRID --- */
-.photoGridTitle {
-  margin-top: 30px;
-  margin-bottom: 15px;
-  color: #81e6d9; /* Teal */
-  font-size: 1.1rem;
-  font-weight: 700;
+  color: #94a3b8;
+  margin-top: 8px;
+  font-size: 0.85rem;
 }
 
 .photoGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.photoGridTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #fbbf24;
+  font-size: 0.95rem;
 }
 
 .photoCard {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
   padding: 10px;
-  transition: transform 0.2s;
-  display: flex;
-  flex-direction: column;
-}
-
-.photoCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .previewImage {
   width: 100%;
-  height: 140px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
 
 .photoDescInput {
   width: 100%;
-  padding: 8px;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
+  padding: 5px;
+  border-radius: 4px;
   font-size: 0.85rem;
-  margin-bottom: 8px;
-}
-
-.photoDescInput:focus {
-  outline: none;
-  border-color: #fbbf24;
+  margin-bottom: 5px;
 }
 
 .photoName {
@@ -227,107 +173,126 @@
 }
 
 .removePhotoBtn {
-  margin-top: auto;
-  padding: 8px;
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.2);
   color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 6px;
+  border: none;
+  width: 100%;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 0.8rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
-  font-weight: 600;
-  transition: all 0.2s;
 }
 
 .removePhotoBtn:hover {
-  background: rgba(239, 68, 68, 0.3);
-  color: #fff;
+  background: rgba(239, 68, 68, 0.4);
+  color: white;
 }
 
-/* --- SUMMARY BOX --- */
 .summarySection {
-  background: rgba(15, 23, 42, 0.8);
-  border-left: 4px solid #fbbf24;
-  padding: 20px;
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
 .summaryTitle {
-  color: #fbbf24;
-  margin-top: 0;
+  margin: 0 0 10px 0;
+  color: #34d399;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-.summaryInfoBox {
-  background: rgba(56, 178, 172, 0.1);
-  border: 1px solid rgba(56, 178, 172, 0.3);
-  color: #81e6d9;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  color: #e2e8f0;
   font-size: 0.9rem;
 }
 
-/* --- SUBMIT BUTTON --- */
+.summaryInfoBox {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  background: rgba(251, 191, 36, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  color: #fbbf24;
+  font-size: 0.85rem;
+  align-items: flex-start;
+}
+
 .submitBtn {
   width: 100%;
-  padding: 18px;
+  padding: 15px;
+  border-radius: 50px;
+  border: none;
   background: linear-gradient(135deg, #b45309 0%, #fbbf24 100%);
   color: #0f172a;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.2rem;
   font-weight: 800;
- 
-  letter-spacing: 1px;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
-  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-top: 2rem;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  transition: transform 0.2s;
 }
 
 .submitBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
 }
 
 .submitBtn:disabled {
   opacity: 0.7;
-  cursor: wait;
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* --- MESSAGES --- */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
 .message {
-  margin-top: 30px;
-  padding: 20px;
+  margin-top: 20px;
+  padding: 15px;
   border-radius: 12px;
-  text-align: center;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
   animation: fadeIn 0.3s;
 }
 
 .successMessage {
-  background: rgba(16, 185, 129, 0.2);
-  border: 1px solid #34d399;
+  background: rgba(16, 185, 129, 0.15);
   color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .errorMessage {
-  background: rgba(239, 68, 68, 0.2);
-  border: 1px solid #f87171;
-  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .infoMessage {
-  background: rgba(56, 178, 172, 0.2);
-  border: 1px solid #2dd4bf;
-  color: #2dd4bf;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

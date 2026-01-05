@@ -38,7 +38,6 @@ const BasicInfoForm = ({ formData, handleChange }) => {
                 />
             </div>
 
-            {/* Row for Duration, Difficulty, Category */}
             <div className={classes.row}>
                 <div className={classes.formGroup}>
                     <label className={classes.label}>

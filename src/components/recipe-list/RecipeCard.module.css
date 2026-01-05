@@ -1,32 +1,26 @@
-/* src/components/recipe-list/RecipeCard.module.css */
+
 
 .card {
   width: 100%;
   text-align: left;
   cursor: pointer;
-
-  /* NORDIC DARK GLASS BASE */
-  border: 1px solid rgba(251, 191, 36, 0.3); /* Gold border low opacity */
-  background: rgba(30, 41, 59, 0.6); /* Dark Slate Glass */
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgba(30, 41, 59, 0.6); 
   border-radius: 20px;
-
   padding: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 100%;
   min-height: 380px;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
 .card:hover {
   transform: translateY(-8px);
-  /* Stronger Gold on Hover */
   border-color: #fbbf24;
   background: rgba(30, 41, 59, 0.8);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 15px rgba(251, 191, 36, 0.15);
@@ -37,14 +31,12 @@
   box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3);
 }
 
-/* -------- Cover -------- */
 .cover {
   position: relative;
-  height: 180px; /* Λίγο πιο ψηλό */
+  height: 180px;
   overflow: hidden;
   border-bottom: 1px solid rgba(251, 191, 36, 0.2);
 
-  /* Gold & Teal Gradients instead of Coral */
   background: radial-gradient(
       600px 240px at 20% 10%,
       rgba(251, 191, 36, 0.15), /* Gold tint */
@@ -88,11 +80,10 @@
 .coverText {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #94a3b8; /* Slate text */
+  color: #94a3b8; 
   letter-spacing: 1px;
 }
 
-/* Top row over cover */
 .coverTopRow {
   position: absolute;
   top: 12px;
@@ -105,7 +96,7 @@
   z-index: 2;
 }
 
-/* Category pill */
+
 .categoryPill {
   display: inline-flex;
   align-items: center;
@@ -113,13 +104,13 @@
   padding: 6px 12px;
   border-radius: 50px;
 
-  /* Glass Dark */
+
   background: rgba(15, 23, 42, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   
-  color: #fbbf24; /* Gold Icon */
+  color: #fbbf24;
 }
 
 .categoryText {
@@ -130,7 +121,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Time badge */
 .timeBadge {
   display: inline-flex;
   align-items: center;
@@ -147,7 +137,6 @@
   backdrop-filter: blur(4px);
 }
 
-/* Shine Effect (Keep existing logic but adjust colors) */
 .shine {
   position: absolute;
   inset: -40% -20%;
@@ -168,7 +157,7 @@
   transform: translateX(40%) rotate(10deg);
 }
 
-/* -------- Body -------- */
+
 .cardBody {
   padding: 20px;
   display: flex;
@@ -189,7 +178,7 @@
   margin: 0 0 20px 0;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #94a3b8; /* Slate */
+  color: #94a3b8; 
 
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -198,7 +187,6 @@
   overflow: hidden;
 }
 
-/* Stats */
 .quickStats {
   margin-top: auto;
   padding: 12px;
@@ -240,7 +228,6 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* -------- Footer -------- */
 .cardFooter {
   display: flex;
   justify-content: space-between;
@@ -260,7 +247,6 @@
   letter-spacing: 0.5px;
 }
 
-/* Difficulty Colors (Adjusted for Dark Theme) */
 .easy {
   background: rgba(16, 185, 129, 0.15);
   border: 1px solid rgba(16, 185, 129, 0.3);
@@ -283,7 +269,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #81e6d9; /* Teal */
+  color: #81e6d9; 
   font-weight: 700;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -291,12 +277,17 @@
 
 .card:hover .viewAction {
   transform: translateX(4px);
-  color: #fbbf24; /* Gold on hover */
+  color: #fbbf24; 
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .cover { height: 160px; }
   .title { font-size: 1.15rem; }
-  .categoryText { display: none; } /* Hide text on small screens, keep icon */
+  .categoryText { display: none; } 
 }
+
+.gaugeIcon {
+  margin-right: 4px;
+}
+

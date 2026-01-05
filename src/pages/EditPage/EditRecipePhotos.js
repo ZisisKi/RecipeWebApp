@@ -1,23 +1,21 @@
 import React from "react";
 import PhotoGallery from "../../components/UI/PhotoGallery";
 import PhotoUploader from "../../components/UI/PhotoUploader"; 
-
-// CHANGE: import classes
 import classes from "./EditRecipePhotos.module.css";
 
 const EditRecipePhotos = ({ recipeId, onRefresh, showMessage }) => {
 
   const handleUploadSuccess = () => {
-    showMessage("📷 Η φωτογραφία ανέβηκε επιτυχώς!");
+    showMessage("Η φωτογραφία ανέβηκε επιτυχώς!", "success");
     if (onRefresh) onRefresh();
   };
 
   const handleUploadError = (msg) => {
-    showMessage(`❌ ${msg}`, "error");
+    showMessage(msg, "error");
   };
 
   const handlePhotoDeleted = (photoId) => {
-    showMessage("Η φωτογραφία διαγράφηκε.");
+    showMessage("Η φωτογραφία διαγράφηκε.", "success");
     if (onRefresh) onRefresh();
   };
 

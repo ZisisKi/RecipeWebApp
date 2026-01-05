@@ -1,0 +1,89 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 3000; /* Πάνω από όλα */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(239, 68, 68, 0.5); /* Κόκκινο περίγραμμα για validation errors */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.title {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Χρώματα Εικονιδίων */
+.iconError {
+  color: #ef4444;
+}
+
+.iconSuccess {
+  color: #10b981;
+}
+
+.iconInfo {
+  color: #3b82f6;
+}
+
+.message {
+  color: #cbd5e1;
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.btn {
+  background: #ef4444; /* Κόκκινο κουμπί για προσοχή */
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

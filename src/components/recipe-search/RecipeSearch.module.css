@@ -1,25 +1,15 @@
-/* --- CONTAINER (Glassmorphism with Gold Glow) --- */
 .searchContainer {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-bottom: 40px;
-  
-  /* Σκούρο φόντο */
-  background: rgba(30, 41, 59, 0.5); 
-  
+  background: rgba(30, 41, 59, 0.5);
   padding: 25px;
   border-radius: 24px;
-  
-  /* Χρυσό περίγραμμα (λεπτό και διακριτικό) */
-  border: 1px solid rgba(251, 191, 36, 0.3); 
-  
-  /* Χρυσή λάμψη στο shadow */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
-              0 0 15px rgba(251, 191, 36, 0.05);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(251, 191, 36, 0.05);
 }
 
-/* --- SEARCH BAR --- */
 .searchWrapper {
   position: relative;
   width: 100%;
@@ -32,7 +22,7 @@
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  color: #fbbf24; /* Gold */
+  color: #fbbf24;
   pointer-events: none;
   filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.5));
 }
@@ -41,28 +31,24 @@
   width: 100%;
   padding: 16px 16px 16px 55px;
   border-radius: 50px;
-  
-  /* Χρυσό border (ημιδιάφανο όταν δεν είναι active) */
   border: 1px solid rgba(251, 191, 36, 0.3);
-  
   background: rgba(15, 23, 42, 0.6);
-  color: #fbbf24; /* Το κείμενο που γράφεις γίνεται χρυσό */
+  color: #fbbf24;
   font-size: 1rem;
   transition: all 0.3s ease;
   outline: none;
   font-family: inherit;
   font-weight: 500;
+  box-sizing: border-box;
 }
 
-/* Χρώμα για το Placeholder κειμενο */
 .searchInput::placeholder {
-  color: rgba(251, 191, 36, 0.5); /* 50% Gold */
+  color: rgba(251, 191, 36, 0.5);
 }
 
-/* Όταν κάνεις κλικ μέσα (Focus) */
 .searchInput:focus {
-  border-color: #fbbf24; /* Full Gold */
-  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2); /* Gold Glow ring */
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2);
   background: rgba(15, 23, 42, 0.9);
 }
 
@@ -76,12 +62,11 @@
   transition: all 0.2s;
 }
 
-.clearIcon:hover { 
-  color: #fbbf24; 
+.clearIcon:hover {
+  color: #fbbf24;
   transform: translateY(-50%) scale(1.1);
 }
 
-/* --- FILTERS GRID --- */
 .filtersSection {
   display: flex;
   flex-direction: column;
@@ -100,7 +85,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #fbbf24; /* Gold Label */
+  color: #fbbf24;
   font-weight: 700;
   font-size: 0.9rem;
   margin-right: 8px;
@@ -109,19 +94,15 @@
   text-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
 }
 
-/* --- BUTTONS (Capsules) --- */
 .filterBtn {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
   border-radius: 50px;
-  
-  /* Λεπτό χρυσό περίγραμμα */
   border: 1px solid rgba(251, 191, 36, 0.2);
-  
   background: rgba(30, 41, 59, 0.4);
-  color: #cbd5e1; /* Ανοιχτό γκρι για να διαβάζεται εύκολα */
+  color: #cbd5e1;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.85rem;
@@ -135,7 +116,6 @@
   transform: translateY(-2px);
 }
 
-/* Active State (Selected) */
 .activeFilter {
   background: rgba(251, 191, 36, 0.2);
   border-color: #fbbf24;
@@ -143,40 +123,47 @@
   box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
 }
 
-/* Difficulty Specific Colors (Optional: Keeping Gold theme or keeping semantic colors) */
-/* Εδώ τα έκανα όλα να παίζουν με Gold τόνους για ομοιομορφία, 
-   ή κράτησε τα χρώματα αλλά με Gold borders */
-
-.activeEasy { 
-  background: rgba(16, 185, 129, 0.15); 
-  border-color: #34d399; 
-  color: #34d399; 
+.activeEasy {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #34d399;
+  color: #34d399;
   box-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
 }
 
-.activeMedium { 
-  background: rgba(245, 158, 11, 0.15); 
-  border-color: #fbbf24; 
-  color: #fbbf24; 
+.activeMedium {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: #fbbf24;
+  color: #fbbf24;
   box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
 }
 
-.activeHard { 
-  background: rgba(239, 68, 68, 0.15); 
-  border-color: #f87171; 
-  color: #f87171; 
+.activeHard {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #f87171;
+  color: #f87171;
   box-shadow: 0 0 10px rgba(248, 113, 113, 0.2);
 }
 
-/* --- DURATION INPUT --- */
+.durationRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.durationContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .durationWrapper {
   display: flex;
   align-items: center;
   background: rgba(15, 23, 42, 0.6);
-  
-  /* Χρυσό περίγραμμα */
   border: 1px solid rgba(251, 191, 36, 0.3);
-  
   border-radius: 50px;
   padding: 5px 15px;
   transition: all 0.3s;
@@ -190,7 +177,7 @@
 .durationInput {
   background: transparent;
   border: none;
-  color: #fbbf24; /* Gold Text */
+  color: #fbbf24;
   width: 60px;
   padding: 5px;
   text-align: center;
@@ -202,18 +189,19 @@
   color: rgba(251, 191, 36, 0.4);
 }
 
-/* --- RESET BUTTON --- */
+.minuteLabel {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
 .resetBtn {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
   background: transparent;
-  
-  /* Subtle Gold/Grey mix */
   color: #94a3b8;
   border: 1px solid transparent;
-  
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s;
@@ -221,14 +209,13 @@
 }
 
 .resetBtn:hover {
-  color: #fca5a5; /* Light Red on hover for "Reset" action */
+  color: #fca5a5;
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.3);
 }
 
-/* Mobile Adjustments */
 @media (max-width: 768px) {
-  .rowLabel { display: none; } 
+  .rowLabel { display: none; }
   .filterRow { justify-content: flex-start; overflow-x: auto; padding-bottom: 10px; }
   .filterBtn { white-space: nowrap; }
 }

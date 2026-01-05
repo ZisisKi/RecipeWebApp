@@ -1,33 +1,13 @@
-/* --- MAIN BACKGROUND --- */
-/* --- MAIN BACKGROUND (Culinary Theme) --- */
 .overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  
-  /* ΕΠΙΛΟΓΗ 1: Dark Kitchen (Ατμοσφαιρική κουζίνα - Προτείνεται) */
-  /*background: 
-    linear-gradient(rgba(15, 23, 42, 0.85), rgba(0, 0, 0, 0.95)),
-    url('https://images.unsplash.com/photo-1556910103-1c02745a30bf?q=80&w=2070&auto=format&fit=crop');
-  */
-
-  /* ΕΠΙΛΟΓΗ 2: Dark Spices & Ingredients (Αν θες να φαίνονται υλικά) - Ξε-σχολίασε για να το δεις */
-  
-  background: 
-    linear-gradient(rgba(15, 23, 42, 0.7), rgba(0, 0, 0, 0.75)),
-    url('https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?q=80&w=1920&auto=format&fit=crop');
-  
-
-  /* ΕΠΙΛΟΓΗ 3: Dark Marble/Slate Texture (Πιο καθαρό/μοντέρνο) */
-  
-  /*background: 
-    linear-gradient(rgba(15, 23, 42, 0.85), rgba(0, 0, 0, 0.9)),
-    url('https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop');
-  */
-
-  background-size: cover;      /* Καλύπτει όλη την οθόνη */
-  background-position: center; /* Κεντράρισμα */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?q=80&w=1920&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -36,10 +16,11 @@
   color: #e2e8f0;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* --- HEADER --- */
 .header {
   flex-shrink: 0;
   padding: 10px 20px;
@@ -60,45 +41,47 @@
   font-weight: 600;
   cursor: pointer;
   color: #cbd5e1;
-  display: flex; align-items: center; gap: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   transition: all 0.2s;
 }
-.closeBtn:hover { border-color: #f87171; color: #f87171; }
 
-/* --- ACTIVE PROCESS ANIMATIONS --- */
-
-/* 1. PROGRESS BAR (LIQUID GOLD FLOW) */
-.progressContainer {
-  flex: 1; max-width: 500px; 
-  display: flex; align-items: center; gap: 15px;
+.closeBtn:hover {
+  border-color: #f87171;
+  color: #f87171;
 }
-.progressLabel { 
-  font-size: 0.75rem; font-weight: 800; color: #fbbf24; white-space: nowrap;
-} 
 
-.progressBarBg { 
-  width: 100%; height: 8px; /* Λίγο πιο παχύ για να φαίνεται η κίνηση */
-  background: rgba(255,255,255,0.1); 
-  border-radius: 10px; overflow: hidden; 
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+.progressContainer {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.progressLabel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
+.progressBarBg {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .progressBarFill {
   height: 100%;
-  /* Gradient που επαναλαμβάνεται για να δημιουργήσει ροή */
-  background: linear-gradient(
-    90deg, 
-    #b45309 0%, 
-    #fbbf24 25%, 
-    #fffbeb 50%, 
-    #fbbf24 75%, 
-    #b45309 100%
-  );
-  background-size: 200% 100%; /* Διπλάσιο μέγεθος για το animation */
+  background: linear-gradient(90deg, #b45309 0%, #fbbf24 25%, #fffbeb 50%, #fbbf24 75%, #b45309 100%);
+  background-size: 200% 100%;
   box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
   transition: width 0.4s ease;
-  
-  /* Η ΜΑΓΕΙΑ: Συνεχόμενη Κίνηση */
   animation: liquidGold 2s linear infinite;
 }
 
@@ -107,7 +90,6 @@
   100% { background-position: -100% 0; }
 }
 
-/* --- CONTENT AREA --- */
 .content {
   flex: 1;
   display: flex;
@@ -117,15 +99,17 @@
   overflow: hidden;
 }
 
-/* CARD */
 .stepCardWrapper {
-  background: rgba(15, 23, 42, 0.85); 
+  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(251, 191, 36, 0.3);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
-  width: 100%; max-width: 1100px; max-height: 90vh;
-  display: flex; flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -133,25 +117,33 @@
   padding: 20px 30px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #fbbf24 rgba(255,255,255,0.05);
+  scrollbar-color: #fbbf24 rgba(255, 255, 255, 0.05);
 }
 
 .stepHeaderTitle {
   font-size: 1.6rem;
-  color: #fff; margin: 0 0 10px 0; font-weight: 800; text-align: center;
+  color: #fff;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  text-align: center;
   border-bottom: 1px solid rgba(251, 191, 36, 0.2);
   padding-bottom: 10px;
 }
 
-/* 2. STEP META TAG (PULSING ACTIVE STATE) */
 .stepMetaTag {
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  width: fit-content; margin: 0 auto 20px auto;
-  background: rgba(251, 191, 36, 0.1); color: #fbbf24;
-  padding: 4px 12px; border-radius: 50px; font-weight: 700; font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 auto 20px auto;
+  background: rgba(251, 191, 36, 0.1);
+  color: #fbbf24;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.9rem;
   border: 1px solid rgba(251, 191, 36, 0.5);
-  
-  /* Active Pulse Animation */
   box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
   animation: pulseGold 2s infinite;
 }
@@ -162,79 +154,199 @@
   100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
 }
 
-/* LAYOUT GRID */
 @media (min-width: 768px) {
   .flexRowLayout { display: flex; gap: 20px; align-items: flex-start; }
   .leftCol { flex: 1; }
   .rightCol { flex: 1.5; }
 }
 
-/* PHOTOS */
 .photosGrid {
-  display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; justify-content: center; padding: 5px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  justify-content: center;
+  padding: 5px;
 }
+
 .stepPhoto {
-  height: 140px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.2s; cursor: pointer;
+  height: 140px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
 }
-.stepPhoto:hover { transform: scale(1.05); border-color: #fbbf24; }
 
-/* INGREDIENTS */
+.stepPhoto:hover {
+  transform: scale(1.05);
+  border-color: #fbbf24;
+}
+
 .ingredientsBox {
-  background: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 12px;
-  border: 1px dashed rgba(251, 191, 36, 0.3); margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px dashed rgba(251, 191, 36, 0.3);
+  margin-bottom: 20px;
 }
-.ingTitle { margin: 0 0 10px 0; color: #fbbf24; font-size: 0.95rem; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-.ingList { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
-.ingItem { font-size: 0.9rem; color: #cbd5e1; display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.03); padding: 6px 10px; border-radius: 6px; }
-.checkbox { width: 16px; height: 16px; accent-color: #fbbf24; cursor: pointer; }
 
-/* DESCRIPTION */
+.ingTitle {
+  margin: 0 0 10px 0;
+  color: #fbbf24;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ingList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.ingItem {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #fbbf24;
+  cursor: pointer;
+}
+
 .description {
-  font-size: 1.05rem; line-height: 1.6; color: #f1f5f9; text-align: justify;
-  background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.05);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #f1f5f9;
+  text-align: justify;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* FOOTER */
 .footer {
-  flex-shrink: 0; padding: 15px 30px; background: rgba(15, 23, 42, 0.95);
-  border-top: 1px solid rgba(251, 191, 36, 0.2); display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
+  padding: 15px 30px;
+  background: rgba(15, 23, 42, 0.95);
+  border-top: 1px solid rgba(251, 191, 36, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .btnBack {
-  background: transparent; color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 20px; border-radius: 50px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
 }
-.btnBack:hover { color: #fff; border-color: #fff; }
+
+.btnBack:hover {
+  color: #fff;
+  border-color: #fff;
+}
 
 .btnNext {
   background: linear-gradient(135deg, #b45309 0%, #fbbf24 100%);
-  color: #0f172a; border: none;
-  padding: 10px 30px; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer;
-  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3); display: flex; align-items: center; gap: 8px;
-  /* Ελαφριά κίνηση και στο κουμπί */
+  color: #0f172a;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   transition: all 0.3s;
 }
-.btnNext:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5); }
 
-/* COMPLETED SCREEN */
+.btnNext:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5);
+}
+
 .completedOverlay {
-  position: fixed; inset: 0; background: radial-gradient(circle, #1e293b 0%, #000000 100%);
-  z-index: 2001; display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #1e293b 0%, #000000 100%);
+  z-index: 2001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.completedCard {
-  background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px);
-  color: white; padding: 40px; border-radius: 20px; text-align: center; border: 2px solid #fbbf24;
-  max-width: 450px; width: 90%;
-}
-.congratsIcon { color: #fbbf24; margin-bottom: 15px; }
-.completedTitle { font-size: 2rem; margin-bottom: 15px; color: #fbbf24; }
-.completedButtons { display: flex; flex-direction: column; gap: 10px; }
-.btnMenu { background: #fbbf24; color: #0f172a; padding: 12px; border-radius: 8px; border: none; font-weight: 800; cursor: pointer; }
-.btnReturn { background: transparent; color: #94a3b8; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: pointer; }
 
-.photoThumbBtn{
+.completedCard {
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(20px);
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid #fbbf24;
+  max-width: 450px;
+  width: 90%;
+}
+
+.congratsIcon {
+  color: #fbbf24;
+  margin-bottom: 15px;
+}
+
+.completedTitle {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #fbbf24;
+}
+
+.completedButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btnMenu {
+  background: #fbbf24;
+  color: #0f172a;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btnReturn {
+  background: transparent;
+  color: #94a3b8;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.photoThumbBtn {
   padding: 0;
   border: 0;
   background: transparent;
@@ -242,48 +354,46 @@
   border-radius: 10px;
 }
 
-.photoThumbBtn:focus-visible{
-  outline: 2px solid rgba(251,191,36,0.9);
+.photoThumbBtn:focus-visible {
+  outline: 2px solid rgba(251, 191, 36, 0.9);
   outline-offset: 3px;
 }
 
-/* Lightbox */
-.lightbox{
+.lightbox {
   position: fixed;
   inset: 0;
   z-index: 9999999;
-  background: rgba(0,0,0,0.78);
+  background: rgba(0, 0, 0, 0.78);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
 }
 
-.lightboxImg{
+.lightboxImg {
   max-width: min(1100px, 94vw);
   max-height: 88vh;
   border-radius: 18px;
   object-fit: contain;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
-  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.lightboxClose{
+.lightboxClose {
   position: fixed;
   top: 16px;
   right: 16px;
   width: 44px;
   height: 44px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.35);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
-
 
 @media (max-width: 768px) {
   .stepCardWrapper { max-height: 100vh; border-radius: 0; }

@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { updateStep, createStep, deleteStep } from "../../api/stepApi";
 import { uploadPhotoForStep, deletePhoto, getPhotoImageUrl } from "../../api/PhotoApi";
-import { ListOrdered, Plus, Edit2, Trash2, Save, X, Clock, Camera } from "lucide-react";
+import { 
+  ListOrdered, 
+  Plus, 
+  Edit2, 
+  Trash2, 
+  Save, 
+  X, 
+  Clock, 
+  Camera,
+  ShoppingCart,
+  Box
+} from "lucide-react";
 import classes from "./EditRecipeSteps.module.css";
 import { useConfirm } from "../../components/UI/ConfirmProvider";
 
+import IngredientSelector from "../../components/recipe-form/IngredientSelector";
 
 const MEASUREMENT_UNITS = [
   { value: "GRAMS", label: "g" },
@@ -19,18 +31,10 @@ const MEASUREMENT_UNITS = [
   { value: "PINCH", label: "πρέζα" }
 ];
 
-
-const TO_BACKEND_UNIT_MAP = {
-  "GRAMS": "γραμμάρια", "KILOGRAMS": "κιλά", "MILLILITERS": "ml", "LITERS": "λίτρα",
-  "CUPS": "φλιτζάνια", "TABLESPOONS": "κουταλιές σούπας", "TEASPOONS": "κουταλάκια γλυκού",
-  "PIECES": "κομμάτια", "SLICES": "φέτες", "PINCH": "πρέζα"
-};
-
 const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMessage }) => {
   const [editingStepId, setEditingStepId] = useState(null);
   const [localSteps, setLocalSteps] = useState(steps);
-  const [newStepIng, setNewStepIng] = useState({ ingredientId: "", name: "", quantity: "", measurementUnit: "GRAMS" });
-
+  
   const confirmDialog = useConfirm();
 
   useEffect(() => {
@@ -47,7 +51,6 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
       setEditingStepId(null);
     } else {
       setEditingStepId(id);
-      setNewStepIng({ ingredientId: "", name: "", quantity: "", measurementUnit: "GRAMS" });
     }
   };
 
@@ -62,78 +65,72 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
         recipeId: parseInt(recipeId)
       });
       onRefresh();
-      showMessage("✅ Νέο βήμα δημιουργήθηκε!");
+      showMessage("Νέο βήμα δημιουργήθηκε!");
     } catch (error) {
-      showMessage("❌ Σφάλμα δημιουργίας βήματος.", "error");
+      showMessage("Σφάλμα δημιουργίας βήματος.", "error");
     }
+  };
+
+  // Handlers for inputs
+  const handleTitleChange = (id) => (e) => {
+    const val = e.target.value;
+    setLocalSteps(prev => prev.map(s => s.id === id ? { ...s, title: val } : s));
+  };
+
+  const handleDurationChange = (id) => (e) => {
+    const val = e.target.value;
+    setLocalSteps(prev => prev.map(s => s.id === id ? { ...s, duration: val } : s));
+  };
+
+  const handleDescChange = (id) => (e) => {
+    const val = e.target.value;
+    setLocalSteps(prev => prev.map(s => s.id === id ? { ...s, description: val } : s));
   };
 
   const onDeleteStep = async (e, stepId) => {
     e.stopPropagation();
     const ok = await confirmDialog({
-  title: "Διαγραφή βήματος",
-  message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το βήμα;",
-  confirmText: "Ναι, διαγραφή",
-  cancelText: "Ακύρωση",
-});
+      title: "Διαγραφή βήματος",
+      message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το βήμα;",
+      confirmText: "Ναι, διαγραφή",
+      cancelText: "Ακύρωση",
+    });
 
-if (!ok) return;
+    if (!ok) return;
 
     try {
       await deleteStep(stepId);
       onRefresh();
       showMessage("Το βήμα διαγράφηκε.");
     } catch (error) {
-      showMessage("❌ Σφάλμα διαγραφής.", "error");
+      showMessage("Σφάλμα διαγραφής.", "error");
     }
   };
 
-  const handleTitleChange = (e, stepId) => {
-    const val = e.target.value;
-    setLocalSteps(prev => prev.map(s => s.id === stepId ? { ...s, title: val } : s));
-  };
-
-  const handleDurationChange = (e, stepId) => {
-    const val = e.target.value;
-    setLocalSteps(prev => prev.map(s => s.id === stepId ? { ...s, duration: val } : s));
-  };
-
-  const handleDescChange = (e, stepId) => {
-    const val = e.target.value;
-    setLocalSteps(prev => prev.map(s => s.id === stepId ? { ...s, description: val } : s));
-  };
-
-  const onSelectIngredientChange = (e) => {
-    const selected = recipeIngredients.find(i => (i.ingredientId || i.id).toString() === e.target.value);
-    setNewStepIng({ ...newStepIng, ingredientId: e.target.value, name: selected ? selected.name : "" });
-  };
-
-  const onQuantityChange = (e) => setNewStepIng({ ...newStepIng, quantity: e.target.value });
-  const onUnitChange = (e) => setNewStepIng({ ...newStepIng, measurementUnit: e.target.value });
-
-  const onAddIngredientToStep = (stepId) => {
-    if (!newStepIng.ingredientId || !newStepIng.quantity) return;
+  const onAddIngredientToStep = (stepId, ingredientData) => {
+    if (!ingredientData) return;
     setLocalSteps(prev => prev.map(step => {
       if (step.id === stepId) {
         return {
           ...step,
-          stepIngredients: [
-            ...(step.stepIngredients || []),
-            {
-              ingredientId: newStepIng.ingredientId,
-              name: newStepIng.name,
-              quantity: parseFloat(newStepIng.quantity),
-              measurementUnit: newStepIng.measurementUnit
-            }
-          ]
+          stepIngredients: [...(step.stepIngredients || []), ingredientData]
         };
       }
       return step;
     }));
-    setNewStepIng({ ingredientId: "", name: "", quantity: "", measurementUnit: "GRAMS" });
   };
 
-  const onRemoveIngredientFromStep = (stepId, index) => {
+  // --- ΤΡΟΠΟΠΟΙΗΣΗ ΕΔΩ ΓΙΑ CONFIRMATION ---
+  const createRemoveIngredientHandler = (stepId, index) => async () => {
+    const isConfirmed = await confirmDialog({
+        title: "Αφαίρεση Υλικού",
+        message: "Αφαίρεση υλικού από το βήμα;",
+        confirmText: "Ναι, αφαίρεση",
+        cancelText: "Ακύρωση"
+    });
+
+    if (!isConfirmed) return;
+
     setLocalSteps(prev => prev.map(step => {
       if (step.id === stepId) {
         return {
@@ -144,17 +141,21 @@ if (!ok) return;
       return step;
     }));
   };
+  // ----------------------------------------
 
   const onSaveStep = async (step) => {
     try {
       const cleanStepIngredients = (step.stepIngredients || []).map(ing => {
-        let finalIngredientId = ing.ingredientId || (ing.ingredient ? ing.ingredient.id : null);
-        if (!finalIngredientId) return null;
+        const finalIngredientId = ing.ingredientId || (ing.ingredient ? ing.ingredient.id : null);
+        if (!finalIngredientId) {
+            console.warn("Υλικό χωρίς ID αγνοήθηκε:", ing);
+            return null;
+        }
         return {
           stepId: parseInt(step.id),
           ingredientId: parseInt(finalIngredientId),
           quantity: parseFloat(ing.quantity),
-          measurementUnit: TO_BACKEND_UNIT_MAP[ing.measurementUnit] || ing.measurementUnit,
+          measurementUnit: ing.measurementUnit,
           name: ing.name,
           id: ing.id || null
         };
@@ -171,11 +172,12 @@ if (!ok) return;
         photos: step.photos || []
       });
 
-      showMessage(`✅ Το Βήμα "${step.title}" ενημερώθηκε!`);
+      showMessage(`Το Βήμα "${step.title}" ενημερώθηκε!`);
       setEditingStepId(null);
       setTimeout(() => onRefresh(), 200);
     } catch (error) {
-      showMessage("❌ Σφάλμα αποθήκευσης βήματος.", "error");
+      console.error(error);
+      showMessage("Σφάλμα αποθήκευσης βήματος.", "error");
     }
   };
 
@@ -184,33 +186,75 @@ if (!ok) return;
     if (!files) return;
     try {
       for (const file of files) {
-        await uploadPhotoForStep(stepId, file, "Φωτογραφία βήματος");
+        await uploadPhotoForStep(stepId, file, "Step preview");
       }
       onRefresh();
-      showMessage("📷 Η φωτογραφία ανέβηκε!");
+      showMessage("Η φωτογραφία ανέβηκε!");
     } catch (error) {
-      showMessage("❌ Σφάλμα ανεβάσματος.", "error");
+      showMessage("Σφάλμα ανεβάσματος.", "error");
     }
   };
 
-  const onDeletePhoto = async (photoId) => {
+  const createPhotoDeleteHandler = (photoId) => async () => {
     const ok = await confirmDialog({
-  title: "Διαγραφή φωτογραφίας",
-  message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;",
-  confirmText: "Ναι, διαγραφή",
-  cancelText: "Ακύρωση",
-});
+      title: "Διαγραφή φωτογραφίας",
+      message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;",
+      confirmText: "Ναι, διαγραφή",
+      cancelText: "Ακύρωση",
+    });
 
-if (!ok) return;
+    if (!ok) return;
 
     try {
       await deletePhoto(photoId);
       onRefresh();
       showMessage("Η φωτογραφία διαγράφηκε.");
     } catch (error) {
-      showMessage("❌ Σφάλμα διαγραφής.", "error");
+      showMessage("Σφάλμα διαγραφής.", "error");
     }
   };
+
+  // Wrappers
+  const createPhotoUploadHandler = (stepId) => (e) => onPhotoUpload(e, stepId);
+  const createToggleEditHandler = (id) => () => onToggleEdit(id);
+  const createDeleteStepHandler = (id) => (e) => onDeleteStep(e, id);
+  const createSaveStepHandler = (step) => () => onSaveStep(step);
+  const createCancelEditHandler = () => setEditingStepId(null);
+
+  // --- RENDER HELPERS ---
+
+  const renderIngredientItem = (ing, idx, stepId) => (
+    <li key={idx} className={classes.ingItem}>
+        <span>
+            <strong>{ing.name}</strong> - {ing.quantity} {getUnitLabel(ing.measurementUnit)}
+        </span>
+        <button 
+            type="button" 
+            className={classes.btnDangerSmall} 
+            onClick={createRemoveIngredientHandler(stepId, idx)}
+        >
+            <X size={14}/>
+        </button>
+    </li>
+  );
+
+  const renderPhotoItem = (p) => (
+    <div key={p.id} className={classes.photoWrapper}>
+        <img 
+            src={getPhotoImageUrl(p.id)} 
+            className={classes.viewPhotoImg} 
+            alt="Step preview" 
+            onError={(e) => { e.target.style.display = 'none'; }} 
+        />
+        <button 
+            className={classes.photoDeleteBtn} 
+            onClick={createPhotoDeleteHandler(p.id)} 
+            type="button"
+        >
+            <X size={12}/>
+        </button>
+    </div>
+  );
 
   return (
     <div className={classes.card}>
@@ -225,7 +269,7 @@ if (!ok) return;
         <div key={step.id} className={`${classes.stepContainer} ${editingStepId === step.id ? classes.activeEdit : ''}`}>
           
           {/* Header Display */}
-          <div className={classes.stepHeaderDisplay} onClick={() => onToggleEdit(step.id)}>
+          <div className={classes.stepHeaderDisplay} onClick={createToggleEditHandler(step.id)}>
             <div className={classes.stepHeaderInfo}>
                <span className={classes.stepNumberBadge}>{step.stepOrder}</span>
                <span className={classes.stepTitleText}>{step.title}</span>
@@ -238,7 +282,7 @@ if (!ok) return;
               </span>
               <button 
                 className={classes.btnDangerIcon} 
-                onClick={(e) => onDeleteStep(e, step.id)}
+                onClick={createDeleteStepHandler(step.id)}
                 type="button"
                 title="Διαγραφή Βήματος"
               >
@@ -256,7 +300,7 @@ if (!ok) return;
                 <div className={classes.tagList}>
                   {step.stepIngredients.map((ing, i) => (
                     <span key={i} className={classes.ingTag}>
-                      🛒 {ing.name} ({ing.quantity} {getUnitLabel(ing.measurementUnit)})
+                      <ShoppingCart size={14}/> {ing.name} ({ing.quantity} {getUnitLabel(ing.measurementUnit)})
                     </span>
                   ))}
                 </div>
@@ -267,9 +311,9 @@ if (!ok) return;
                   {step.photos.map((p) => (
                     <img 
                       key={p.id} 
-                      src={getPhotoImageUrl(p.id)}
+                      src={getPhotoImageUrl(p.id)} 
                       className={classes.viewPhotoImg} 
-                      alt="step preview" 
+                      alt="Step preview" 
                       onError={(e) => { e.target.style.display = 'none'; }}
                     />
                   ))}
@@ -282,67 +326,54 @@ if (!ok) return;
           {editingStepId === step.id && (
             <div className={classes.editForm}>
               <div className={classes.row}>
-                <div className={classes.inputGroup} style={{flex:3}}>
+                <div className={classes.inputGroupLarge}>
                   <label className={classes.label}>Τίτλος</label>
-                  <input className={classes.input} value={step.title} onChange={(e) => handleTitleChange(e, step.id)} />
+                  <input className={classes.input} value={step.title} onChange={handleTitleChange(step.id)} />
                 </div>
-                <div className={classes.inputGroup} style={{flex:1}}>
+                <div className={classes.inputGroupSmall}>
                   <label className={classes.label}>Διάρκεια (λ.)</label>
-                  <input type="number" className={classes.input} value={step.duration} onChange={(e) => handleDurationChange(e, step.id)} />
+                  <input type="number" className={classes.input} value={step.duration} onChange={handleDurationChange(step.id)} />
                 </div>
               </div>
 
-              <div className={classes.inputGroup} style={{ marginBottom: '1rem' }}>
+              <div className={classes.inputGroup}>
                 <label className={classes.label}>Περιγραφή</label>
-                <textarea className={classes.textarea} value={step.description} onChange={(e) => handleDescChange(e, step.id)} />
+                <textarea className={classes.textarea} value={step.description} onChange={handleDescChange(step.id)} />
               </div>
 
-              {/* Ingredients */}
+              {/* Ingredients Section */}
               <div className={classes.ingredientsBox}>
-                <label className={classes.label}>💊 Υλικά Βήματος</label>
-                <ul className={classes.ingList}>
-                  {(step.stepIngredients || []).map((sing, idx) => (
-                    <li key={idx} className={classes.ingItem}>
-                      <span><strong>{sing.name}</strong> - {sing.quantity} {getUnitLabel(sing.measurementUnit)}</span>
-                      <button type="button" className={classes.btnDangerSmall} onClick={() => onRemoveIngredientFromStep(step.id, idx)}>✕</button>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className={classes.addRow}>
-                  <select className={`${classes.select} ${classes.flex2}`} value={newStepIng.ingredientId} onChange={onSelectIngredientChange}>
-                    <option value="">Επιλογή Υλικού...</option>
-                    {recipeIngredients.map((ri) => (
-                      <option key={ri.ingredientId || ri.id} value={ri.ingredientId || ri.id}>{ri.name}</option>
-                    ))}
-                  </select>
-                  <input type="number" placeholder="Ποσ." className={`${classes.input} ${classes.flex1}`} value={newStepIng.quantity} onChange={onQuantityChange} />
-                  <select className={`${classes.select} ${classes.flex1}`} value={newStepIng.measurementUnit} onChange={onUnitChange}>
-                    {MEASUREMENT_UNITS.map((unit) => <option key={unit.value} value={unit.value}>{unit.label}</option>)}
-                  </select>
-                  <button type="button" className={classes.btnAdd} onClick={() => onAddIngredientToStep(step.id)}><Plus size={18}/></button>
+                <label className={classes.label}><Box size={16}/> Υλικά Βήματος</label>
+                
+                <div className={classes.selectorWrapper}>
+                    <IngredientSelector 
+                        onAdd={(ingredientData) => onAddIngredientToStep(step.id, ingredientData)} 
+                    />
                 </div>
+
+                <ul className={classes.ingList}>
+                  {(step.stepIngredients || []).map((ing, idx) => renderIngredientItem(ing, idx, step.id))}
+                </ul>
               </div>
 
               {/* Photos */}
               <div className={classes.photoEditSection}>
                 <label className={classes.label}><Camera size={16}/> Φωτογραφίες</label>
                 <div className={classes.photoGrid}>
-                  {(step.photos || []).map((p) => (
-                    <div key={p.id} className={classes.photoWrapper}>
-                      <img src={getPhotoImageUrl(p.id)} className={classes.viewPhotoImg} alt="step" onError={(e) => { e.target.style.display = 'none'; }} />
-                      <button className={classes.photoDeleteBtn} onClick={() => onDeletePhoto(p.id)} type="button">✕</button>
-                    </div>
-                  ))}
+                  {(step.photos || []).map(renderPhotoItem)}
                 </div>
-                <input type="file" className={classes.fileInput} style={{ marginTop: '5px' }} onChange={(e) => onPhotoUpload(e, step.id)} />
+                <input 
+                    type="file" 
+                    className={classes.fileInput} 
+                    onChange={createPhotoUploadHandler(step.id)} 
+                />
               </div>
 
               <div className={classes.buttonsRow}>
-                <button type="button" className={classes.btnSuccess} onClick={() => onSaveStep(step)}>
+                <button type="button" className={classes.btnSuccess} onClick={createSaveStepHandler(step)}>
                   <Save size={18}/> Αποθήκευση
                 </button>
-                <button type="button" className={classes.btnSecondary} onClick={() => setEditingStepId(null)}>
+                <button type="button" className={classes.btnSecondary} onClick={createCancelEditHandler}>
                   <X size={18}/> Κλείσιμο
                 </button>
               </div>

@@ -42,12 +42,20 @@ const RecipeSearch = ({ onSearch, onReset }) => {
     onReset();
   };
 
+  // --- Handlers ---
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  const handleClearSearch = () => setSearchTerm("");
+  const handleDurationChange = (e) => setMaxDuration(e.target.value);
+  
+  // Wrapper handlers for category/difficulty buttons
+  const createCategoryHandler = (id) => () => setSelectedCategory(id);
+  const createDifficultyHandler = (id) => () => setSelectedDifficulty(id);
+
   const categories = [
     { id: "APPETIZER", label: "Ορεκτικό" },
     { id: "MAIN_COURSE", label: "Κυρίως" },
     { id: "SALAD", label: "Σαλάτα" },
     { id: "DESSERT", label: "Γλυκό" },
-    // { id: "SNACK", label: "Σνακ" }, // Αφαίρεσε το σχόλιο αν το έχεις
   ];
 
   const difficulties = [
@@ -67,13 +75,13 @@ const RecipeSearch = ({ onSearch, onReset }) => {
           className={classes.searchInput}
           placeholder="Αναζήτηση με όνομα ή υλικό..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
         />
         {searchTerm && (
           <XCircle 
             size={18} 
             className={classes.clearIcon} 
-            onClick={() => setSearchTerm("")}
+            onClick={handleClearSearch}
           />
         )}
       </div>
@@ -85,7 +93,7 @@ const RecipeSearch = ({ onSearch, onReset }) => {
           <span className={classes.rowLabel}><Utensils size={16}/> Κατηγορία:</span>
           <button
             className={`${classes.filterBtn} ${selectedCategory === "" ? classes.activeFilter : ""}`}
-            onClick={() => setSelectedCategory("")}
+            onClick={createCategoryHandler("")}
           >
             Όλα
           </button>
@@ -93,7 +101,7 @@ const RecipeSearch = ({ onSearch, onReset }) => {
             <button
               key={cat.id}
               className={`${classes.filterBtn} ${selectedCategory === cat.id ? classes.activeFilter : ""}`}
-              onClick={() => setSelectedCategory(cat.id)}
+              onClick={createCategoryHandler(cat.id)}
             >
               {cat.label}
             </button>
@@ -105,7 +113,7 @@ const RecipeSearch = ({ onSearch, onReset }) => {
           <span className={classes.rowLabel}><Gauge size={16}/> Δυσκολία:</span>
           <button
             className={`${classes.filterBtn} ${selectedDifficulty === "" ? classes.activeFilter : ""}`}
-            onClick={() => setSelectedDifficulty("")}
+            onClick={createDifficultyHandler("")}
           >
             Όλες
           </button>
@@ -113,7 +121,7 @@ const RecipeSearch = ({ onSearch, onReset }) => {
             <button
               key={diff.id}
               className={`${classes.filterBtn} ${selectedDifficulty === diff.id ? diff.class : ""}`}
-              onClick={() => setSelectedDifficulty(diff.id)}
+              onClick={createDifficultyHandler(diff.id)}
             >
               {diff.label}
             </button>
@@ -121,8 +129,9 @@ const RecipeSearch = ({ onSearch, onReset }) => {
         </div>
 
         {/* 4. DURATION & RESET */}
-        <div className={classes.filterRow} style={{ justifyContent: 'space-between', width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Αντικατάσταση inline styles */}
+        <div className={classes.durationRow}>
+          <div className={classes.durationContainer}>
             <span className={classes.rowLabel}><Clock size={16}/> Χρόνος (max):</span>
             <div className={classes.durationWrapper}>
               <input 
@@ -131,9 +140,9 @@ const RecipeSearch = ({ onSearch, onReset }) => {
                 placeholder="-"
                 min="0"
                 value={maxDuration}
-                onChange={(e) => setMaxDuration(e.target.value)}
+                onChange={handleDurationChange}
               />
-              <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>λεπτά</span>
+              <span className={classes.minuteLabel}>λεπτά</span>
             </div>
           </div>
 

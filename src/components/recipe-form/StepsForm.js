@@ -1,350 +1,262 @@
-import React, { useEffect, useState } from "react";
-import {
-  Camera,
-  Trash2,
-  Plus,
-  Clock,
-  CheckSquare,
-  Upload,
-  ShoppingBasket,
-} from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Plus, Camera, Clock, X, ShoppingCart } from "lucide-react";
 import classes from "./StepsForm.module.css";
-import { useToast } from "../UI/ToastProvider";
+import IngredientSelector from "./IngredientSelector";
+import { useConfirm } from "../UI/ConfirmProvider";
 
-const StepsForm = ({
-  steps,
-  onAddStep,
-  availableIngredients,
-  onRemoveStep,
-  mode = "create",
-  onStepPhotoUpload,
-  onStepPhotoDelete,
-}) => {
+const MEASUREMENT_UNITS_MAP = {
+  "GRAMS": "g",
+  "KILOGRAMS": "kg",
+  "MILLILITERS": "ml",
+  "LITERS": "L",
+  "CUPS": "φλιτζ.",
+  "TABLESPOONS": "κ.σ.",
+  "TEASPOONS": "κ.γ.",
+  "PIECES": "τεμ.",
+  "SLICES": "φέτες",
+  "PINCH": "πρέζα"
+};
+
+const StepsForm = ({ steps, onAddStep }) => {
   const [newStep, setNewStep] = useState({
     title: "",
     description: "",
     duration: 5,
-    ingredientIds: [],
-    pendingPhotos: [],
+    representedPhotos: [],
+    stepIngredients: []
   });
 
-  // Lightbox viewer state
-  const [viewer, setViewer] = useState({ open: false, src: "", alt: "" });
-  const openViewer = (src, alt = "") => setViewer({ open: true, src, alt });
-  const closeViewer = () => setViewer({ open: false, src: "", alt: "" });
+  const fileInputRef = useRef(null);
+  const confirmDialog = useConfirm();
 
-  // Close lightbox with ESC
-  useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") closeViewer();
-    };
-    if (viewer.open) window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [viewer.open]);
-
-  const showToast = useToast();
-
-  const handleStepPhotoSelect = (files) => {
-    try {
-      const newPhotos = Array.from(files).map((file) => {
-        if (file.size > 50 * 1024 * 1024) throw new Error("File too large");
-        return {
-          file,
-          id: Date.now() + Math.random(),
-          preview: URL.createObjectURL(file),
-          description: "",
-          name: file.name,
-        };
-      });
-
-      setNewStep((prev) => ({
-        ...prev,
-        pendingPhotos: [...prev.pendingPhotos, ...newPhotos],
-      }));
-    } catch (error) {
-      showToast({
-        type: "error",
-        title: "Σφάλμα",
-        message: error?.message ? `Σφάλμα: ${error.message}` : "Κάτι πήγε στραβά.",
-      });
-    }
+  const handleTitleChange = (e) => {
+    setNewStep((prev) => ({ ...prev, title: e.target.value }));
   };
 
-  const handleRemoveStepPhoto = (photoId) => {
+  const handleDurationChange = (e) => {
+    setNewStep((prev) => ({ ...prev, duration: e.target.value }));
+  };
+
+  const handleDescriptionChange = (e) => {
+    setNewStep((prev) => ({ ...prev, description: e.target.value }));
+  };
+
+  const handleAddIngredientToStep = (ingredientData) => {
+    if (!ingredientData) return;
     setNewStep((prev) => ({
       ...prev,
-      pendingPhotos: prev.pendingPhotos.filter((p) => p.id !== photoId),
+      stepIngredients: [...prev.stepIngredients, ingredientData]
     }));
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewStep((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const createCheckboxHandler = (ingredientId) => () => {
-    setNewStep((prevState) => {
-      const currentIds = prevState.ingredientIds;
-      if (currentIds.includes(ingredientId)) {
-        return {
-          ...prevState,
-          ingredientIds: currentIds.filter((id) => id !== ingredientId),
-        };
-      }
-      return { ...prevState, ingredientIds: [...currentIds, ingredientId] };
+  const createRemoveIngredientHandler = (index) => async () => {
+    const isConfirmed = await confirmDialog({
+      title: "Αφαίρεση Υλικού",
+      message: "Θέλετε να αφαιρέσετε αυτό το υλικό από το βήμα;",
+      confirmText: "Ναι, αφαίρεση",
     });
+    if (isConfirmed) {
+      setNewStep((prev) => ({
+        ...prev,
+        stepIngredients: prev.stepIngredients.filter((_, i) => i !== index)
+      }));
+    }
   };
 
-  const handleAddClick = () => {
-    if (!newStep.description.trim()) {
-      showToast({
-        type: "warning",
-        title: "Λείπει περιγραφή",
-        message: "Η περιγραφή είναι υποχρεωτική.",
-      });
+  const handleTriggerFile = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handlePhotoSelect = (e) => {
+    const files = e.target.files;
+    if (!files) return;
+    const newPhotos = Array.from(files).map((file) => ({
+      file,
+      id: Date.now() + Math.random(),
+      preview: URL.createObjectURL(file),
+      description: "",
+      name: file.name
+    }));
+    setNewStep((prev) => ({
+      ...prev,
+      representedPhotos: [...prev.representedPhotos, ...newPhotos]
+    }));
+  };
+
+  const createRemovePhotoHandler = (photoId) => () => {
+    setNewStep((prev) => ({
+      ...prev,
+      representedPhotos: prev.representedPhotos.filter((p) => p.id !== photoId)
+    }));
+  };
+
+  const handleAddStepClick = () => {
+    if (!newStep.title.trim()) {
+      alert("Παρακαλώ δώστε τίτλο στο βήμα.");
       return;
     }
-
-    const titleToUse =
-      newStep.title.trim() === "" ? `Βήμα ${steps.length + 1}` : newStep.title;
-
-    onAddStep({
+    const stepOrder = steps.length + 1;
+    const stepToAdd = {
       ...newStep,
-      title: titleToUse,
-      stepOrder: steps.length + 1,
-      stepIngredients: newStep.ingredientIds.map((id) => ({ ingredientId: id })),
-      pendingPhotos: newStep.pendingPhotos,
-    });
-
+      stepOrder,
+      duration: parseInt(newStep.duration) || 1
+    };
+    onAddStep(stepToAdd);
     setNewStep({
       title: "",
       description: "",
       duration: 5,
-      ingredientIds: [],
-      pendingPhotos: [],
+      representedPhotos: [],
+      stepIngredients: []
     });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
+
+  const renderStepPreview = (step, index) => (
+    <div key={index} className={classes.stepPreviewCard}>
+      <div className={classes.stepHeader}>
+        <span className={classes.stepBadge}>{index + 1}</span>
+        <span className={classes.stepTitle}>{step.title}</span>
+        <span className={classes.stepDuration}>
+            <Clock size={14}/> {step.duration}'
+        </span>
+      </div>
+      {step.stepIngredients?.length > 0 && (
+        <div className={classes.stepIngPreview}>
+           <small>Υλικά: {step.stepIngredients.length}</small>
+        </div>
+      )}
+      {step.representedPhotos?.length > 0 && (
+        <div className={classes.stepPhotoPreview}>
+           <Camera size={14} /> {step.representedPhotos.length} φωτό
+        </div>
+      )}
+    </div>
+  );
+
+  const renderIngredientItem = (ing, idx) => (
+    <li key={idx} className={classes.ingredientItem}>
+         <span>
+            <strong>{ing.name}</strong> 
+            ({ing.quantity} {MEASUREMENT_UNITS_MAP[ing.measurementUnit] || ing.measurementUnit})
+         </span>
+         <button 
+           type="button" 
+           onClick={createRemoveIngredientHandler(idx)}
+           className={classes.removeIngBtn}
+           title="Αφαίρεση"
+         >
+            <X size={14} />
+         </button>
+    </li>
+  );
+
+  const renderPhotoItem = (photo) => (
+    <div key={photo.id} className={classes.photoThumbnail}>
+        <img 
+          src={photo.preview} 
+          alt="preview" 
+          className={classes.thumbImg} 
+        />
+        <button 
+          type="button" 
+          onClick={createRemovePhotoHandler(photo.id)}
+          className={classes.removePhotoBtn}
+        >
+           <X size={12}/>
+        </button>
+    </div>
+  );
 
   return (
     <div className={classes.container}>
-      {/* --- NEW STEP FORM --- */}
-      <div className={classes.newStepBox}>
-        <h4 className={classes.boxTitle}>
-          <Plus size={18} /> Προσθήκη Νέου Βήματος
-        </h4>
-
-        <div className={classes.row}>
-          <div className={classes.inputGroup} style={{ flex: 3 }}>
-            <input
-              type="text"
-              name="title"
-              placeholder="Τίτλος (π.χ. Προετοιμασία)"
-              className={classes.input}
-              value={newStep.title}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className={classes.inputGroup} style={{ flex: 1 }}>
-            <div className={classes.iconInputWrapper}>
-              <Clock size={16} className={classes.inputIcon} />
-              <input
-                type="number"
-                name="duration"
-                placeholder="min"
-                min="1"
-                className={classes.inputWithIcon}
-                value={newStep.duration}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-        </div>
-
-        <textarea
-          name="description"
-          className={classes.textarea}
-          placeholder="Περιγράψτε τη διαδικασία..."
-          value={newStep.description}
-          onChange={handleInputChange}
-        />
-
-        {availableIngredients.length > 0 && (
-          <div className={classes.ingredientsSection}>
-            <label className={classes.sectionLabel}>
-              <CheckSquare size={16} /> Υλικά σε αυτό το βήμα:
-            </label>
-
-            <div className={classes.checkboxGrid}>
-              {availableIngredients.map((ing) => (
-                <label
-                  key={ing.ingredientId || ing.id}
-                  className={classes.checkboxLabel}
-                >
-                  <input
-                    type="checkbox"
-                    checked={newStep.ingredientIds.includes(
-                      ing.ingredientId || ing.id
-                    )}
-                    onChange={createCheckboxHandler(ing.ingredientId || ing.id)}
-                  />
-                  <span>{ing.name}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step Photos Upload */}
-        <div className={classes.photoUploadSection}>
-          <label className={classes.uploadLabel}>
-            <Camera size={18} /> Φωτογραφίες Βήματος
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              hidden
-              onChange={(e) => handleStepPhotoSelect(e.target.files)}
-            />
-            <span className={classes.uploadBtnText}>
-              <Upload size={14} /> Επιλογή
-            </span>
-          </label>
-
-          {newStep.pendingPhotos.length > 0 && (
-            <div className={classes.previewRow}>
-              {newStep.pendingPhotos.map((photo) => (
-                <div key={photo.id} className={classes.miniPreview}>
-                  <img
-                    src={photo.preview}
-                    alt=""
-                    onClick={() => openViewer(photo.preview, photo.name)}
-                    style={{ cursor: "zoom-in" }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveStepPhoto(photo.id)}
-                  >
-                    <Trash2 size={12} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <button
-          type="button"
-          className={classes.addButton}
-          onClick={handleAddClick}
-        >
-          Προσθήκη Βήματος
-        </button>
-      </div>
-
-      {/* --- EXISTING STEPS LIST --- */}
-      <div className={classes.stepsList}>
-        {steps.map((step, index) => (
-          <div key={index} className={classes.stepCard}>
-            <div className={classes.stepHeader}>
-              <span className={classes.stepNumber}>{index + 1}</span>
-
-              <div className={classes.stepInfo}>
-                <div className={classes.stepTitleRow}>
-                  <strong>{step.title}</strong>
-                  <span className={classes.durationTag}>{step.duration}'</span>
-                </div>
-
-                <p className={classes.stepDesc}>{step.description}</p>
-
-                {/* Step Photos Preview */}
-                {(step.pendingPhotos?.length > 0 || step.photos?.length > 0) && (
-                  <div className={classes.stepPhotosRow}>
-                    {step.pendingPhotos?.map((p) => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        className={classes.thumbBtn}
-                        onClick={() => openViewer(p.preview, p.name || "step photo")}
-                        aria-label="Άνοιγμα φωτογραφίας"
-                      >
-                        <img
-                          className={classes.stepPhotoThumb}
-                          src={p.preview}
-                          alt={p.name || "step photo"}
-                        />
-                      </button>
-                    ))}
-
-                    {step.photos?.map((url, i) => (
-                      <button
-                        key={`${url}-${i}`}
-                        type="button"
-                        className={classes.thumbBtn}
-                        onClick={() => openViewer(url, `step photo ${i + 1}`)}
-                        aria-label="Άνοιγμα φωτογραφίας"
-                      >
-                        <img
-                          className={classes.stepPhotoThumb}
-                          src={url}
-                          alt={`step photo ${i + 1}`}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* Metadata Tags */}
-                <div className={classes.metaTags}>
-                  {step.stepIngredients?.length > 0 && (
-                    <span className={`${classes.tag} ${classes.ingTag}`}>
-                      <ShoppingBasket size={14} />
-                      {step.stepIngredients.length}{" "}
-                      {step.stepIngredients.length === 1 ? "Υλικό" : "Υλικά"}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {onRemoveStep && (
-                <button
-                  type="button"
-                  className={classes.removeStepBtn}
-                  onClick={() => onRemoveStep(index)}
-                >
-                  <Trash2 size={18} />
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* LIGHTBOX / MODAL */}
-      {viewer.open && (
-        <div
-          className={classes.lightbox}
-          onClick={closeViewer}
-          role="dialog"
-          aria-modal="true"
-        >
-          <button
-            type="button"
-            className={classes.lightboxClose}
-            onClick={closeViewer}
-            aria-label="Κλείσιμο"
-          >
-            ✕
-          </button>
-
-          <img
-            className={classes.lightboxImg}
-            src={viewer.src}
-            alt={viewer.alt}
-            onClick={(e) => e.stopPropagation()}
-          />
+      {steps.length > 0 && (
+        <div className={classes.stepsList}>
+          {steps.map(renderStepPreview)}
         </div>
       )}
+      <div className={classes.formCard}>
+        <h4 className={classes.formTitle}>
+          Προσθήκη Βήματος {steps.length + 1}
+        </h4>
+        <div className={classes.row}>
+          <div className={classes.inputGroupFull}>
+            <label className={classes.label}>Τίτλος Βήματος</label>
+            <input
+              type="text"
+              value={newStep.title}
+              onChange={handleTitleChange}
+              className={classes.input}
+              placeholder="π.χ. Προετοιμασία λαχανικών"
+            />
+          </div>
+          <div className={classes.inputGroupSmall}>
+             <label className={classes.label}>Διάρκεια (λεπτά)</label>
+             <input
+               type="number"
+               min="1"
+               value={newStep.duration}
+               onChange={handleDurationChange}
+               className={classes.input}
+             />
+          </div>
+        </div>
+        <div className={classes.inputGroup}>
+          <label className={classes.label}>Περιγραφή Διαδικασίας</label>
+          <textarea
+            value={newStep.description}
+            onChange={handleDescriptionChange}
+            className={classes.textarea}
+            placeholder="Περιγράψτε αναλυτικά τι πρέπει να γίνει..."
+          />
+        </div>
+        <div className={classes.ingredientsSection}>
+            <label className={classes.label}>
+                <ShoppingCart size={16}/> Υλικά για αυτό το βήμα
+            </label>
+            <div className={classes.selectorWrapper}>
+                <IngredientSelector onAdd={handleAddIngredientToStep} />
+            </div>
+            {newStep.stepIngredients.length > 0 && (
+                <ul className={classes.ingredientsList}>
+                    {newStep.stepIngredients.map(renderIngredientItem)}
+                </ul>
+            )}
+        </div>
+        <div className={classes.photoSection}>
+           <button 
+             type="button" 
+             onClick={handleTriggerFile} 
+             className={classes.uploadBtn}
+           >
+              <Camera size={18}/> Προσθήκη Φωτογραφιών
+           </button>
+           <input
+             ref={fileInputRef}
+             type="file"
+             accept="image/*"
+             multiple
+             className={classes.hiddenInput}
+             onChange={handlePhotoSelect}
+           />
+           {newStep.representedPhotos.length > 0 && (
+              <div className={classes.photosPreviewRow}>
+                 {newStep.representedPhotos.map(renderPhotoItem)}
+              </div>
+           )}
+        </div>
+        <button 
+          type="button" 
+          onClick={handleAddStepClick} 
+          className={classes.addBtn}
+        >
+           <Plus size={20} /> Καταχώρηση Βήματος
+        </button>
+      </div>
     </div>
   );
 };

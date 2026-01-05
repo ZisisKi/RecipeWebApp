@@ -1,54 +1,41 @@
-/* --- GLOBAL RESETS --- */
 *, *::before, *::after {
-  box-sizing: border-box; /* Πολύ σημαντικό για να μην ξεφεύγουν τα paddings */
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
-  /* Dark Slate Background (matching the app theme) */
-  background-color: #0f172a; 
-  color: #e2e8f0; /* Standard Light Text */
-  
-  font-family: 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: #0f172a;
+  color: #e2e8f0;
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* --- CUSTOM SCROLLBAR (Dark & Gold) --- */
-/* Works on Chrome, Edge, and Safari */
 ::-webkit-scrollbar {
   width: 10px;
-  height: 10px; /* For horizontal scrollbars */
+  height: 10px;
 }
 
-/* Track (το αυλάκι πίσω) */
 ::-webkit-scrollbar-track {
-  background: #1e293b; /* Dark Slate */
+  background: #1e293b;
 }
 
-/* Handle (η μπάρα που κινείται) */
 ::-webkit-scrollbar-thumb {
-  background: #475569; /* Grey-Blue initially */
+  background: #475569;
   border-radius: 5px;
-  border: 2px solid #1e293b; /* Space around handle */
+  border: 2px solid #1e293b;
 }
 
-/* Handle on Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #fbbf24; /* Gold on hover */
+  background: #fbbf24;
 }
 
-/* --- TEXT SELECTION --- */
-/* Όταν μαρκάρεις κείμενο */
 ::selection {
-  background: rgba(251, 191, 36, 0.3); /* Gold tint */
+  background: rgba(251, 191, 36, 0.3);
   color: #fbbf24;
 }

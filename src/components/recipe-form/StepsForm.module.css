@@ -1,191 +1,32 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-/* --- NEW STEP FORM --- */
-.newStepBox {
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px dashed rgba(251, 191, 36, 0.4);
-  padding: 20px;
-  border-radius: 16px;
-}
-
-.boxTitle {
-  margin-top: 0;
-  color: #fbbf24;
-  display: flex; align-items: center; gap: 8px;
-}
-
+.container { display: flex; flex-direction: column; gap: 20px; }
+.stepsList { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+.stepPreviewCard { background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
+.stepHeader { display: flex; align-items: center; gap: 10px; }
+.stepBadge { background: #fbbf24; color: #0f172a; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; }
+.stepTitle { color: #e2e8f0; font-weight: 500; }
+.stepDuration { color: #94a3b8; font-size: 0.85rem; display: flex; align-items: center; gap: 4px; }
+.stepIngPreview { color: #94a3b8; font-size: 0.85rem; }
+.stepPhotoPreview { color: #94a3b8; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+.formCard { background: #1e293b; padding: 20px; border-radius: 12px; border: 1px dashed #475569; }
+.formTitle { margin-top: 0; margin-bottom: 15px; color: #fbbf24; }
 .row { display: flex; gap: 15px; margin-bottom: 15px; }
-
-.input, .textarea, .inputWithIcon {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #fff;
-  font-size: 0.95rem;
-  box-sizing: border-box;
-}
-
-.iconInputWrapper { position: relative; }
-.inputIcon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #fbbf24; }
-.inputWithIcon { padding-left: 35px; }
-
-.ingredientsSection {
-  background: rgba(15, 23, 42, 0.3);
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-.sectionLabel { display: flex; align-items: center; gap: 5px; color: #81e6d9; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; }
-
-.checkboxGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
-.checkboxLabel { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; color: #cbd5e1; cursor: pointer; }
-
-/* PHOTO UPLOAD MINI AREA */
-.uploadLabel {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 8px 15px; border-radius: 50px;
-  cursor: pointer; border: 1px solid rgba(255,255,255,0.1);
-  color: #e2e8f0; font-size: 0.9rem;
-  transition: all 0.2s;
-}
-.uploadLabel:hover { background: rgba(255, 255, 255, 0.1); border-color: #fbbf24; }
-.uploadBtnText { color: #fbbf24; font-weight: 600; display: flex; gap: 4px; align-items: center; }
-
-.previewRow { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-.miniPreview { position: relative; width: 60px; height: 60px; }
-.miniPreview img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; border: 1px solid #fbbf24; }
-.miniPreview button { position: absolute; top: -5px; right: -5px; background: #ef4444; border: none; border-radius: 50%; width: 20px; height: 20px; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-.addButton {
-  width: 100%; padding: 12px; margin-top: 15px;
-  background: rgba(251, 191, 36, 0.1);
-  color: #fbbf24; border: 1px solid #fbbf24;
-  border-radius: 8px; font-weight: 700; cursor: pointer;
-  transition: all 0.2s;
-}
-.addButton:hover { background: #fbbf24; color: #0f172a; }
-
-/* --- STEPS LIST --- */
-.stepCard {
-  background: rgba(30, 41, 59, 0.6);
-  padding: 15px;
-  border-radius: 12px;
-  border-left: 4px solid #fbbf24;
-  margin-bottom: 10px;
-}
-
-.stepHeader { display: flex; gap: 15px; }
-.stepNumber { background: #fbbf24; color: #0f172a; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
-.stepInfo { flex-grow: 1; }
-
-.stepTitleRow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; color: #f1f5f9; }
-.durationTag { font-size: 0.8rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 10px; }
-
-.stepDesc { color: #94a3b8; font-size: 0.95rem; margin: 0 0 10px 0; }
-
-.metaTags { display: flex; gap: 10px; }
-.tag { font-size: 0.8rem; background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 2px 8px; border-radius: 4px; }
-.photoTag { background: rgba(56, 178, 172, 0.15); color: #81e6d9; }
-
-.removeStepBtn { background: none; border: none; color: #f87171; cursor: pointer; opacity: 0.7; }
-.removeStepBtn:hover { opacity: 1; transform: scale(1.1); }
-
-.stepPhotosRow{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  padding-top: 14px;
-  border-top: 1px dashed rgba(255,255,255,0.12);
-}
-
-.ingTag{
-  margin-top: 14px;  
-}
-
-
-.thumbBtn{
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: zoom-in;
-  border-radius: 12px;
-}
-
-.thumbBtn:focus-visible{
-  outline: 2px solid rgba(251,191,36,0.8);
-  outline-offset: 3px;
-}
-
-
-.lightbox{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0,0,0,0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.lightboxImg{
-  max-width: min(980px, 92vw);
-  max-height: 86vh;
-  border-radius: 18px;
-  object-fit: contain;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
-}
-
-.lightboxClose{
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.35);
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-
-.ingTag{
-  margin-top: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-
-
-.stepPhotoThumb{
-  width: 86px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-}
-
-.tag{
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.08);
-}
-
-
+.inputGroupFull { flex: 3; }
+.inputGroupSmall { flex: 1; }
+.inputGroup { margin-bottom: 15px; }
+.label { display: flex; align-items: center; gap: 8px; color: #94a3b8; margin-bottom: 6px; font-size: 0.9rem; }
+.input { width: 100%; background: #0f172a; border: 1px solid #334155; color: #f1f5f9; padding: 10px; border-radius: 6px; font-size: 0.95rem; }
+.textarea { width: 100%; background: #0f172a; border: 1px solid #334155; color: #f1f5f9; padding: 10px; border-radius: 6px; font-size: 0.95rem; min-height: 80px; resize: vertical; }
+.ingredientsSection { background: #0f172a; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #334155; }
+.selectorWrapper { margin-bottom: 10px; }
+.ingredientsList { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ingredientItem { background: #1e293b; border: 1px solid #475569; padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #e2e8f0; }
+.removeIngBtn { background: transparent; border: none; color: #ef4444; cursor: pointer; padding: 0; display: flex; align-items: center; }
+.photoSection { margin-bottom: 20px; }
+.uploadBtn { background: #334155; color: #e2e8f0; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+.hiddenInput { display: none; }
+.photosPreviewRow { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.photoThumbnail { position: relative; width: 60px; height: 60px; }
+.thumbImg { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+.removePhotoBtn { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border: none; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 10px; }
+.addBtn { width: 100%; background: #10b981; color: #064e3b; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: background 0.2s; }
+.addBtn:hover { background: #059669; }

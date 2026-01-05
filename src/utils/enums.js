@@ -18,11 +18,9 @@ export const MEASUREMENT_UNITS = {
   PINCH: "πρέζα",
 };
 
-// Βοηθητική λίστα για να γεμίζουμε εύκολα τα <select> (dropdowns)
-// Μετατρέπει το αντικείμενο σε πίνακα: [{value: 'GRAMS', label: 'γραμμάρια'}, ...]
 export const MEASUREMENT_OPTIONS = Object.keys(MEASUREMENT_UNITS).map(
   (key) => ({
-    value: MEASUREMENT_UNITS[key], // Αυτό θα σταλεί στη Java (π.χ. GRAMS)
-    label: MEASUREMENT_UNITS[key], // Αυτό θα δει ο χρήστης (π.χ. γραμμάρια)
+    value: MEASUREMENT_UNITS[key], 
+    label: MEASUREMENT_UNITS[key], 
   })
 );
