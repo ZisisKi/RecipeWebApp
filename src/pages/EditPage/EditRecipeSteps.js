@@ -103,11 +103,6 @@ const EditRecipeSteps = ({
       confirmText: "Ναι, διαγραφή",
       cancelText: "Ακύρωση",
     });
-      title: "Διαγραφή βήματος",
-      message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το βήμα;",
-      confirmText: "Ναι, διαγραφή",
-      cancelText: "Ακύρωση",
-    });
 
     if (!ok) return;
     if (!ok) return;
@@ -220,12 +215,6 @@ const EditRecipeSteps = ({
       confirmText: "Ναι, διαγραφή",
       cancelText: "Ακύρωση",
     });
-      title: "Διαγραφή φωτογραφίας",
-      message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;",
-      confirmText: "Ναι, διαγραφή",
-      cancelText: "Ακύρωση",
-    });
-
     if (!ok) return;
     if (!ok) return;
 
