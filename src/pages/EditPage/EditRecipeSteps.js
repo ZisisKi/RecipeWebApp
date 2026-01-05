@@ -28,10 +28,16 @@ const MEASUREMENT_UNITS = [
   { value: "TEASPOONS", label: "κ.γ." },
   { value: "PIECES", label: "τεμ." },
   { value: "SLICES", label: "φέτες" },
-  { value: "PINCH", label: "πρέζα" }
+  { value: "PINCH", label: "πρέζα" },
 ];
 
-const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMessage }) => {
+const EditRecipeSteps = ({
+  recipeId,
+  steps,
+  recipeIngredients,
+  onRefresh,
+  showMessage,
+}) => {
   const [editingStepId, setEditingStepId] = useState(null);
   const [localSteps, setLocalSteps] = useState(steps);
   
@@ -42,7 +48,7 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
   }, [steps]);
 
   const getUnitLabel = (unitValue) => {
-    const unit = MEASUREMENT_UNITS.find(u => u.value === unitValue);
+    const unit = MEASUREMENT_UNITS.find((u) => u.value === unitValue);
     return unit ? unit.label : unitValue;
   };
 
@@ -62,11 +68,13 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
         description: "Περιγραφή...",
         duration: 5,
         stepOrder: newOrder,
-        recipeId: parseInt(recipeId)
+        recipeId: parseInt(recipeId),
       });
       onRefresh();
       showMessage("Νέο βήμα δημιουργήθηκε!");
+      showMessage("Νέο βήμα δημιουργήθηκε!");
     } catch (error) {
+      showMessage("Σφάλμα δημιουργίας βήματος.", "error");
       showMessage("Σφάλμα δημιουργίας βήματος.", "error");
     }
   };
@@ -95,7 +103,13 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
       confirmText: "Ναι, διαγραφή",
       cancelText: "Ακύρωση",
     });
+      title: "Διαγραφή βήματος",
+      message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το βήμα;",
+      confirmText: "Ναι, διαγραφή",
+      cancelText: "Ακύρωση",
+    });
 
+    if (!ok) return;
     if (!ok) return;
 
     try {
@@ -103,6 +117,7 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
       onRefresh();
       showMessage("Το βήμα διαγράφηκε.");
     } catch (error) {
+      showMessage("Σφάλμα διαγραφής.", "error");
       showMessage("Σφάλμα διαγραφής.", "error");
     }
   };
@@ -169,9 +184,10 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
         stepOrder: parseInt(step.stepOrder),
         recipeId: parseInt(recipeId),
         stepIngredients: cleanStepIngredients,
-        photos: step.photos || []
+        photos: step.photos || [],
       });
 
+      showMessage(`Το Βήμα "${step.title}" ενημερώθηκε!`);
       showMessage(`Το Βήμα "${step.title}" ενημερώθηκε!`);
       setEditingStepId(null);
       setTimeout(() => onRefresh(), 200);
@@ -190,7 +206,9 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
       }
       onRefresh();
       showMessage("Η φωτογραφία ανέβηκε!");
+      showMessage("Η φωτογραφία ανέβηκε!");
     } catch (error) {
+      showMessage("Σφάλμα ανεβάσματος.", "error");
       showMessage("Σφάλμα ανεβάσματος.", "error");
     }
   };
@@ -202,7 +220,13 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
       confirmText: "Ναι, διαγραφή",
       cancelText: "Ακύρωση",
     });
+      title: "Διαγραφή φωτογραφίας",
+      message: "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή τη φωτογραφία;",
+      confirmText: "Ναι, διαγραφή",
+      cancelText: "Ακύρωση",
+    });
 
+    if (!ok) return;
     if (!ok) return;
 
     try {
@@ -210,6 +234,7 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
       onRefresh();
       showMessage("Η φωτογραφία διαγράφηκε.");
     } catch (error) {
+      showMessage("Σφάλμα διαγραφής.", "error");
       showMessage("Σφάλμα διαγραφής.", "error");
     }
   };
@@ -259,26 +284,42 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
   return (
     <div className={classes.card}>
       <div className={classes.header}>
-        <h3 className={classes.title}><ListOrdered size={24}/> Βήματα Εκτέλεσης</h3>
-        <button type="button" className={classes.btnSuccess} onClick={onAddNewStep}>
-          <Plus size={18}/> Προσθήκη Βήματος
+        <h3 className={classes.title}>
+          <ListOrdered size={24} /> Βήματα Εκτέλεσης
+        </h3>
+        <button
+          type="button"
+          className={classes.btnSuccess}
+          onClick={onAddNewStep}
+        >
+          <Plus size={18} /> Προσθήκη Βήματος
         </button>
       </div>
 
       {localSteps.map((step) => (
-        <div key={step.id} className={`${classes.stepContainer} ${editingStepId === step.id ? classes.activeEdit : ''}`}>
-          
+        <div
+          key={step.id}
+          className={`${classes.stepContainer} ${
+            editingStepId === step.id ? classes.activeEdit : ""
+          }`}
+        >
           {/* Header Display */}
           <div className={classes.stepHeaderDisplay} onClick={createToggleEditHandler(step.id)}>
             <div className={classes.stepHeaderInfo}>
-               <span className={classes.stepNumberBadge}>{step.stepOrder}</span>
-               <span className={classes.stepTitleText}>{step.title}</span>
-               <span className={classes.durationBadge}><Clock size={12}/> {step.duration}'</span>
+              <span className={classes.stepNumberBadge}>{step.stepOrder}</span>
+              <span className={classes.stepTitleText}>{step.title}</span>
+              <span className={classes.durationBadge}>
+                <Clock size={12} /> {step.duration}'
+              </span>
             </div>
-            
+
             <div className={classes.actions}>
               <span className={classes.iconBtn}>
-                {editingStepId === step.id ? <Edit2 size={18} color="#fbbf24"/> : <Edit2 size={18} color="#94a3b8"/>}
+                {editingStepId === step.id ? (
+                  <Edit2 size={18} color="#fbbf24" />
+                ) : (
+                  <Edit2 size={18} color="#94a3b8" />
+                )}
               </span>
               <button 
                 className={classes.btnDangerIcon} 
@@ -294,8 +335,10 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
           {/* VIEW MODE */}
           {editingStepId !== step.id && (
             <div className={classes.viewContainer}>
-              <p className={classes.viewDesc}>{step.description || "Χωρίς περιγραφή"}</p>
-              
+              <p className={classes.viewDesc}>
+                {step.description || "Χωρίς περιγραφή"}
+              </p>
+
               {step.stepIngredients && step.stepIngredients.length > 0 && (
                 <div className={classes.tagList}>
                   {step.stepIngredients.map((ing, i) => (
@@ -358,7 +401,9 @@ const EditRecipeSteps = ({ recipeId, steps, recipeIngredients, onRefresh, showMe
 
               {/* Photos */}
               <div className={classes.photoEditSection}>
-                <label className={classes.label}><Camera size={16}/> Φωτογραφίες</label>
+                <label className={classes.label}>
+                  <Camera size={16} /> Φωτογραφίες
+                </label>
                 <div className={classes.photoGrid}>
                   {(step.photos || []).map(renderPhotoItem)}
                 </div>

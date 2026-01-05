@@ -162,7 +162,7 @@ function App() {
       {/* FOOTER */}
       <footer className={classes.footer}>
         <div className={classes.footerContent}>
-          <span>© 2025 Recipe eBook Project</span>
+          <span>© 2026 Recipe eBook Project</span>
           <span className={classes.footerSeparator}>|</span>
           <span className={classes.footerTeam}>
             Powered by: <strong>Alex / Zisis / Stelios / Argiris</strong>

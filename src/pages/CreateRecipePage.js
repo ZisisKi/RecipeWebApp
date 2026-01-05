@@ -144,7 +144,9 @@ const CreateRecipePage = () => {
         </div>
 
         <div className={classes.subSection}>
-          <h3><Camera size={24}/> Φωτογραφίες Συνταγής</h3>
+          <h3>
+            <Camera size={24} /> Φωτογραφίες Συνταγής
+          </h3>
           <p className={classes.descriptionText}>
             Προσθέστε κεντρικές φωτογραφίες της συνταγής.
           </p>
@@ -169,7 +171,7 @@ const CreateRecipePage = () => {
                 />
             </div>
             <small className={classes.helperText}>
-              Επιτρέπονται: JPEG, PNG, GIF, BMP, WebP (μέγιστο 50MB)
+              Επιτρέπονται: JPEG, PNG, JPG (μέγιστο 10MB)
             </small>
           </div>
 
