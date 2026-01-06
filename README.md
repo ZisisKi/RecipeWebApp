@@ -170,12 +170,12 @@ RECIPE/
 
 Επεξεργασία Υλικών και Φωτογραφιών Βήματος
 
-| ![Επεξεργασία Υλικών και Φωτογραφιών Βήματος](screenshotsForReadME\EditStepIngredient&Photo.jpg) |
+| ![Επεξεργασία Υλικών και Φωτογραφιών Βήματος](screenshotsForReadME\EditStepIngredients&Photo.jpg) |
 
 ### Λειτουργία Εκτέλεσης
 Η Λειτουργία Εκτέλεσης της Συνταγής!
 
 | Έναρξη Εκτέλεσης | Κατά την Διάρκεια της εκτέλεσης| Λήξη εκτέλεσης |
 |:---:|:---:|:---:|
-| ![Έναρξη Εκτέλεσης](screenshotsForReadME/RecipeExecutionStart.jpg) | ![Κατά την Διάρκει της εκτέλεσης](screenshotsForReadME/RecipeExecutioRunning.jpg) | ![Λήξη εκτέλεσης](screenshotsForReadME/RecipeExecutionEnd.jpg) |
+| ![Έναρξη Εκτέλεσης](screenshotsForReadME/RecipeExecutionStart.jpg) | ![Κατά την Διάρκει της εκτέλεσης](screenshotsForReadME/RecipeExecutionRunning.jpg) | ![Λήξη εκτέλεσης](screenshotsForReadME/RecipeExecutionEnd.jpg) |
 
