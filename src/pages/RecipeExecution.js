@@ -25,7 +25,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
   const [stepPhotos, setStepPhotos] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
 
-  
   const [viewer, setViewer] = useState({
     open: false,
     src: "",
@@ -35,6 +34,50 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
   });
 
   const currentStep = steps[currentStepIndex];
+
+  // --- Helpers for Formatting Units (Same as RecipeDetailsPage) ---
+  const UNIT_LABELS = {
+    κομμάτια: { singular: "κομμάτι", plural: "κομμάτια" },
+    γραμμάρια: { singular: "γραμμάριο", plural: "γραμμάρια" },
+    ml: { singular: "ml", plural: "ml" },
+    "κουταλιές σούπας": {
+      singular: "κουταλιά σούπας",
+      plural: "κουταλιές σούπας",
+    },
+    "κουταλάκια γλυκού": {
+      singular: "κουταλάκι γλυκού",
+      plural: "κουταλάκια γλυκού",
+    },
+    πρέζες: { singular: "πρέζα", plural: "πρέζες" },
+    φέτες: { singular: "φέτα", plural: "φέτες" },
+    φλιτζάνια: { singular: "φλιτζάνι", plural: "φλιτζάνια" },
+    λίτρα: { singular: "λίτρο", plural: "λίτρα" },
+    κιλά: { singular: "κιλό", plural: "κιλά" },
+  };
+
+  const UNIT_ENUM_TO_KEY = {
+    PIECES: "κομμάτια",
+    GRAMS: "γραμμάρια",
+    KILOGRAMS: "κιλά",
+    MILLILITERS: "ml",
+    LITERS: "λίτρα",
+    CUPS: "φλιτζάνια",
+    TABLESPOONS: "κουταλιές σούπας",
+    TEASPOONS: "κουταλάκια γλυκού",
+    SLICES: "φέτες",
+    PINCH: "πρέζες",
+  };
+
+  const toUnitKey = (unitEnumOrGreek) =>
+    UNIT_ENUM_TO_KEY[unitEnumOrGreek] || unitEnumOrGreek;
+
+  const formatUnit = (quantity, unit) => {
+    const unitKey = toUnitKey(unit);
+    const entry = UNIT_LABELS[unitKey];
+    if (!entry) return unit; // fallback
+    return quantity === 1 ? entry.singular : entry.plural;
+  };
+  // ----------------------------------------------------------------
 
   const calculateProgress = () => {
     if (isFinished) return 100;
@@ -48,7 +91,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
 
   const progressPercentage = calculateProgress();
 
-
   useEffect(() => {
     if (!currentStep) return;
 
@@ -56,7 +98,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
       setStepPhotos(photos || []);
     });
   }, [currentStep]);
-
 
   const photoSources = useMemo(() => {
     return (stepPhotos || []).map((p) => getPhotoImageUrl(p.id));
@@ -75,7 +116,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
 
   const closeViewer = () =>
     setViewer({ open: false, src: "", alt: "", index: 0, sources: [] });
-
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -150,7 +190,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
 
   return (
     <div className={classes.overlay}>
-    
       <div className={classes.header}>
         <button className={classes.closeBtn} onClick={onClose}>
           <X size={18} /> Ακύρωση
@@ -171,7 +210,6 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
         <div style={{ width: "80px" }}></div>
       </div>
 
-      
       <div className={classes.content}>
         <div className={classes.stepCardWrapper}>
           <div className={classes.cardInnerScroll} id="inner-scroll">
@@ -210,7 +248,7 @@ const RecipeExecution = ({ recipe, onClose, onBackToMenu }) => {
                     <li key={idx} className={classes.ingItem}>
                       <span>
                         <strong>
-                          {ing.quantity} {ing.measurementUnit}
+                          {ing.quantity} {formatUnit(ing.quantity, ing.measurementUnit)}
                         </strong>{" "}
                         {ing.name}
                       </span>
