@@ -72,7 +72,8 @@ const EditRecipe = ({ recipeId, onCancel, onSaveSuccess }) => {
 
   const onSaveBasicInfo = async () => {
     try {
-      await updateRecipe(recipeId, { ...formData, steps: [] });
+      
+      await updateRecipe(recipeId, { ...formData, steps: formData.steps });
       showMessage("Τα βασικά στοιχεία αποθηκεύτηκαν!");
     } catch (error) {
       showMessage("Σφάλμα κατά την αποθήκευση.", "error");
